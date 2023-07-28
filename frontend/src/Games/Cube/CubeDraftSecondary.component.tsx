@@ -1,4 +1,3 @@
-import { downloadDeck } from "../../service";
 import { ICube } from "./service/CubeGameService";
 import React, { useState } from "react";
 import { DecksByPlayer } from "./CubeDraft.component";
@@ -8,14 +7,15 @@ import DeckExplorer from "../../component/DeckExplorer/DeckExplorer.component";
 interface Props {
   cube?: ICube;
   decksByPlayer: DecksByPlayer[];
+  deckName: string;
 }
 
 const CubeDraftSecondary = (props: Props) => {
-  const { cube, decksByPlayer } = props;
+  const { cube, decksByPlayer, deckName } = props;
 
   const { profile } = React.useContext(GameContext) as GameContextType;
 
-  const [activeTab, setActiveTab] = useState<string>(profile?.uuid || "");
+  const [activeTab, setActiveTab] = useState<string>(profile?.uuid ?? "");
 
   return (
     <div className="section">
@@ -40,27 +40,11 @@ const CubeDraftSecondary = (props: Props) => {
         {decksByPlayer.map(
           ({ player, deck }) =>
             player.uuid === activeTab && (
-              <DeckExplorer key={`tab-body-${player.uuid}`} deck={deck} />
-              // <div  className="mt-3 flex">
-              //   <div className="">
-              //   </div>
-              //   <div className="m-3">
-              //     <CardsTypeDistribution deck={deck} />
-              //     <div>Number of Cards: {deck.length}</div>
-              //     {deck.length > 0 && (
-              //       <div className="mt-3">
-              //         <button
-              //           onClick={() =>
-              //             downloadDeck(`${cube?.name} - ${player.name}`, deck)
-              //           }
-              //           className="btn btn-secondary btn-sm"
-              //         >
-              //           Download Deck
-              //         </button>
-              //       </div>
-              //     )}
-              //   </div>
-              // </div>
+              <DeckExplorer
+                key={`tab-body-${player.uuid}`}
+                deck={deck}
+                deckName={deckName}
+              />
             )
         )}
       </div>

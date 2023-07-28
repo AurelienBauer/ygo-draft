@@ -1,7 +1,7 @@
 import React from "react";
 import { ICard } from "../../types";
 import Card from "../Card.component";
-import CardsTypeDistribution from "../StatsAndCharts/CardsTypeDistribution.component";
+import CardsTypeDistribution from "./CardsTypeDistribution.component";
 
 interface Props {
   selectedCard: ICard | null;
@@ -39,11 +39,11 @@ const DeckExplorerSideInfo = (props: Props) => {
             selectedCard?.def !== undefined && (
               <div className="side-info-attribute-atk-def mt-2">
                 <div>
-                  <span>Atk:</span>
+                  <span className="mr-1">Atk:</span>
                   {selectedCard?.atk}
                 </div>
                 <div>
-                  <span>Def:</span>
+                  <span className="mr-1">Def:</span>
                   {selectedCard?.def}
                 </div>
               </div>

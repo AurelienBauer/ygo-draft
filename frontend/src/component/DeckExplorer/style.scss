@@ -23,6 +23,8 @@
 
 .side-info {
   position: relative;
+  display: flex;
+  flex-direction: column;
 }
 
 .side-info-card {
@@ -78,25 +80,17 @@
   z-index: 1;
 }
 
-.download-deck-small {
-  position: absolute;
-  bottom: 0;
-  right: 0;
-  width: 2.5rem;
-  height: 2.5rem;
-  padding: 0.25rem;
-  margin: 0.5rem;
-  border-radius: 5px;
-  border: 2px solid #b6b6b6;
-  cursor: pointer;
+.deck-explorer-stat-pie-distribution {
+  display: flex;
+  flex: 1;
+  height: 8vh;
+  max-height: 20rem;
+  text-align: start;
 }
 
-.download-deck-small:hover {
-  border: 2px solid #888888;
-}
-
-.download-deck-small:hover > svg {
-  stroke: #888888;
+.deck-explorer-stat-pie-distribution > div {
+  height: 80%;
+  width: 50%;
 }
 
 // .cards-list-selected > img {

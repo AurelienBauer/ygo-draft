@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import { ICard } from "../../types";
 import Card from "../Card.component";
-import CardsTypeDistribution from "../StatsAndCharts/CardsTypeDistribution.component";
 import DeckExplorerSideInfo from "./DeckExplorerSideInfo.component";
-import { downloadDeck } from "../../service";
-import Icon from "../../frontendComponent/Icon.components";
+import DownloadDeckButton from "../DownloadDeckButton.component";
+import CardsTypeDistribution from "./CardsTypeDistribution.component";
 
 interface Props {
   deck: ICard[];
+  deckName: string;
 }
 
 const typeSort = [
@@ -34,7 +34,7 @@ const typeSort = [
 ];
 
 const DeckExplorer = (props: Props) => {
-  const { deck } = props;
+  const { deck, deckName } = props;
 
   const [selectedCard, setSelectedCard] = useState<ICard | null>(null);
   const [hoverCard, setHoverCard] = useState<ICard | null>(null);
@@ -81,12 +81,8 @@ const DeckExplorer = (props: Props) => {
         <DeckExplorerSideInfo
           selectedCard={selectedCard ? selectedCard : hoverCard}
         />
-        <div
-          onClick={() => downloadDeck(`download`, deck)}
-          className="download-deck-small"
-        >
-          <Icon icon="import" strokeColor="#b6b6b6" />
-        </div>
+        <CardsTypeDistribution deck={deck} />
+        <DownloadDeckButton type="icon" deck={deck} filename={deckName} />
       </div>
     </div>
   );

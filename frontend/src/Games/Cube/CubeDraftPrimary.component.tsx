@@ -41,27 +41,31 @@ const CubeDraftPrimary = (props: Props) => {
   }, [boardCards]);
 
   useEffect(() => {
-    cgservice.socket.onNewBoard((cards) => {
-      const board = cube?.cards.filter((c) => cards.includes(c.uuid));
-      if (board) {
-        setDisplayBoard(board);
-        setBoardCards(board);
-      }
-    });
+    if (cube) {
+      cgservice.socket.onNewBoard((cards) => {
+        const board = cube.cards.filter((c) => cards.includes(c.uuid));
+        if (board) {
+          setDisplayBoard(board);
+          setBoardCards(board);
+        }
+      });
 
-    cgservice.socket.onNextTurn((playerUUID: string) => {
-      setCurrentPlayer(playerUUID);
-    });
+      cgservice.socket.onNextTurn((playerUUID: string) => {
+        setCurrentPlayer(playerUUID);
+      });
 
-    cgservice.socket.getCurrentGameState().then((gamecube) => {
-      setPlayers(gamecube.playersInGame.map((pig) => pig.player));
-      const board = cube?.cards.filter((c) => gamecube.board.includes(c.uuid));
-      if (board) {
-        setDisplayBoard(board);
-        setBoardCards(board);
-      }
-      setCurrentPlayer(gamecube.currentPlayer);
-    });
+      cgservice.socket.getCurrentGameState().then((gamecube) => {
+        setPlayers(gamecube.playersInGame.map((pig) => pig.player));
+        const board = cube.cards.filter((c) =>
+          gamecube.board.includes(c.uuid)
+        );
+        if (board) {
+          setDisplayBoard(board);
+          setBoardCards(board);
+        }
+        setCurrentPlayer(gamecube.currentPlayer);
+      });
+    }
   }, [cube]);
 
   const getTurn = (): string => {

@@ -21,9 +21,12 @@ const Card = (props: Props) => {
   }
 
   return card ? (
-    <img style={{ width: widthSize, height: "100%"  }} src={card[img_src]} />
+    <img style={{ width: widthSize, height: "100%" }} src={card[img_src]} />
   ) : (
-    <img style={{ width: widthSize }} src="" />
+    <img
+      style={{ width: widthSize, height: "100%" }}
+      src="https://images.ygoprodeck.com/images/cards/100421010.jpg"
+    />
   );
 };
 

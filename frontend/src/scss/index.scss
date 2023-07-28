@@ -39,6 +39,22 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+.ml-1 {
+  margin-left: 0.25rem;
+}
+
+.ml-2 {
+  margin-left: 0.5rem;
+}
+
+.mr-1 {
+  margin-right: 0.25rem;
+}
+
+.mr-2 {
+  margin-right: 0.5rem;
+}
+
 .max-width-20 {
   max-width: 20rem;
 }
@@ -366,4 +382,54 @@ span {
 
 .large-container {
   width: 75vw;
+}
+
+.download-deck-icon {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 2.5rem;
+  height: 2.5rem;
+  padding: 0.25rem;
+  margin: 0.5rem;
+  border-radius: 5px;
+  border: 2px solid #b6b6b6;
+  cursor: pointer;
+}
+
+.download-deck-icon:hover {
+  border: 2px solid #888888;
+}
+
+.download-deck-icon:hover > svg {
+  stroke: #888888;
+}
+
+.download-deck-btn > svg {
+  width: 1.5rem;
+  height: 1.5rem;
+  margin-right: 0.5rem;
+  padding-bottom: 3px;
+}
+
+.simple-pie-root {
+  text-align: center;
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.simple-pie-overlay {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 4vh;
+  color: #ffffff;
+  text-align: center;
+  pointer-events: visible;
+  right: 50%;
+  left: 50%;
 }

@@ -5,6 +5,7 @@ import CubeDraftPrimary from "./CubeDraftPrimary.component";
 import CubeDraftSecondary from "./CubeDraftSecondary.component";
 import CubeLastCardPicked from "./CubeLastCardPicked.component";
 import { GameContext, GameContextType } from "../../component/Game/GameContext";
+import DownloadDeckButton from "../../component/DownloadDeckButton.component";
 
 interface Props {
   cgservice: CubeGameService;
@@ -28,9 +29,13 @@ const CubeDraft = (props: Props) => {
 
   const refIntersecting = useRef<HTMLDivElement>(null);
 
-  const { reconnectionParam } = React.useContext(
+  const { reconnectionParam, profile } = React.useContext(
     GameContext
   ) as GameContextType;
+
+  const deckName = `${new Date().toJSON().slice(0, 10)}-${cube?.name}-${
+    profile?.name ?? "unknown"
+  }`;
 
   const addCardToPlayerDeck = (playerUUID: string, card: ICard) => {
     setDecksByPlayer(
@@ -47,25 +52,33 @@ const CubeDraft = (props: Props) => {
   };
 
   useEffect(() => {
-    cgservice.rest.getCubeById(cubeID).then((cube) => {
-      setCube(cube);
-    });
+    if (cubeID) {
+      cgservice.rest.getCubeById(cubeID).then((cube) => {
+        setCube(cube);
+      });
+    }
   }, [cubeID]);
 
   useEffect(() => {
-    cgservice.socket.getCurrentGameState().then((gamecube) => {
-      setDecksByPlayer(
-        gamecube.playersInGame.map((pig) => ({
-          player: pig.player,
-          deck: cube?.cards.filter((c) => pig?.deck && pig?.deck.length && pig.deck.includes(c.uuid)) ?? [],
-        }))
-      );
-    });
+    if (cube) {
+      cgservice.socket.getCurrentGameState().then((gamecube) => {
+        setDecksByPlayer(
+          gamecube.playersInGame.map((pig) => ({
+            player: pig.player,
+            deck:
+              cube?.cards.filter(
+                (c) =>
+                  pig?.deck && pig?.deck.length && pig.deck.includes(c.uuid)
+              ) ?? [],
+          }))
+        );
+      });
 
-    cgservice.socket.onDraftOver(() => {
-      setIsDraftOver(true);
-    });
-  }, [cube]);
+      cgservice.socket.onDraftOver(() => {
+        setIsDraftOver(true);
+      });
+    }
+  }, [cube, cgservice]);
 
   useEffect(() => {
     if (reconnectionParam === "draft_over") {
@@ -90,7 +103,17 @@ const CubeDraft = (props: Props) => {
     <>
       <h1>{cube?.name}</h1>
       {isDraftOver ? (
-        <h2 className="big-blue-text mt-5 mb-5">DRAFT OVER</h2>
+        <div>
+          <h2 className="big-blue-text mt-5 mb-5">DRAFT OVER</h2>
+          <DownloadDeckButton
+            type="button"
+            deck={
+              decksByPlayer.find((dbp) => dbp.player.uuid === profile?.uuid)
+                ?.deck ?? []
+            }
+            filename={deckName}
+          />
+        </div>
       ) : (
         <CubeDraftPrimary
           cube={cube}
@@ -100,7 +123,11 @@ const CubeDraft = (props: Props) => {
         />
       )}
       <div ref={refIntersecting}>
-        <CubeDraftSecondary cube={cube} decksByPlayer={decksByPlayer} />
+        <CubeDraftSecondary
+          cube={cube}
+          decksByPlayer={decksByPlayer}
+          deckName={deckName}
+        />
       </div>
       <div className="cube-last-card-picked-modal-container hidden-scroll">
         {decksByPlayer.map((dbp) => (

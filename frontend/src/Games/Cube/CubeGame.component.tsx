@@ -44,6 +44,7 @@ const CubeGame = (props: Props) => {
   const [openDetailModal, setOpenDetailModal] = useState(false);
   const [detailCard, setDetailCard] = useState<ICard>();
   const [gameAborded, setGameAborded] = useState(false);
+  const [cgservice, setCgservice] = useState<CubeGameService | null>(null);
 
   const {
     socket,
@@ -63,11 +64,6 @@ const CubeGame = (props: Props) => {
     setDetailCard(card);
     setOpenDetailModal(true);
   };
-
-  let cgservice: CubeGameService | null = null;
-  if (socket) {
-    cgservice = new CubeGameService(socket);
-  }
 
   const handleStartGame = () => {
     if (cgservice) {
@@ -90,6 +86,15 @@ const CubeGame = (props: Props) => {
 
   useEffect(() => {
     if (cgservice) {
+      if (
+        reconnectionParam === "draft_start" ||
+        reconnectionParam === "draft_over"
+      ) {
+        cgservice.socket.getCurrentGameState().then((res) => {
+          setCubeID(res.cubeID);
+          setDraftStarted(true);
+        });
+      }
       cgservice.socket.onGameStart((res: ICubeDraftStart) => {
         setCubeID(res.cubeID);
         setDraftStarted(true);
@@ -101,17 +106,10 @@ const CubeGame = (props: Props) => {
   }, [cgservice]);
 
   useEffect(() => {
-    if (
-      cgservice &&
-      (reconnectionParam === "draft_start" ||
-        reconnectionParam === "draft_over")
-    ) {
-      cgservice.socket.getCurrentGameState().then((res) => {
-        setCubeID(res.cubeID);
-        setDraftStarted(true);
-      });
+    if (socket) {
+      setCgservice(new CubeGameService(socket));
     }
-  }, [cgservice]);
+  }, [socket]);
 
   return (
     <div className="text-center flex justify-content-center">
