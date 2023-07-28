@@ -1,0 +1,246 @@
+.App {
+  text-align: center;
+}
+
+.card {
+  display: flex;
+}
+
+.Cube-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  min-height: 5vh;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+  align-items: start;
+  justify-items: start;
+}
+
+.small-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+  align-items: start;
+  justify-items: start;
+}
+
+.pick-grid {
+  display: flex;
+  align-items: center;
+  justify-items: center;
+  min-height: 60vh;
+}
+
+.pick-grid > div {
+  margin: 0 1rem 0 1rem;
+}
+.cubeList {
+  list-style: none;
+  font-size: 1rem;
+}
+
+.cubeList > li {
+  padding: 0.5rem;
+}
+
+.pick-picture {
+  width: 40vh;
+}
+
+.Cube-footer {
+  /* background-color: #282c34; */
+  min-height: 100vh;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  font-size: calc(10px + 2vmin);
+}
+
+.BoosterGame.cardsList {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  align-items: center;
+  justify-items: center;
+  grid-gap: 15px;
+  list-style: none;
+}
+
+.BoosterGame.booster:hover {
+  cursor: pointer;
+}
+
+.BoosterGame.boosterCards {
+  display: flex;
+  margin-bottom: 50px;
+}
+
+.BoosterGame.allBoosterCards {
+  list-style: none;
+}
+
+.shine {
+  height: 262px;
+}
+
+.shine:hover {
+  cursor: zoom-in;
+  opacity: 0.5;
+}
+
+.rare {
+  position: relative;
+  overflow: hidden;
+  color: #ffffff;
+  width: 180px;
+  height: 262px;
+  bottom: 268px;
+}
+
+.rare:after {
+  animation: shine 3s ease-in-out infinite;
+  animation-fill-mode: forwards;
+  content: "";
+  position: absolute;
+  top: -110%;
+  left: -210%;
+  width: 200%;
+  height: 200%;
+  opacity: 0;
+  transform: rotate(30deg);
+
+  background: rgba(255, 255, 255, 0.13);
+  background: linear-gradient(
+    to right,
+    rgba(255, 255, 255, 0.13) 0%,
+    rgba(255, 255, 255, 0.13) 77%,
+    rgba(255, 255, 255, 0.5) 92%,
+    rgba(255, 255, 255, 0) 100%
+  );
+}
+
+.rare:active:after {
+  opacity: 0;
+}
+
+@keyframes shine {
+  10% {
+    opacity: 1;
+    top: -30%;
+    left: -30%;
+    transition-property: left, top, opacity;
+    transition-duration: 0.7s, 0.7s, 0.15s;
+    transition-timing-function: ease;
+  }
+  100% {
+    opacity: 0;
+    top: -30%;
+    left: -30%;
+    transition-property: left, top, opacity;
+  }
+}
+
+@keyframes rare-shadow-box-move {
+  50% {
+    box-shadow: 0 0 10px 5px #f5d017;
+  }
+}
+
+.super-rare {
+  animation: rare-shadow-box-move 5s infinite;
+  box-shadow: 0 0 5px 2px #f5d017;
+}
+
+@keyframes ultra-rare-shadow-box-move {
+  50% {
+    box-shadow: 0 0 10px 5px #ff3eff;
+  }
+}
+
+.ultra-rare {
+  animation: ultra-rare-shadow-box-move 5s infinite;
+  box-shadow: 0 0 5px 2px #ff3eff;
+}
+
+@keyframes secret-rare-shadow-box-move {
+  50% {
+    box-shadow: 0 0 9px 6px #fff, 0 0 11px 8px #f0f, 0 0 13px 10px #0ff;
+  }
+}
+
+.secret-rare {
+  animation: secret-rare-shadow-box-move 5s infinite;
+  box-shadow: 0 0 5px 2px #fff, 0 0 7px 4px #f0f, 0 0 9px 6px #0ff;
+}
+
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 10;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+}
+
+.modal-content {
+  background: rgba(0, 0, 0, 0.8);
+  margin: auto;
+  padding: 10px;
+  color: lightgray;
+  border: 1px solid #ffffff00;
+  width: 80%;
+}
+
+.modal-footer {
+  display: flex;
+  justify-content: space-between;
+}
+
+.close {
+  font-size: 28px;
+}
+
+.close:hover {
+  cursor: pointer;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.modal.open {
+  display: flex;
+}
+
+.modal-card-pic > img {
+  height: 65vh;
+}
+
+.modal-body {
+  display: flex;
+}
+
+.modal-card-desc > ul {
+  list-style: none;
+}
+
+.modal-card-desc > ul > li {
+  margin: 20px;
+}
+
+.BoosterGame.cards-grid {
+  list-style: none;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+  align-items: center;
+  justify-items: center;
+  grid-gap: 15px;
+  min-height: 83vh;
+}

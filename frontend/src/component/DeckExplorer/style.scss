@@ -1,0 +1,105 @@
+.deck-explorer {
+  display: flex;
+  background-color: #1b1d23;
+  height: 90vh;
+  min-height: 30rem;
+}
+
+.deck-explorer > .cards-list {
+  display: block;
+  column-gap: 85px;
+  width: 59%;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+
+.deck-explorer > .cards-list > div {
+  float: left;
+}
+
+.deck-explorer > .side-info {
+  width: 41%;
+}
+
+.side-info {
+  position: relative;
+}
+
+.side-info-card {
+  width: 100%;
+}
+
+.side-info-attribute {
+  width: 100%;
+}
+
+.side-info-attribute > div {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.side-info-details {
+  display: flex;
+}
+
+.side-info-description {
+  text-align: start;
+  display: block;
+}
+
+.side-info-description-text {
+  overflow-y: scroll;
+  overflow-x: hidden;
+  height: 6rem;
+  font-size: small;
+  padding: 0 0.5rem 0 0.5rem;
+}
+
+.side-info-attribute-atk-def {
+  display: flex;
+  justify-content: space-around;
+}
+
+.cards-list-card {
+  cursor: pointer;
+  border: 1px solid transparent;
+  position: relative;
+}
+
+.cards-list-card:hover {
+  cursor: pointer;
+  outline: 2px solid #b6b6b6;
+  z-index: 1;
+}
+
+.cards-list-selected {
+  outline: 3px solid white !important;
+  z-index: 1;
+}
+
+.download-deck-small {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 2.5rem;
+  height: 2.5rem;
+  padding: 0.25rem;
+  margin: 0.5rem;
+  border-radius: 5px;
+  border: 2px solid #b6b6b6;
+  cursor: pointer;
+}
+
+.download-deck-small:hover {
+  border: 2px solid #888888;
+}
+
+.download-deck-small:hover > svg {
+  stroke: #888888;
+}
+
+// .cards-list-selected > img {
+//   position: relative;
+//   z-index: -1;
+// }
