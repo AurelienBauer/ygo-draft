@@ -9,24 +9,33 @@ interface Props {
   filename: string;
 }
 
-const DownloadDeckButton = (props: Props) => {
+function DownloadDeckButton(props: Props) {
   const { type, deck, filename } = props;
 
   return type === "icon" ? (
     <button
       onClick={() => downloadDeck(filename, deck)}
       className="btn download-deck-icon"
+      type="button"
     >
       <Icon icon="import" strokeColor="#b6b6b6" />
     </button>
   ) : (
     <div>
-      <button className="btn btn-outline-primary download-deck-btn" onClick={() => downloadDeck(filename, deck)}>
+      <button
+        className="btn btn-outline-primary download-deck-btn"
+        onClick={() => downloadDeck(filename, deck)}
+        type="button"
+      >
         <Icon icon="import" />
         Download the Deck
       </button>
     </div>
   );
+}
+
+DownloadDeckButton.defaultProps = {
+  type: "button",
 };
 
 export default DownloadDeckButton;

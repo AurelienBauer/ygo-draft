@@ -1,5 +1,4 @@
-import { dir } from "console";
-import React, { ReactNode, useEffect } from "react";
+import { ReactNode, useEffect } from "react";
 import { Store } from "react-notifications-component";
 
 interface Props {
@@ -13,6 +12,7 @@ const ErrorPromiseBoundary = (props: Props) => {
     event.preventDefault();
     const error = event.reason as Error;
     // You can customize the error handling here, such as logging or displaying an alert.
+    // eslint-disable-next-line no-console
     console.error(error);
     Store.addNotification({
       title: "Error",

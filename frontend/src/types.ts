@@ -39,3 +39,16 @@ export interface ICard {
 export interface IDisconnectionMsg {
   message: "disconnected" | "disconnection_failed";
 }
+
+export interface DecksByPlayer {
+  player: IPlayer;
+  deck: ICard[];
+}
+
+export interface ICube {
+  _id: string;
+  name: string;
+  description: string;
+  created: Date;
+  cards: ICard[];
+}

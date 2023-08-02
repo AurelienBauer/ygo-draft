@@ -27,16 +27,18 @@ interface ICreateSocket {
 
 export default class SocketManager {
   protected socket: Socket;
+
   protected socketID: string;
 
   constructor(socket: Socket) {
     this.socket = socket;
+    // eslint-disable-next-line no-console
     this.socket.io.on("reconnect", () => console.dir("reConnected !!!"));
   }
 
   protected socketRequest<T, D>(
     event: string,
-    body: T | null = null
+    body: T | null = null,
   ): Promise<SResponse<D>> {
     return new Promise((resolve, reject) => {
       const responseCb = (res: SResponse<D>) => {
@@ -56,20 +58,20 @@ export default class SocketManager {
   public async reconnect(socketId: string): Promise<ReconnectionInfo> {
     return this.socketRequest<{ socketId: string }, ReconnectionInfo>(
       "me:reconnect",
-      { socketId }
+      { socketId },
     ).then((res) => res.data);
   }
 
   public async abordReconnect(socketId: string): Promise<ReconnectionInfo> {
     return this.socketRequest<{ socketId: string }, ReconnectionInfo>(
       "me:abort_reconnect",
-      { socketId }
+      { socketId },
     ).then((res) => res.data);
   }
 
   public async disconnect(): Promise<IDisconnectionMsg> {
     return this.socketRequest<void, IDisconnectionMsg>("me:disconnect").then(
-      (res) => res.data
+      (res) => res.data,
     );
   }
 
@@ -102,9 +104,7 @@ export default class SocketManager {
   }
 
   public async getMyProfile(): Promise<IPlayer> {
-    return this.socketRequest("me:profile").then((res: SResponse<IPlayer>) => {
-      return res.data;
-    });
+    return this.socketRequest("me:profile").then((res: SResponse<IPlayer>) => res.data);
   }
 
   public static NewSession(playerName: string) {

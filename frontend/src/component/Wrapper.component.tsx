@@ -7,7 +7,7 @@ interface Props {
   children: ReactNode;
 }
 
-const Wrapper = (props: Props) => {
+function Wrapper(props: Props) {
   const { children } = props;
 
   const { profile, socket } = React.useContext(GameContext) as GameContextType;
@@ -17,10 +17,10 @@ const Wrapper = (props: Props) => {
       <Reconnection />
       {children}
       {socket?.connected && profile?.name && (
-        <ConnectedBadge name={profile.name} socket={socket} />
+        <ConnectedBadge name={profile.name} />
       )}
     </div>
   );
-};
+}
 
 export default Wrapper;

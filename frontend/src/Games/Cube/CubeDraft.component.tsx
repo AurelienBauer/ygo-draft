@@ -1,11 +1,14 @@
-import React, { Dispatch, useEffect, useRef, useState } from "react";
-import CubeGameService, { ICube } from "./service/CubeGameService";
-import { ICard, IPlayer } from "../../types";
+import React, {
+  useCallback, useEffect, useRef, useState,
+} from "react";
+import CubeGameService from "./service/CubeGameService";
+import { DecksByPlayer, ICard, ICube } from "../../types";
 import CubeDraftPrimary from "./CubeDraftPrimary.component";
 import CubeDraftSecondary from "./CubeDraftSecondary.component";
 import CubeLastCardPicked from "./CubeLastCardPicked.component";
 import { GameContext, GameContextType } from "../../component/Game/GameContext";
 import DownloadDeckButton from "../../component/DownloadDeckButton.component";
+import CubeGameRest from "./service/CubeGameRest";
 
 interface Props {
   cgservice: CubeGameService;
@@ -13,48 +16,47 @@ interface Props {
   handleOpenDetailModal: (c: ICard) => void;
 }
 
-export interface DecksByPlayer {
-  player: IPlayer;
-  deck: ICard[];
-}
-
-const CubeDraft = (props: Props) => {
+function CubeDraft(props: Props) {
   const { cubeID, cgservice, handleOpenDetailModal } = props;
 
   const [cube, setCube] = useState<ICube>();
   const [decksByPlayer, setDecksByPlayer] = useState<DecksByPlayer[]>([]);
   const [isDraftOver, setIsDraftOver] = useState<boolean>(false);
-  const [modalAreIntersecting, setModalAreIntersecting] =
-    useState<boolean>(false);
+  const [modalAreIntersecting, setModalAreIntersecting] = useState<boolean>(false);
 
   const refIntersecting = useRef<HTMLDivElement>(null);
 
   const { reconnectionParam, profile } = React.useContext(
-    GameContext
+    GameContext,
   ) as GameContextType;
 
   const deckName = `${new Date().toJSON().slice(0, 10)}-${cube?.name}-${
     profile?.name ?? "unknown"
   }`;
 
-  const addCardToPlayerDeck = (playerUUID: string, card: ICard) => {
-    setDecksByPlayer(
-      decksByPlayer.map((d) => {
-        if (d?.deck && d.player.uuid === playerUUID) {
-          if (!d.deck.find((c) => c.uuid === card.uuid)) {
-            const updatedDeck = [...d.deck, card]; // Create a new array by spreading the existing deck and adding the new card
-            return { ...d, deck: updatedDeck }; // Create a new object with the updated deck property
+  const addCardToPlayerDeck = useCallback(
+    (playerUUID: string, card: ICard) => {
+      setDecksByPlayer(
+        decksByPlayer.map((d) => {
+          if (d?.deck && d.player.uuid === playerUUID) {
+            if (!d.deck.find((c) => c.uuid === card.uuid)) {
+              // Create a new array by spreading the existing deck and adding the new card
+              const updatedDeck = [...d.deck, card];
+              // Create a new object with the updated deck property
+              return { ...d, deck: updatedDeck };
+            }
           }
-        }
-        return d;
-      })
-    );
-  };
+          return { ...d };
+        }),
+      );
+    },
+    [decksByPlayer],
+  );
 
   useEffect(() => {
     if (cubeID) {
-      cgservice.rest.getCubeById(cubeID).then((cube) => {
-        setCube(cube);
+      CubeGameRest.getCubeById(cubeID).then((c) => {
+        setCube(c);
       });
     }
   }, [cubeID]);
@@ -67,10 +69,9 @@ const CubeDraft = (props: Props) => {
             player: pig.player,
             deck:
               cube?.cards.filter(
-                (c) =>
-                  pig?.deck && pig?.deck.length && pig.deck.includes(c.uuid)
+                (c) => pig?.deck && pig?.deck.length && pig.deck.includes(c.uuid),
               ) ?? [],
-          }))
+          })),
         );
       });
 
@@ -78,7 +79,7 @@ const CubeDraft = (props: Props) => {
         setIsDraftOver(true);
       });
     }
-  }, [cube, cgservice]);
+  }, [cgservice, cube]);
 
   useEffect(() => {
     if (reconnectionParam === "draft_over") {
@@ -91,7 +92,7 @@ const CubeDraft = (props: Props) => {
       ([entry]) => {
         setModalAreIntersecting(entry.isIntersecting);
       },
-      { threshold: 0.8 }
+      { threshold: 0.8 },
     );
     if (refIntersecting.current) {
       observer.observe(refIntersecting.current);
@@ -123,11 +124,7 @@ const CubeDraft = (props: Props) => {
         />
       )}
       <div ref={refIntersecting}>
-        <CubeDraftSecondary
-          cube={cube}
-          decksByPlayer={decksByPlayer}
-          deckName={deckName}
-        />
+        <CubeDraftSecondary decksByPlayer={decksByPlayer} deckName={deckName} />
       </div>
       <div className="cube-last-card-picked-modal-container hidden-scroll">
         {decksByPlayer.map((dbp) => (
@@ -142,6 +139,6 @@ const CubeDraft = (props: Props) => {
       </div>
     </>
   );
-};
+}
 
 export default CubeDraft;

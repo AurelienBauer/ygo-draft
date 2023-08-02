@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Tooltip } from "react-tooltip";
 import {
   ConnectionDot,
   DisconnectionDot,
@@ -7,13 +8,12 @@ import Icon from "../../frontendComponent/Icon.components";
 import { GameContext, GameContextType } from "../Game/GameContext";
 import RoomManager from "./RoomManager";
 import { IRoom } from "../../types";
-import { Tooltip } from "react-tooltip";
 
 interface Props {
   position: "centered" | "fixed";
 }
 
-const RoomModal = (props: Props) => {
+function RoomModal(props: Props) {
   const { position } = props;
   const { profile, socket } = React.useContext(GameContext) as GameContextType;
 
@@ -28,10 +28,9 @@ const RoomModal = (props: Props) => {
     if (socket && profile?.room && profile.room?.uuid) {
       const roomManager = new RoomManager(socket, profile?.room?.uuid);
 
-      const refreshModal = () =>
-        roomManager?.refresh().then((r: IRoom) => {
-          setRoom(r);
-        });
+      const refreshModal = () => roomManager?.refresh().then((r: IRoom) => {
+        setRoom(r);
+      });
 
       roomManager.onPlayerDisconnect(() => {
         refreshModal();
@@ -44,6 +43,11 @@ const RoomModal = (props: Props) => {
       roomManager.onPlayerLeft(() => {
         refreshModal();
       });
+
+      roomManager.onPlayerJoin(() => {
+        refreshModal();
+      });
+
       refreshModal();
     }
   }, [socket, profile]);
@@ -55,7 +59,13 @@ const RoomModal = (props: Props) => {
       }`}
     >
       {position === "fixed" && (
-        <div className="room-side-button" onClick={handleOpenCloseModal}>
+        <div
+          className="room-side-button"
+          onClick={handleOpenCloseModal}
+          onKeyDown={handleOpenCloseModal}
+          role="button"
+          tabIndex={0}
+        >
           <Icon
             icon={isOpen ? "arrow-right" : "arrow-left"}
             scale="0.7"
@@ -63,34 +73,37 @@ const RoomModal = (props: Props) => {
           />
         </div>
       )}
-      <div>Room: {room?.title}</div>
+      <div>
+        Room:
+        {room?.title}
+      </div>
       <div className="room-list-of-players">
         {room?.players.map((p) => (
-            <div key={`player-in-room-${p.uuid}`}>
-              {p.connected ? <ConnectionDot /> : <DisconnectionDot />}
-              <div className="player-name">{p.name}</div>
-              {p.uuid === room.adminId.pub && (
-                <>
-                  <div
-                    className="player-admin-icon"
-                    data-tooltip-id="tt-icon-admin"
-                    data-tooltip-content="Admin of the room"
-                  >
-                    <Icon
-                      icon="user-filled"
-                      scale="0.7"
-                      strokeWidth="2"
-                      strokeColor="#D00"
-                    />
-                  </div>
-                  <Tooltip id="tt-icon-admin" />
-                </>
-              )}
-            </div>
-          ))}
+          <div key={`player-in-room-${p.uuid}`}>
+            {p.connected ? <ConnectionDot /> : <DisconnectionDot />}
+            <div className="player-name">{p.name}</div>
+            {p.uuid === room.adminId.pub && (
+              <>
+                <div
+                  className="player-admin-icon"
+                  data-tooltip-id="tt-icon-admin"
+                  data-tooltip-content="Admin of the room"
+                >
+                  <Icon
+                    icon="user-filled"
+                    scale="0.7"
+                    strokeWidth="2"
+                    strokeColor="#D00"
+                  />
+                </div>
+                <Tooltip id="tt-icon-admin" />
+              </>
+            )}
+          </div>
+        ))}
       </div>
     </div>
   );
-};
+}
 
 export default RoomModal;

@@ -1,5 +1,5 @@
-import React from "react";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
+
 import RoomManager from "./RoomManager";
 import { IRoom } from "../../types";
 import RoomModal from "./RoomModal.component";
@@ -10,7 +10,7 @@ interface Props {
   onGameStart: () => void;
 }
 
-const Room = (props: Props) => {
+function Room(props: Props) {
   const { roomManager, leftTheRoom, onGameStart } = props;
 
   const [roomInfo, setRoomInfo] = useState<IRoom>();
@@ -29,8 +29,7 @@ const Room = (props: Props) => {
         onGameStart();
       });
     }
-    return;
-  }, [roomManager]);
+  }, [onGameStart, roomManager]);
 
   useEffect(() => {
     if (roomManager && roomInfo) {
@@ -62,14 +61,16 @@ const Room = (props: Props) => {
         <div className="width-20 mt-5">
           <div className="flex space-between mb-1">
             <div>{roomInfo?.title}</div>
-            <span>Created by: {roomInfo?.createdBy}</span>
+            <span>
+              Created by:
+              {roomInfo?.createdBy}
+            </span>
           </div>
           <div className="mb-4">
             <RoomModal position="centered" />
           </div>
-          <RoomModal position="fixed" />
           {amIAdmin && (
-            <button className="btn btn-primary mb-3" onClick={handleStartGame}>
+            <button className="btn btn-primary mb-3" type="button" onClick={handleStartGame}>
               Start the game
             </button>
           )}
@@ -77,11 +78,11 @@ const Room = (props: Props) => {
       ) : (
         <div> Admin has left, please leave the room</div>
       )}
-      <button className="btn btn-secondary" onClick={handleLeaveTheRoom}>
+      <button className="btn btn-secondary" type="button" onClick={handleLeaveTheRoom}>
         Leave the room
       </button>
     </div>
   );
-};
+}
 
 export default Room;

@@ -9,25 +9,38 @@ interface ErrorBoundaryState {
 }
 
 class ErrorBoundary extends React.Component<
-  ErrorBoundaryProps,
-  ErrorBoundaryState
+ErrorBoundaryProps,
+ErrorBoundaryState
 > {
+  private static LogErrorToMyService(
+    error: Error,
+    componentStack: string | null,
+  ): void {
+    // eslint-disable-next-line no-console
+    console.error("Error occurred:", error);
+    // eslint-disable-next-line no-console
+    console.error("Component stack:", componentStack);
+  }
+
   constructor(props: ErrorBoundaryProps) {
     super(props);
     this.state = { hasError: false };
   }
 
-  static getDerivedStateFromError(_: Error): ErrorBoundaryState {
+  static getDerivedStateFromError(): ErrorBoundaryState {
     // Update state so the next render will show the fallback UI.
     return { hasError: true };
   }
 
   componentDidCatch(error: Error, info: React.ErrorInfo): void {
-    logErrorToMyService(error, info.componentStack);
+    ErrorBoundary.LogErrorToMyService(error, info.componentStack);
   }
 
   render() {
-    if (this.state.hasError) {
+    const { children } = this.props;
+    const { hasError } = this.state;
+
+    if (hasError) {
       return (
         <div className="error-dom-container">
           <div className="error-status">500</div>
@@ -42,13 +55,8 @@ class ErrorBoundary extends React.Component<
       );
     }
 
-    return this.props.children;
+    return children;
   }
-}
-
-function logErrorToMyService(error: Error, componentStack: string | null): void {
-  console.error('Error occurred:', error);
-  console.error('Component stack:', componentStack);
 }
 
 export default ErrorBoundary;

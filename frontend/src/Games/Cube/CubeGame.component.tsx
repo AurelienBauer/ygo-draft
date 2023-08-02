@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { GameContext, GameContextType } from "../../component/Game/GameContext";
 import CubeGameService from "./service/CubeGameService";
 import CubeSelection from "./CubeSelection.component";
 import { ICubeDraftStart } from "./service/CubeGameSocket";
 import CubeDraft from "./CubeDraft.component";
-import { useNavigate } from "react-router-dom";
 import RoomModal from "../../component/GameRoom/RoomModal.component";
 import { ICard } from "../../types";
 import CardDetail from "../../component/CardDetail.component";
@@ -14,7 +14,7 @@ interface PropsGAModal {
   handleLeaveGameRoom: () => void;
 }
 
-const GameAbordedModal = (props: PropsGAModal) => {
+function GameAbordedModal(props: PropsGAModal) {
   const { open, handleLeaveGameRoom } = props;
 
   return (
@@ -27,18 +27,20 @@ const GameAbordedModal = (props: PropsGAModal) => {
           </div>
         </div>
         <div className="modal-footer">
-          <button className="btn btn-secondary" onClick={handleLeaveGameRoom}>
+          <button
+            className="btn btn-secondary"
+            onClick={handleLeaveGameRoom}
+            type="button"
+          >
             Leave the game and the room
           </button>
         </div>
       </div>
     </div>
   );
-};
+}
 
-interface Props {}
-
-const CubeGame = (props: Props) => {
+function CubeGame() {
   const [cubeID, setCubeID] = useState<string>("");
   const [draftStarted, setDraftStarted] = useState(false);
   const [openDetailModal, setOpenDetailModal] = useState(false);
@@ -67,7 +69,7 @@ const CubeGame = (props: Props) => {
 
   const handleStartGame = () => {
     if (cgservice) {
-      cgservice.socket.gameStart(cubeID).then((_cubeID) => {
+      cgservice.socket.gameStart(cubeID).then(() => {
         setDraftStarted(true);
       });
     }
@@ -87,8 +89,7 @@ const CubeGame = (props: Props) => {
   useEffect(() => {
     if (cgservice) {
       if (
-        reconnectionParam === "draft_start" ||
-        reconnectionParam === "draft_over"
+        reconnectionParam === "draft_start" || reconnectionParam === "draft_over"
       ) {
         cgservice.socket.getCurrentGameState().then((res) => {
           setCubeID(res.cubeID);
@@ -103,7 +104,7 @@ const CubeGame = (props: Props) => {
         setGameAborded(true);
       });
     }
-  }, [cgservice]);
+  }, [cgservice, reconnectionParam]);
 
   useEffect(() => {
     if (socket) {
@@ -115,12 +116,13 @@ const CubeGame = (props: Props) => {
     <div className="text-center flex justify-content-center">
       <div>
         {cgservice && !draftStarted && (
-          <CubeSelection cgservice={cgservice} setCubeID={setCubeID} />
+          <CubeSelection setCubeID={setCubeID} />
         )}
         {cubeID && !draftStarted && (
           <button
             className="mt-3 btn btn-outline-primary"
             onClick={handleStartGame}
+            type="button"
           >
             Start Game
           </button>
@@ -137,7 +139,6 @@ const CubeGame = (props: Props) => {
         open={openDetailModal}
         card={detailCard}
         closeModal={handleCloseDetailModal}
-        cgservice={cgservice}
       />
       <GameAbordedModal
         open={gameAborded}
@@ -146,6 +147,6 @@ const CubeGame = (props: Props) => {
       <RoomModal position="fixed" />
     </div>
   );
-};
+}
 
 export default CubeGame;

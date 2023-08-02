@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 import React, {
   ChangeEvent,
   Dispatch,
@@ -5,16 +6,16 @@ import React, {
   useEffect,
   useState,
 } from "react";
-import CubeGameService, { ICube } from "./service/CubeGameService";
 import { GameContext, GameContextType } from "../../component/Game/GameContext";
+import { ICube } from "../../types";
+import CubeGameRest from "./service/CubeGameRest";
 
 interface Props {
-  cgservice: CubeGameService;
   setCubeID: Dispatch<string>;
 }
 
-const CubeSelection = (props: Props) => {
-  const { cgservice, setCubeID } = props;
+function CubeSelection(props: Props) {
+  const { setCubeID } = props;
 
   const { profile } = React.useContext(GameContext) as GameContextType;
 
@@ -23,7 +24,7 @@ const CubeSelection = (props: Props) => {
   const [cubeFile, setCubeFile] = useState<File | null>(null);
 
   const loadCubes = () => {
-    cgservice.rest.getCubes().then((res) => {
+    CubeGameRest.getCubes().then((res) => {
       setCubes(res);
     });
   };
@@ -45,7 +46,7 @@ const CubeSelection = (props: Props) => {
   const onSubmitCube = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (cubeFile) {
-      cgservice.rest.postCubeFromFile(cubeName, cubeFile).then(() => {
+      CubeGameRest.postCubeFromFile(cubeName, cubeFile).then(() => {
         loadCubes();
         setCubeName("");
         setCubeFile(null);
@@ -65,9 +66,9 @@ const CubeSelection = (props: Props) => {
         <form className="width-20" onSubmit={onSubmitCube}>
           <h4>Cube selection</h4>
           <div onChange={onCubeSelectionChange}>
-            {cubes &&
-              cubes.length > 0 &&
-              cubes.map((cube: ICube) => (
+            {cubes
+              && cubes.length > 0
+              && cubes.map((cube: ICube) => (
                 <div className="form-check" key={cube._id}>
                   <input
                     className="form-check-input"
@@ -108,6 +109,6 @@ const CubeSelection = (props: Props) => {
       )}
     </div>
   );
-};
+}
 
 export default CubeSelection;

@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 import React, { useState } from "react";
 import { ICard } from "../../types";
 import Card from "../Card.component";
@@ -33,7 +34,7 @@ const typeSort = [
   },
 ];
 
-const DeckExplorer = (props: Props) => {
+function DeckExplorer(props: Props) {
   const { deck, deckName } = props;
 
   const [selectedCard, setSelectedCard] = useState<ICard | null>(null);
@@ -61,31 +62,32 @@ const DeckExplorer = (props: Props) => {
         {deck
           .slice(0)
           .sort(
-            (a, b) => getCardTypeNumber(a._type) - getCardTypeNumber(b._type)
+            (a, b) => getCardTypeNumber(a._type) - getCardTypeNumber(b._type),
           )
           .sort((a, b) => a.level - b.level)
           .map((card) => (
             <div
               key={card.uuid}
               onClick={() => handleSelectedCard(card)}
+              onKeyDown={() => handleSelectedCard(card)}
               onMouseEnter={() => setHoverCard(card)}
               className={`cards-list-card ${
                 card.uuid === selectedCard?.uuid ? "cards-list-selected" : ""
               }`}
+              role="button"
+              tabIndex={0}
             >
               <Card card={card} size="small" />
             </div>
           ))}
       </div>
       <div className="side-info">
-        <DeckExplorerSideInfo
-          selectedCard={selectedCard ? selectedCard : hoverCard}
-        />
+        <DeckExplorerSideInfo selectedCard={selectedCard || hoverCard} />
         <CardsTypeDistribution deck={deck} />
         <DownloadDeckButton type="icon" deck={deck} filename={deckName} />
       </div>
     </div>
   );
-};
+}
 
 export default DeckExplorer;

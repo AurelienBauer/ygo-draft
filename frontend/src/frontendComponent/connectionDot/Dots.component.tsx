@@ -5,7 +5,7 @@ interface Props {
   state: string;
 }
 
-const Dot = ({ state }: Props) => {
+function Dot({ state }: Props) {
   let ringColor = "";
 
   switch (state) {
@@ -20,26 +20,30 @@ const Dot = ({ state }: Props) => {
   return (
     <div className={`ring-container ${ringColor}`}>
       {state !== "disconnected" && <div className="ringring" />}
-      <div className="circle"></div>
+      <div className="circle" />
     </div>
   );
-};
+}
 
-const ConnectionDot = () => (
-  <div data-tooltip-id="tt-connection-dot" data-tooltip-content="Connected">
-    <Dot state="connected" />
-    <Tooltip id="tt-connection-dot" />
-  </div>
-);
+function ConnectionDot() {
+  return (
+    <div data-tooltip-id="tt-connection-dot" data-tooltip-content="Connected">
+      <Dot state="connected" />
+      <Tooltip id="tt-connection-dot" />
+    </div>
+  );
+}
 
-const DisconnectionDot = () => (
-  <div
-    data-tooltip-id="tt-disconnection-dot"
-    data-tooltip-content="Disconnected"
-  >
-    <Dot state="disconnected" />
-    <Tooltip id="tt-disconnection-dot" />
-  </div>
-);
+function DisconnectionDot() {
+  return (
+    <div
+      data-tooltip-id="tt-disconnection-dot"
+      data-tooltip-content="Disconnected"
+    >
+      <Dot state="disconnected" />
+      <Tooltip id="tt-disconnection-dot" />
+    </div>
+  );
+}
 
 export { ConnectionDot, DisconnectionDot };

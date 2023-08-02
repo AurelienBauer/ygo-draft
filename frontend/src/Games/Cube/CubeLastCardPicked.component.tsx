@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ICard } from "../../types";
-import React from "react";
+
 import Icon from "../../frontendComponent/Icon.components";
 
 interface Props {
@@ -12,8 +12,10 @@ interface Props {
 
 type OpenStates = "open" | "reduce" | "close";
 
-const CubeLastCardPicked = (props: Props) => {
-  const { cardStack, playerName, handleOpenDetailModal, isDisturbing } = props;
+function CubeLastCardPicked(props: Props) {
+  const {
+    cardStack, playerName, handleOpenDetailModal, isDisturbing,
+  } = props;
 
   const [openState, setOpenState] = useState<OpenStates>("reduce");
 
@@ -29,6 +31,8 @@ const CubeLastCardPicked = (props: Props) => {
         case "reduce":
           setOpenState("open");
           break;
+        default:
+          break;
       }
     } else {
       switch (openState) {
@@ -41,6 +45,8 @@ const CubeLastCardPicked = (props: Props) => {
         case "reduce":
           setOpenState("open");
           break;
+        default:
+          break;
       }
     }
   };
@@ -51,13 +57,16 @@ const CubeLastCardPicked = (props: Props) => {
     } else if (!isDisturbing && openState === "close") {
       setOpenState("reduce");
     }
-  }, [isDisturbing]);
+  }, [isDisturbing, openState]);
 
   return (
     <div className={`cube-last-card-picked-modal modal-${openState}`}>
       <div
         className="cube-last-card-picked-side-button"
         onClick={handleOpenCloseModal}
+        onKeyDown={handleOpenCloseModal}
+        role="button"
+        tabIndex={0}
       >
         <Icon
           icon={openState === "open" ? "arrow-right" : "arrow-left"}
@@ -66,7 +75,9 @@ const CubeLastCardPicked = (props: Props) => {
         />
       </div>
       <div className="cube-last-card-picked-name">
-        Cards picked by: {playerName}
+        Cards picked by:
+        {" "}
+        {playerName}
       </div>
       <div className="last-card-picked-container">
         <div className="last-card-picked">
@@ -78,8 +89,11 @@ const CubeLastCardPicked = (props: Props) => {
                 key={`last-card-picked-${card.uuid}`}
                 className="last-card-picked-image"
                 onClick={() => handleOpenDetailModal(card)}
+                onKeyDown={() => handleOpenDetailModal(card)}
+                role="button"
+                tabIndex={0}
               >
-                <img src={card.image_small_url} />
+                <img src={card.image_small_url} alt={card.name} />
                 <div className="last-card-picked-svg-overlay ">
                   <Icon icon="search" />
                 </div>
@@ -89,6 +103,10 @@ const CubeLastCardPicked = (props: Props) => {
       </div>
     </div>
   );
+}
+
+CubeLastCardPicked.defaultProps = {
+  isDisturbing: false,
 };
 
 export default CubeLastCardPicked;

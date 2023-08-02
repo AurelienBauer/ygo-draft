@@ -1,13 +1,12 @@
 import React from "react";
 import { ICard } from "../../types";
 import Card from "../Card.component";
-import CardsTypeDistribution from "./CardsTypeDistribution.component";
 
 interface Props {
   selectedCard: ICard | null;
 }
 
-const DeckExplorerSideInfo = (props: Props) => {
+function DeckExplorerSideInfo(props: Props) {
   const { selectedCard } = props;
 
   return (
@@ -16,6 +15,7 @@ const DeckExplorerSideInfo = (props: Props) => {
         <Card card={selectedCard} size="large" />
         <div className="side-info-attribute">
           <div className="mt-2">{selectedCard?.name}</div>
+          {/* eslint-disable-next-line no-underscore-dangle */}
           <div className="mt-2 mb-4">{selectedCard?._type}</div>
           {selectedCard?.race && (
             <div>
@@ -35,8 +35,8 @@ const DeckExplorerSideInfo = (props: Props) => {
               <div>{selectedCard?.level}</div>
             </div>
           )}
-          {selectedCard?.atk !== undefined &&
-            selectedCard?.def !== undefined && (
+          {selectedCard?.atk !== undefined
+            && selectedCard?.def !== undefined && (
               <div className="side-info-attribute-atk-def mt-2">
                 <div>
                   <span className="mr-1">Atk:</span>
@@ -47,7 +47,7 @@ const DeckExplorerSideInfo = (props: Props) => {
                   {selectedCard?.def}
                 </div>
               </div>
-            )}
+          )}
         </div>
       </div>
       <div className="side-info-description">
@@ -58,6 +58,6 @@ const DeckExplorerSideInfo = (props: Props) => {
       </div>
     </div>
   );
-};
+}
 
 export default DeckExplorerSideInfo;

@@ -30,15 +30,13 @@ export default class RoomManager extends SocketManager {
   private roomIdNoDefine = new Error("The room Id is not set");
 
   public async getAllRooms(): Promise<IRoom[]> {
-    return this.socketRequest<void, IRoom[]>("room:list").then((res) => {
-      return res.data;
-    });
+    return this.socketRequest<void, IRoom[]>("room:list").then((res) => res.data);
   }
 
   public async createRoom(data: ICreateRoom): Promise<string> {
     return this.socketRequest<ICreateRoom, IRoomJoined>(
       "room:create",
-      data
+      data,
     ).then((res) => {
       this.roomId = res.data.roomId;
       return res.data.roomId;
@@ -60,9 +58,7 @@ export default class RoomManager extends SocketManager {
     }
     return this.socketRequest<IGetRoom, IRoom>("room:get", {
       roomId: this.roomId,
-    }).then((res) => {
-      return res.data;
-    });
+    }).then((res) => res.data);
   }
 
   public async leaveRoom() {
@@ -70,7 +66,7 @@ export default class RoomManager extends SocketManager {
       throw this.roomIdNoDefine;
     }
     return this.socketRequest("room:leave", { roomId: this.roomId }).then(
-      (res: { data: string }) => res.data
+      (res: { data: string }) => res.data,
     );
   }
 
@@ -91,14 +87,12 @@ export default class RoomManager extends SocketManager {
   }
 
   public async amIAdmin(roomAdminId: string): Promise<boolean> {
-    return this.getMyProfile().then((player: IPlayer) => {
-      return player.uuid === roomAdminId;
-    });
+    return this.getMyProfile().then((player: IPlayer) => player.uuid === roomAdminId);
   }
 
   public async startGame() {
     return this.socketRequest("room:startgame").then(
-      (res: { data: string }) => res.data
+      (res: { data: string }) => res.data,
     );
   }
 }

@@ -7,9 +7,10 @@ interface Props {
   strokeColor?: string;
 }
 
-const Icon = (props: Props) => {
-  const { icon, scale, strokeWidth, strokeColor } = props;
-
+function Icon(props: Props) {
+  const {
+    icon, scale, strokeColor, strokeWidth,
+  } = props;
   let id = null;
   let path = null;
   let fill = "none";
@@ -54,26 +55,40 @@ const Icon = (props: Props) => {
         <path d="M28 22 L28 30 4 30 4 22 M16 4 L16 24 M8 16 L16 24 24 16" />
       );
       break;
+    default:
+      id = "i-undefined";
+      path = (
+        <>
+          <circle cx="14" cy="14" r="12" />
+          <path d="M23 23 L30 30" />
+        </>
+      );
   }
 
   return (
-    id &&
-    path && (
+    id
+    && path && (
       <svg
         id={id}
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 32 32"
         fill={fill}
-        stroke={strokeColor || "currentcolor"}
+        stroke={strokeColor}
         strokeLinecap="round"
         strokeLinejoin="round"
-        strokeWidth={strokeWidth || "2"}
-        transform={`scale(${scale || "1"})`}
+        strokeWidth={strokeWidth}
+        transform={`scale(${scale})`}
       >
         {path}
       </svg>
     )
   );
+}
+
+Icon.defaultProps = {
+  scale: "1",
+  strokeColor: "currentcolor",
+  strokeWidth: "2",
 };
 
 export default Icon;

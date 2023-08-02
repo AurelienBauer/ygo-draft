@@ -1,14 +1,8 @@
-import { Socket } from "socket.io-client";
 import SocketManager, { SCallback } from "../../../SocketManager";
-import { ICard, IPlayer } from "../../../types";
+import { IPlayer } from "../../../types";
 
 export interface ICubeDraftStart {
   cubeID: string;
-}
-
-interface IDeck {
-  cards: ICard[];
-  cardsDiscarded: ICard[];
 }
 
 export interface ICubeGame {
@@ -27,33 +21,23 @@ interface IPlayerPickACard {
 }
 
 export default class CubeGameSocket extends SocketManager {
-  constructor(socket: Socket) {
-    super(socket);
-  }
-
   public async gameStart(cubeID: string) {
     return this.socketRequest<ICubeDraftStart, ICubeDraftStart>(
       "cube:startdraft",
-      { cubeID }
-    ).then((res) => {
-      return res.data;
-    });
+      { cubeID },
+    ).then((res) => res.data);
   }
 
   public async pickACard(cardUUID: string) {
     return this.socketRequest<IPlayerPickACard, IPlayerPickACard>(
       "cube:pickcard",
-      { cardUUID }
-    ).then((res) => {
-      return res.data;
-    });
+      { cardUUID },
+    ).then((res) => res.data);
   }
 
   public async getCurrentGameState() {
     return this.socketRequest<ICubeGame, ICubeGame>("cube:currentinfo").then(
-      (res) => {
-        return res.data;
-      }
+      (res) => res.data,
     );
   }
 

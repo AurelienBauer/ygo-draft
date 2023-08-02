@@ -1,22 +1,24 @@
-import React, { Dispatch, FormEvent, useEffect, useState } from "react";
+import React, {
+  Dispatch, FormEvent, useEffect, useState,
+} from "react";
+import { useCookies } from "react-cookie";
+import { Socket } from "socket.io-client";
 import Room from "./Room.component";
 import SocketManager from "../../SocketManager";
 import RoomManager from "./RoomManager";
 import { GameContext, GameContextType } from "../Game/GameContext";
 import { IPlayer, IRoom } from "../../types";
-import { useCookies } from "react-cookie";
-import { Socket } from "socket.io-client";
 
 interface PropsPlayerConnection {
   setIsconnected: Dispatch<boolean>;
 }
 
-const PlayerConnection = (props: PropsPlayerConnection) => {
+function PlayerConnection(props: PropsPlayerConnection) {
   const { setIsconnected } = props;
   const { setSocket, setProfile } = React.useContext(
-    GameContext
+    GameContext,
   ) as GameContextType;
-  const [_, setCookie] = useCookies(["socket"]);
+  const [, setCookie] = useCookies(["socket"]);
 
   const [playerName, setPlayerName] = useState("");
 
@@ -40,14 +42,14 @@ const PlayerConnection = (props: PropsPlayerConnection) => {
         <div className="mb-3">
           <label htmlFor="playerName" className="form-label">
             <b>Choose your username</b>
+            <input
+              id="playerName"
+              name="player_name"
+              className="form-control"
+              type="text"
+              onChange={(event) => setPlayerName(event.target.value)}
+            />
           </label>
-          <input
-            id="playerName"
-            name="player_name"
-            className="form-control"
-            type="text"
-            onChange={(event) => setPlayerName(event.target.value)}
-          />
         </div>
         <button type="submit" className="btn btn-primary">
           Connect
@@ -55,14 +57,14 @@ const PlayerConnection = (props: PropsPlayerConnection) => {
       </form>
     </div>
   );
-};
+}
 
 interface PropsRoomJoinCreateRoom {
   roomManager: RoomManager | null;
   setIsInRoom: Dispatch<boolean>;
 }
 
-const RoomJoinCreateRoom = (props: PropsRoomJoinCreateRoom) => {
+function RoomJoinCreateRoom(props: PropsRoomJoinCreateRoom) {
   const { roomManager, setIsInRoom } = props;
 
   const [roomName, setRoomName] = useState("");
@@ -101,11 +103,11 @@ const RoomJoinCreateRoom = (props: PropsRoomJoinCreateRoom) => {
     }
   };
 
-  const listRooms = () => {
-    roomManager?.getAllRooms().then((r) => setRooms(r));
-  };
-
   useEffect(() => {
+    const listRooms = () => {
+      roomManager?.getAllRooms().then((r) => setRooms(r));
+    };
+
     listRooms();
     const interval = setInterval(listRooms, 5000);
     return () => clearInterval(interval);
@@ -119,19 +121,24 @@ const RoomJoinCreateRoom = (props: PropsRoomJoinCreateRoom) => {
             <td>NoP</td>
             <td>Room</td>
             <td>Created by</td>
-            <td></td>
+            <td> </td>
           </tr>
         </thead>
         <tbody>
           {rooms?.map((r: IRoom) => (
             <tr key={r.uuid}>
-              <td>{r.players.length} /5</td>
+              <td>
+                {r.players.length}
+                {" "}
+                /5
+              </td>
               <td>{r.title}</td>
               <td>{r.createdBy}</td>
               <td>
                 <button
                   className="btn btn-sm btn-primary"
                   onClick={() => handleJoinRoom(r.uuid)}
+                  type="button"
                 >
                   Join
                 </button>
@@ -144,15 +151,15 @@ const RoomJoinCreateRoom = (props: PropsRoomJoinCreateRoom) => {
         <div>
           <label htmlFor="room_name" className="form-label">
             <b>Create a room</b>
+            <input
+              id="room_name"
+              className="form-control"
+              name="room_name"
+              onChange={(event) => {
+                setRoomName(event.target.value);
+              }}
+            />
           </label>
-          <input
-            id="room_name"
-            className="form-control"
-            name="room_name"
-            onChange={(event) => {
-              setRoomName(event.target.value);
-            }}
-          />
         </div>
         <button type="submit" className="btn btn-primary">
           Create
@@ -160,13 +167,13 @@ const RoomJoinCreateRoom = (props: PropsRoomJoinCreateRoom) => {
       </form>
     </div>
   );
-};
+}
 
 interface Props {
   onGameStart: () => void;
 }
 
-const RoomSelection = (props: Props) => {
+function RoomSelection(props: Props) {
   const { onGameStart } = props;
 
   const { profile, socket } = React.useContext(GameContext) as GameContextType;
@@ -205,6 +212,6 @@ const RoomSelection = (props: Props) => {
       )}
     </div>
   );
-};
+}
 
 export default RoomSelection;

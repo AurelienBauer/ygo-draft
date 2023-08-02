@@ -23,7 +23,7 @@ interface Props {
   children: ReactNode;
 }
 
-const GameProvider = (props: Props) => {
+function GameProvider(props: Props) {
   const { children } = props;
   const [socket, setSocket] = useState(null);
   const [profile, setProfile] = useState<IPlayer | null>(null);
@@ -38,10 +38,10 @@ const GameProvider = (props: Props) => {
       reconnectionParam,
       setReconnectionParam,
     }),
-    [socket, profile, reconnectionParam]
+    [socket, profile, reconnectionParam],
   );
 
   return <GameContext.Provider value={value}>{children}</GameContext.Provider>;
-};
+}
 
 export default GameProvider;

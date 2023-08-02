@@ -6,11 +6,11 @@ interface Props {
   children: ReactNode;
 }
 
-const Game = (props: Props) => {
+function Game(props: Props) {
   const { children } = props;
 
   const { reconnectionParam } = React.useContext(
-    GameContext
+    GameContext,
   ) as GameContextType;
 
   const [hasStarted, setHasStarted] = useState(false);
@@ -21,9 +21,9 @@ const Game = (props: Props) => {
 
   useEffect(() => {
     if (
-      reconnectionParam !== "undefine" &&
-      reconnectionParam !== "not_in_game" &&
-      reconnectionParam !== "room"
+      reconnectionParam !== "undefine"
+      && reconnectionParam !== "not_in_game"
+      && reconnectionParam !== "room"
     ) {
       setHasStarted(true);
     }
@@ -38,6 +38,6 @@ const Game = (props: Props) => {
       )}
     </div>
   );
-};
+}
 
 export default Game;

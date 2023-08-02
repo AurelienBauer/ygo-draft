@@ -1,17 +1,19 @@
-import React, { useEffect, useState } from "react";
-import { ICard, IPlayer } from "../../types";
-import CubeGameService, { ICube } from "./service/CubeGameService";
+import React, { useCallback, useEffect, useState } from "react";
+import { ICard, ICube, IPlayer } from "../../types";
+import CubeGameService from "./service/CubeGameService";
 import { GameContext, GameContextType } from "../../component/Game/GameContext";
 
 interface Props {
   cgservice: CubeGameService;
-  cube?: ICube;
+  cube: ICube | undefined;
   addCardToPlayerDeck: (currentPlayer: string, card: ICard) => void;
   handleOpenDetailModal: (c: ICard) => void;
 }
 
-const CubeDraftPrimary = (props: Props) => {
-  const { cube, cgservice, addCardToPlayerDeck, handleOpenDetailModal } = props;
+function CubeDraftPrimary(props: Props) {
+  const {
+    cube, cgservice, addCardToPlayerDeck, handleOpenDetailModal,
+  } = props;
   const [boardCards, setBoardCards] = useState<ICard[]>([]);
   const [displayBoard, setDisplayBoard] = useState<ICard[]>([]);
   const [currentPlayer, setCurrentPlayer] = useState<string>("");
@@ -19,9 +21,9 @@ const CubeDraftPrimary = (props: Props) => {
 
   const { profile } = React.useContext(GameContext) as GameContextType;
 
-  const removeCardFromBoard = (cardUUID: string) => {
+  const removeCardFromBoard = useCallback((cardUUID: string) => {
     setBoardCards(boardCards.filter((c) => c.uuid !== cardUUID));
-  };
+  }, [boardCards]);
 
   const handleCardPicked = (card: ICard) => {
     cgservice.socket.pickACard(card.uuid).then((res) => {
@@ -38,7 +40,7 @@ const CubeDraftPrimary = (props: Props) => {
         addCardToPlayerDeck(res.playerID, card);
       }
     });
-  }, [boardCards]);
+  }, [boardCards, addCardToPlayerDeck, cgservice.socket, removeCardFromBoard]);
 
   useEffect(() => {
     if (cube) {
@@ -56,9 +58,7 @@ const CubeDraftPrimary = (props: Props) => {
 
       cgservice.socket.getCurrentGameState().then((gamecube) => {
         setPlayers(gamecube.playersInGame.map((pig) => pig.player));
-        const board = cube.cards.filter((c) =>
-          gamecube.board.includes(c.uuid)
-        );
+        const board = cube.cards.filter((c) => gamecube.board.includes(c.uuid));
         if (board) {
           setDisplayBoard(board);
           setBoardCards(board);
@@ -66,50 +66,50 @@ const CubeDraftPrimary = (props: Props) => {
         setCurrentPlayer(gamecube.currentPlayer);
       });
     }
-  }, [cube]);
+  }, [cgservice.socket, cube]);
 
   const getTurn = (): string => {
-    const p = players.filter((p) => p.uuid === currentPlayer);
-    if (p.length <= 0 || !profile?.uuid) {
+    const player = players.filter((p) => p.uuid === currentPlayer);
+    if (player.length <= 0 || !profile?.uuid) {
       return "UNKNOWN";
     }
 
-    return p[0].uuid === profile.uuid
+    return player[0].uuid === profile.uuid
       ? "YOUR TURN"
-      : `${p[0].name.toUpperCase()} IS PLAYING`;
+      : `${player[0].name.toUpperCase()} IS PLAYING`;
   };
 
   return (
     <div className="section">
       <div className="pick-grid mt-5 mb-5">
-        {displayBoard.map((card: ICard) =>
-          card?.image_url ? (
-            <div
-              key={card.uuid}
-              className={!boardCards.includes(card) ? "hidden" : ""}
-            >
+        {displayBoard.map((card: ICard) => (card?.image_url ? (
+          <div
+            key={card.uuid}
+            className={!boardCards.includes(card) ? "hidden" : ""}
+          >
+            <div onClick={() => handleCardPicked(card)} onKeyDown={() => handleCardPicked(card)} role="button" tabIndex={0}>
               <img
                 className="pick-picture"
                 src={card.image_url}
-                onClick={() => handleCardPicked(card)}
                 alt={card.name}
               />
-              <br />
-              <button
-                onClick={() => handleOpenDetailModal(card)}
-                className="mt-2 btn btn-outline-secondary"
-              >
-                Detail
-              </button>
             </div>
-          ) : (
-            <div key={card.uuid} />
-          )
-        )}
+            <br />
+            <button
+              onClick={() => handleOpenDetailModal(card)}
+              className="mt-2 btn btn-outline-secondary"
+              type="button"
+            >
+              Detail
+            </button>
+          </div>
+        ) : (
+          <div key={card.uuid} />
+        )))}
       </div>
       <h2 className="big-yellow-text">{getTurn()}</h2>
     </div>
   );
-};
+}
 
 export default CubeDraftPrimary;

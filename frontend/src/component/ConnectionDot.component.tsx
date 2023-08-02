@@ -1,25 +1,24 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router";
+import { useCookies } from "react-cookie";
 import { ConnectionDot } from "../frontendComponent/connectionDot/Dots.component";
 import Icon from "../frontendComponent/Icon.components";
 import YesNoModal from "./YesNoModal.component";
-import { Socket } from "socket.io-client";
 import SocketManager from "../SocketManager";
 import { GameContext, GameContextType } from "./Game/GameContext";
-import { useNavigate } from "react-router";
-import { useCookies } from "react-cookie";
 
 interface Props {
   name: string;
-  socket: Socket;
 }
 
-const ConnectedBadge = ({ name }: Props) => {
+function ConnectedBadge({ name }: Props) {
   const [open, setOpen] = useState(false);
-  const [_, __, removeCookie] = useCookies(["socket"]);
+  const [, , removeCookie] = useCookies(["socket"]);
   const navigate = useNavigate();
 
-  const { socket, setSocket, setProfile, setReconnectionParam } =
-    React.useContext(GameContext) as GameContextType;
+  const {
+    socket, setSocket, setProfile, setReconnectionParam,
+  } = React.useContext(GameContext) as GameContextType;
 
   const handleLeave = () => {
     if (socket) {
@@ -47,7 +46,7 @@ const ConnectedBadge = ({ name }: Props) => {
     <div className="connected-badge">
       <ConnectionDot />
       <div className="connected-player-name">{name}</div>
-      <div className="leave-room-icon" onClick={handleOpenModal}>
+      <div className="leave-room-icon" onClick={handleOpenModal} onKeyDown={handleOpenModal} role="button" tabIndex={0}>
         <Icon icon="signout" scale="0.7" />
       </div>
       <YesNoModal
@@ -58,6 +57,6 @@ const ConnectedBadge = ({ name }: Props) => {
       />
     </div>
   );
-};
+}
 
 export default ConnectedBadge;

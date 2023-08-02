@@ -12,30 +12,38 @@ interface SimplePieData {
 
 interface Props {
   data: SimplePieData[];
-  centerValue?: string;
+  centerValue?: string | null;
 }
 
-const SimplePieChart = ({ data, centerValue }: Props) => (
-  <div className="simple-pie-root">
-    <ResponsivePie
-      data={data}
-      margin={{ top: 10, right: 10, bottom: 10, left: 10 }}
-      innerRadius={0.5}
-      activeOuterRadiusOffset={8}
-      colors={{ datum: "data.color" }}
-      borderWidth={1}
-      borderColor={{
-        from: "color",
-        modifiers: [["darker", 0.2]],
-      }}
-      enableArcLinkLabels={false}
-      enableArcLabels={false}
-      arcLabel={(e) => e.id + " (" + e.value + ")"}
-      arcLabelsSkipAngle={17}
-      arcLabelsTextColor={{ theme: "background" }}
-    />
-    {centerValue && <div className="simple-pie-overlay">{centerValue}</div>}
-  </div>
-);
+function SimplePieChart({ data, centerValue }: Props) {
+  return (
+    <div className="simple-pie-root">
+      <ResponsivePie
+        data={data}
+        margin={{
+          top: 10, right: 10, bottom: 10, left: 10,
+        }}
+        innerRadius={0.5}
+        activeOuterRadiusOffset={8}
+        colors={{ datum: "data.color" }}
+        borderWidth={1}
+        borderColor={{
+          from: "color",
+          modifiers: [["darker", 0.2]],
+        }}
+        enableArcLinkLabels={false}
+        enableArcLabels={false}
+        arcLabel={(e) => `${e.id} (${e.value})`}
+        arcLabelsSkipAngle={17}
+        arcLabelsTextColor={{ theme: "background" }}
+      />
+      {centerValue && <div className="simple-pie-overlay">{centerValue}</div>}
+    </div>
+  );
+}
+
+SimplePieChart.defaultProps = {
+  centerValue: null,
+};
 
 export default SimplePieChart;

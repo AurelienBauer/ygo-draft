@@ -1,17 +1,15 @@
-import { ICube } from "./service/CubeGameService";
 import React, { useState } from "react";
-import { DecksByPlayer } from "./CubeDraft.component";
 import { GameContext, GameContextType } from "../../component/Game/GameContext";
 import DeckExplorer from "../../component/DeckExplorer/DeckExplorer.component";
+import { DecksByPlayer } from "../../types";
 
 interface Props {
-  cube?: ICube;
   decksByPlayer: DecksByPlayer[];
   deckName: string;
 }
 
-const CubeDraftSecondary = (props: Props) => {
-  const { cube, decksByPlayer, deckName } = props;
+function CubeDraftSecondary(props: Props) {
+  const { decksByPlayer, deckName } = props;
 
   const { profile } = React.useContext(GameContext) as GameContextType;
 
@@ -26,6 +24,8 @@ const CubeDraftSecondary = (props: Props) => {
               key={`tab-head-${player.uuid}`}
               className="nav-item"
               onClick={() => setActiveTab(player.uuid)}
+              onKeyDown={() => setActiveTab(player.uuid)}
+              role="tab"
             >
               <b
                 className={`nav-link ${
@@ -38,18 +38,17 @@ const CubeDraftSecondary = (props: Props) => {
           ))}
         </ul>
         {decksByPlayer.map(
-          ({ player, deck }) =>
-            player.uuid === activeTab && (
-              <DeckExplorer
-                key={`tab-body-${player.uuid}`}
-                deck={deck}
-                deckName={deckName}
-              />
-            )
+          ({ player, deck }) => player.uuid === activeTab && (
+          <DeckExplorer
+            key={`tab-body-${player.uuid}`}
+            deck={deck}
+            deckName={deckName}
+          />
+          ),
         )}
       </div>
     </div>
   );
-};
+}
 
 export default CubeDraftSecondary;

@@ -1,6 +1,13 @@
 import React from "react";
+import { ICard } from "../types";
 
-const CardDetail = (props) => {
+interface Props {
+  card: ICard | undefined;
+  open: boolean;
+  closeModal: () => void;
+}
+
+function CardDetail(props: Props) {
   const { card, open, closeModal } = props;
 
   return (
@@ -8,7 +15,7 @@ const CardDetail = (props) => {
       <div className="modal-content">
         <div className="modal-header">
           <h3>{card?.name}</h3>
-          <span className="close" onClick={closeModal}>
+          <span className="close" onClick={closeModal} onKeyDown={closeModal} role="button" tabIndex={0}>
             &times;
           </span>
         </div>
@@ -22,10 +29,14 @@ const CardDetail = (props) => {
           <div className="modal-card-desc">
             <ul>
               <li>
-                <b>French name:</b> {card?.name}
+                <b>French name:</b>
+                {" "}
+                {card?.name}
               </li>
               <li>
-                <b>Description:</b> <p>{card?.description}</p>
+                <b>Description:</b>
+                {" "}
+                <p>{card?.description}</p>
               </li>
             </ul>
           </div>
@@ -33,6 +44,6 @@ const CardDetail = (props) => {
       </div>
     </div>
   );
-};
+}
 
 export default CardDetail;

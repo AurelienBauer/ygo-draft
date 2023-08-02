@@ -1,22 +1,21 @@
 import React, { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
+import { useNavigate } from "react-router";
 import { GameContext, GameContextType } from "./Game/GameContext";
 import SocketManager from "../SocketManager";
-import { useNavigate } from "react-router";
 import YesNoModal from "./YesNoModal.component";
 
-const Reconnection = () => {
+function Reconnection() {
   const [cookie, setCookie, removeCookie] = useCookies(["socket"]);
-  const { socket, setSocket, setProfile, setReconnectionParam } =
-    React.useContext(GameContext) as GameContextType;
+  const {
+    socket, setSocket, setProfile, setReconnectionParam,
+  } = React.useContext(GameContext) as GameContextType;
   const navigate = useNavigate();
 
   const [canReconnect, setCanReconnect] = useState(false);
   const [socketManager, setSocketManager] = useState<
-    SocketManager | undefined
+  SocketManager | undefined
   >();
-
-  const isASessionAlreadyExist = () => cookie.socket && !socket;
 
   const handleJoinPreviousSession = (e: Event) => {
     e.preventDefault();
@@ -43,7 +42,7 @@ const Reconnection = () => {
 
   const handleAbortPreviousSession = () => {
     if (socketManager && cookie.socket) {
-      socketManager.abordReconnect(cookie.socket).then((data) => {
+      socketManager.abordReconnect(cookie.socket).then(() => {
         setSocket(null);
         setProfile(null);
         setCanReconnect(false);
@@ -55,9 +54,9 @@ const Reconnection = () => {
   };
 
   useEffect(() => {
-    if (isASessionAlreadyExist()) {
-      const socket = SocketManager.ReconnectSession(cookie.socket);
-      const sm = new SocketManager(socket);
+    if (cookie.socket && !socket) {
+      const skt = SocketManager.ReconnectSession(cookie.socket);
+      const sm = new SocketManager(skt);
       sm.onConnect(() => {
         setSocket(socket);
         setSocketManager(sm);
@@ -72,7 +71,8 @@ const Reconnection = () => {
         navigate("/");
       });
     }
-  }, [cookie.socket, socket]);
+  }, [cookie.socket, navigate, removeCookie,
+    setProfile, setReconnectionParam, setSocket, socket]);
 
   return (
     <YesNoModal
@@ -82,6 +82,6 @@ const Reconnection = () => {
       text="Re-connect to your previous session?"
     />
   );
-};
+}
 
 export default Reconnection;

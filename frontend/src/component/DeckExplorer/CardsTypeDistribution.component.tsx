@@ -1,7 +1,7 @@
+/* eslint-disable no-underscore-dangle */
 import React, { useEffect, useState } from "react";
 import { ICard } from "../../types";
 import SimplePieChart from "../StatsAndCharts/SimplePieChart.component";
-import { Tooltip } from "react-tooltip";
 
 interface Props {
   deck: ICard[];
@@ -21,7 +21,7 @@ const EFFECT_MONSTER_TYPE = "Effect Monster";
 const NORMAL_MONSTER_TYPE = "Normal Monster";
 const FLIP_EFFECT_MONSTER_TYPE = "Flip Effect Monster";
 
-const CardsTypeDistribution = (props: Props) => {
+function CardsTypeDistribution(props: Props) {
   const { deck } = props;
   const [typesDis, setTypesDis] = useState<TypesDistribution>({
     gTarp: 0,
@@ -34,13 +34,12 @@ const CardsTypeDistribution = (props: Props) => {
   const isSpell = (type: string) => type === SPELL_TYPE;
   const isTrap = (type: string) => type === TRAP_TYPE;
 
-  const isMonster = (type: string) =>
-    type === EFFECT_MONSTER_TYPE ||
-    type === FLIP_EFFECT_MONSTER_TYPE ||
-    type === NORMAL_MONSTER_TYPE;
+  const isMonster = (type: string) => type === EFFECT_MONSTER_TYPE
+    || type === FLIP_EFFECT_MONSTER_TYPE
+    || type === NORMAL_MONSTER_TYPE;
 
-  const isEffectMonster = (type: string) =>
-    type === EFFECT_MONSTER_TYPE || type === FLIP_EFFECT_MONSTER_TYPE;
+  const isEffectMonster = (type: string) => type === EFFECT_MONSTER_TYPE
+  || type === FLIP_EFFECT_MONSTER_TYPE;
 
   const isNormalMonster = (type: string) => type === NORMAL_MONSTER_TYPE;
 
@@ -48,12 +47,8 @@ const CardsTypeDistribution = (props: Props) => {
     const nbrSpell = deck.filter((c: ICard) => isSpell(c._type)).length;
     const nbrTrap = deck.filter((c: ICard) => isTrap(c._type)).length;
     const nbrMonster = deck.filter((c: ICard) => isMonster(c._type)).length;
-    const nbrEffectMonster = deck.filter((c: ICard) =>
-      isEffectMonster(c._type)
-    ).length;
-    const nbrNormalMonster = deck.filter((c: ICard) =>
-      isNormalMonster(c._type)
-    ).length;
+    const nbrEffectMonster = deck.filter((c: ICard) => isEffectMonster(c._type)).length;
+    const nbrNormalMonster = deck.filter((c: ICard) => isNormalMonster(c._type)).length;
 
     setTypesDis({
       gSpell: nbrSpell,
@@ -114,6 +109,6 @@ const CardsTypeDistribution = (props: Props) => {
       </div>
     </div>
   );
-};
+}
 
 export default CardsTypeDistribution;
