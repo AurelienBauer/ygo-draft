@@ -7,7 +7,9 @@ interface GameAction {
 
 export default class Game {
   private actionsStack: GameAction[];
+
   private gameStage: string;
+
   private name: string;
 
   constructor(name: string) {

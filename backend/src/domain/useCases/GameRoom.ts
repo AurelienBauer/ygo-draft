@@ -17,6 +17,7 @@ export interface IRoom {
 
 export default class GameRoom {
   private room: IRoom;
+
   public game: Game;
 
   constructor(title: string, player: Player, game: Game) {
@@ -62,7 +63,7 @@ export default class GameRoom {
 
   public removePlayer(socketID: string) {
     this.room.players = this.room.players.filter(
-      (p) => p.socketID !== socketID
+      (p) => p.socketID !== socketID,
     );
   }
 
@@ -78,6 +79,6 @@ export default class GameRoom {
     this.room.adminId = {
       pub: player.getId(),
       priv: player.getSocketID(),
-    }
+    };
   }
 }

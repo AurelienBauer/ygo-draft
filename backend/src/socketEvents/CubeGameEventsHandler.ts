@@ -1,7 +1,7 @@
+/* eslint-disable class-methods-use-this */
 import { Socket } from "socket.io";
 import { DataSource } from "../data/interfaces";
 import { Callback } from "./event";
-import { Player } from "../domain/useCases/Player";
 import CubeGame, {
   ExportInGamePlayer,
 } from "../domain/useCases/CubeGame";
@@ -29,9 +29,9 @@ export default class CubeGameEventsHandler {
   public startDraft(
     socket: Socket,
     playback: ICubeDraftStart,
-    callback: Callback<ICubeDraftStart>
+    callback: Callback<ICubeDraftStart>,
   ) {
-    const player: Player = socket.data.player;
+    const { player } = socket.data;
     if (!player.room) {
       throw new Error("Room is undefined");
     }
@@ -43,16 +43,16 @@ export default class CubeGameEventsHandler {
         .emit("cube:draftstarted", playback);
       callback({ data: playback });
 
-      let nbrOfCardToDraw = (player.room?.getPlayers().length || 0) + 1;
+      const nbrOfCardToDraw = (player.room?.getPlayers().length || 0) + 1;
       game.drawNCards(
         game.getCardsLeft() > nbrOfCardToDraw
           ? nbrOfCardToDraw
-          : game.getCardsLeft()
+          : game.getCardsLeft(),
       );
       const board = game.getBoard();
       socket.data.io.to(`room:${player.room?.getUUID()}`).emit(
         "cube:newboard",
-        board.map((b) => b.uuid)
+        board.map((b) => b.uuid),
       );
     });
   }
@@ -60,9 +60,9 @@ export default class CubeGameEventsHandler {
   public pickACard(
     socket: Socket,
     playback: IPlayerPickACard,
-    callback: Callback<IPlayerPickACard>
+    callback: Callback<IPlayerPickACard>,
   ) {
-    const player: Player = socket.data.player;
+    const { player } = socket.data;
     const game = player.room?.game as CubeGame;
     if (!game) {
       throw new Error("Game is undefined");
@@ -72,8 +72,8 @@ export default class CubeGameEventsHandler {
     const cardUUID = game.playerPickACard(playerID, playback.cardUUID);
 
     const response = {
-      cardUUID: cardUUID,
-      playerID: playerID,
+      cardUUID,
+      playerID,
     };
     socket
       .to(`room:${player.room?.getUUID()}`)
@@ -86,16 +86,16 @@ export default class CubeGameEventsHandler {
         .emit("cube:draft_over");
     } else if (game.getBoard().length <= 1) {
       game.clearBoard();
-      let nbrOfCardToDraw = (player.room?.getPlayers().length || 0) + 1;
+      const nbrOfCardToDraw = (player.room?.getPlayers().length || 0) + 1;
       game.drawNCards(
         game.getCardsLeft() > nbrOfCardToDraw
           ? nbrOfCardToDraw
-          : game.getCardsLeft()
+          : game.getCardsLeft(),
       );
       const board = game.getBoard();
       socket.data.io.to(`room:${player.room?.getUUID()}`).emit(
         "cube:newboard",
-        board.map((b) => b.uuid)
+        board.map((b) => b.uuid),
       );
       this.nextTurn(socket, game.nextRound());
     } else {
@@ -104,7 +104,7 @@ export default class CubeGameEventsHandler {
   }
 
   public currentInfo(socket: Socket, callback: Callback<ICurrentCubeGame>) {
-    const player: Player = socket.data.player;
+    const { player } = socket.data;
     const game = player.room?.game as CubeGame;
     const currentGame = game.getInfo();
     callback({
@@ -119,7 +119,7 @@ export default class CubeGameEventsHandler {
   }
 
   private nextTurn(socket: Socket, nextPlayerUUID: string) {
-    const player: Player = socket.data.player;
+    const { player } = socket.data;
     socket.data.io
       .to(`room:${player.room?.getUUID()}`)
       .emit("cube:nextturn", nextPlayerUUID);

@@ -27,9 +27,9 @@ export default function CubeRoutes(ds: DataSource) {
         return res.status(400).send({ message: "Language set is invalid" });
       }
       const c = await cube.getByID(req.params.id, language);
-      res.send(c);
+      return res.send(c);
     } catch (err) {
-      res.status(500).send({ message: "Error fetching data" });
+      return res.status(500).send({ message: "Error fetching data" });
     }
   });
 
@@ -49,7 +49,7 @@ export default function CubeRoutes(ds: DataSource) {
       } catch (err) {
         res.status(500).send({ message: "Error fetching data" });
       }
-    }
+    },
   );
 
   // routes.post("/load-cube-form-file", async (req: Request, res: Response) => {

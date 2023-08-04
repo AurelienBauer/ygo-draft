@@ -23,11 +23,17 @@ export interface ICubeGame {
 
 export default class CubeGame extends Game {
   private selectedDeck: Deck | null;
+
   private ds: DataSource;
+
   private board: ICard[];
+
   private playersInGame: InGamePlayer[];
+
   private startTheRoundIndex: number;
+
   private currentPlayerIndex: number;
+
   private cubeID: string;
 
   constructor(datasource: DataSource) {
@@ -60,7 +66,7 @@ export default class CubeGame extends Game {
   }
 
   public drawNCards(n: number) {
-    for (let i = 0; i < n; i++) {
+    for (let i = 0; i < n; i += 1) {
       this.board.push(this.draw());
     }
   }
@@ -71,8 +77,7 @@ export default class CubeGame extends Game {
       player: p,
       deck: new Deck([]),
     }));
-    this.currentPlayerIndex =
-      Math.floor(Math.random()) % this.playersInGame.length;
+    this.currentPlayerIndex = Math.floor(Math.random() * 100) % this.playersInGame.length;
     this.startTheRoundIndex = this.currentPlayerIndex;
   }
 
@@ -96,14 +101,12 @@ export default class CubeGame extends Game {
   }
 
   public nextTurn(): string {
-    this.currentPlayerIndex =
-      (this.currentPlayerIndex + 1) % this.playersInGame.length;
+    this.currentPlayerIndex = (this.currentPlayerIndex + 1) % this.playersInGame.length;
     return this.playersInGame[this.currentPlayerIndex].player.uuid;
   }
 
   public nextRound(): string {
-    this.startTheRoundIndex =
-      (this.startTheRoundIndex + 1) % this.playersInGame.length;
+    this.startTheRoundIndex = (this.startTheRoundIndex + 1) % this.playersInGame.length;
     this.currentPlayerIndex = this.startTheRoundIndex;
     return this.playersInGame[this.currentPlayerIndex].player.uuid;
   }

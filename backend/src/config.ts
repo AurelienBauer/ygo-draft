@@ -1,11 +1,11 @@
-import * as nconf from 'nconf';
+import * as nconf from "nconf";
 
 nconf.argv()
   .env()
   .defaults({
     PORT: 8080,
-    MONGO_HOST: 'mongodb://localhost:27017',
-    NODE_ENV: 'development',
+    MONGO_HOST: "mongodb://localhost:27017",
+    NODE_ENV: "development",
   });
 
 function checkConfig(setting: string) {
@@ -15,8 +15,8 @@ function checkConfig(setting: string) {
 }
 
 // Check for required settings
-checkConfig('PORT');
-checkConfig('MONGO_HOST');
-checkConfig('NODE_ENV');
+checkConfig("PORT");
+checkConfig("MONGO_HOST");
+checkConfig("NODE_ENV");
 
 export default nconf;

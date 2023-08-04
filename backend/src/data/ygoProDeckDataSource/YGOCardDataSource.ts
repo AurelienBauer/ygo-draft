@@ -32,7 +32,7 @@ export default class YGOCardDataSource implements CardDataSource {
 
   private static findFirstImageSrcInImages(
     images: YGOCardImages[] | undefined,
-    key: string
+    key: string,
   ): string {
     return images?.[0]?.[key] ? images[0][key] : "";
   }
@@ -41,7 +41,7 @@ export default class YGOCardDataSource implements CardDataSource {
     return fetch(
       `${this.CARDS_URL}?id=${ids.join(",")}${
         language ? `&language=${language}` : ""
-      }`
+      }`,
     )
       .then((res: YGORequestResponse) => {
         if (res.status !== 200) {
@@ -49,29 +49,27 @@ export default class YGOCardDataSource implements CardDataSource {
         }
         return res.json();
       })
-      .then((res: { data: YGOCardResponseBody[] }) =>
-        res.data.map((card) => ({
-          id: card.id,
-          name: card.name,
-          description: card.desc,
-          image_url: YGOCardDataSource.findFirstImageSrcInImages(
-            card.card_images,
-            "image_url"
-          ),
-          image_small_url: YGOCardDataSource.findFirstImageSrcInImages(
-            card.card_images,
-            "image_url_small"
-          ),
-          _type: card.type,
-          attribute: card.attribute,
-          level: card.level,
-          frameType: card.frameType,
-          atk: card.atk,
-          def: card.def,
-          race: card.race,
-          archetype: card.archetype,
-        }))
-      )
+      .then((res: { data: YGOCardResponseBody[] }) => res.data.map((card) => ({
+        id: card.id,
+        name: card.name,
+        description: card.desc,
+        image_url: YGOCardDataSource.findFirstImageSrcInImages(
+          card.card_images,
+          "image_url",
+        ),
+        image_small_url: YGOCardDataSource.findFirstImageSrcInImages(
+          card.card_images,
+          "image_url_small",
+        ),
+        _type: card.type,
+        attribute: card.attribute,
+        level: card.level,
+        frameType: card.frameType,
+        atk: card.atk,
+        def: card.def,
+        race: card.race,
+        archetype: card.archetype,
+      })))
       .catch(() => {
         throw new Error("Card not found");
       });

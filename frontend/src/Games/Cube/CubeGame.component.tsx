@@ -96,15 +96,29 @@ function CubeGame() {
           setDraftStarted(true);
         });
       }
+    }
+  }, [cgservice, reconnectionParam]);
+
+  useEffect(() => {
+    if (cgservice) {
       cgservice.socket.onGameStart((res: ICubeDraftStart) => {
         setCubeID(res.cubeID);
         setDraftStarted(true);
       });
+      return () => cgservice.socket.onGameStartUnsubscribe();
+    }
+    return () => null;
+  }, [cgservice]);
+
+  useEffect(() => {
+    if (cgservice) {
       cgservice.socket.onGameAbord(() => {
         setGameAborded(true);
       });
+      return () => cgservice.socket.onGameAbordUnsubscribe();
     }
-  }, [cgservice, reconnectionParam]);
+    return () => null;
+  }, [cgservice]);
 
   useEffect(() => {
     if (socket) {

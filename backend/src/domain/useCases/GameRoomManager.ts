@@ -16,7 +16,7 @@ export default class RoomManager {
   }
 
   public getRoomById(uuid: string): GameRoom {
-    const room = this.roomsList.find((room) => room.getUUID() === uuid);
+    const room = this.roomsList.find((r) => r.getUUID() === uuid);
     if (!room) {
       throw new Error(`The room with id "${uuid}" does not exist.`);
     }

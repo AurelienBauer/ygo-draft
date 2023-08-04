@@ -1,16 +1,16 @@
 {
-    "root": true,
-    "extends": [
-        "eslint:recommended",
-        "plugin:@typescript-eslint/recommended",
-        "airbnb-base",
-        "airbnb-typescript/base"
-    ],
-    "parser": "@typescript-eslint/parser",
-    "parserOptions": { "project": ["./tsconfig.json"] },
-    "plugins": [
-        "@typescript-eslint"
-    ],
-    "rules": {
-    }
+  "root": true,
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended",
+    "airbnb-base",
+    "airbnb-typescript/base"
+  ],
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": { "project": ["./tsconfig.json"] },
+  "plugins": ["@typescript-eslint"],
+  "rules": {
+    "@typescript-eslint/quotes": [2, "double", { "avoidEscape": true }],
+    "linebreak-style": ["error", "windows"]
+  }
 }

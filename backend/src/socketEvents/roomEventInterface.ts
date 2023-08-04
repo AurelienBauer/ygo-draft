@@ -1,5 +1,5 @@
-import { IRoom } from '../domain/useCases/GameRoom';
-import { Response } from './event';
+import { IRoom } from "../domain/useCases/GameRoom";
+import { Response } from "./event";
 
 export interface ICreateRoom {
   title: string;
@@ -22,28 +22,28 @@ export interface IJoinRoomResponse {
 }
 
 export interface IRoomServerEvents {
-  'room:created': (room: ICreateRoom) => void;
-  'room:joined': (roomId: string) => void;
-  'room:leaved': (roomId: string) => void;
+  "room:created": (room: ICreateRoom) => void;
+  "room:joined": (roomId: string) => void;
+  "room:leaved": (roomId: string) => void;
 }
 
 export interface IRoomClientEvents {
-  'room:list': (callback: (res: Response<IRoom[]>) => void) => void;
+  "room:list": (callback: (res: Response<IRoom[]>) => void) => void;
 
-  'room:get': (
+  "room:get": (
     playback: IGetRoom,
     callback: (res: Response<IRoom | undefined>) => void
   ) => void;
 
-  'room:create': (
+  "room:create": (
     playback: ICreateRoom,
     callback: (res: Response<IJoinRoomResponse>) => void
   ) => void;
-  'room:join': (
+  "room:join": (
     playback: IJoinRoom,
     callback: (res: Response<IJoinRoomResponse>) => void
   ) => void;
-  'room:leave': (
+  "room:leave": (
     playback: ILeaveRoom,
     callback: (res: Response<string>) => void
   ) => void;

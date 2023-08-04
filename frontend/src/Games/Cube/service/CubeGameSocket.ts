@@ -28,10 +28,11 @@ export default class CubeGameSocket extends SocketManager {
     ).then((res) => res.data);
   }
 
-  public async pickACard(cardUUID: string) {
+  public async pickACard(cardUUID: string, volatile = false) {
     return this.socketRequest<IPlayerPickACard, IPlayerPickACard>(
       "cube:pickcard",
       { cardUUID },
+      volatile,
     ).then((res) => res.data);
   }
 
@@ -45,23 +46,47 @@ export default class CubeGameSocket extends SocketManager {
     this.subscribeToEvent<ICubeDraftStart>("cube:draftstarted", callback);
   }
 
+  public onGameStartUnsubscribe() {
+    this.unsubscribeToAllListenersByEvent("cube:draftstarted");
+  }
+
   public onCardPicked(callback: SCallback<IPlayerPickACard>) {
     this.subscribeToEvent<IPlayerPickACard>("cube:cardpicked", callback);
+  }
+
+  public onCardPickedUnsubscribe() {
+    this.unsubscribeToAllListenersByEvent("cube:cardpicked");
   }
 
   public onNewBoard(callback: SCallback<string[]>) {
     this.subscribeToEvent<string[]>("cube:newboard", callback);
   }
 
+  public onNewBoardUnsubscribe() {
+    this.unsubscribeToAllListenersByEvent("cube:newboard");
+  }
+
   public onNextTurn(callback: SCallback<string>) {
     this.subscribeToEvent("cube:nextturn", callback);
+  }
+
+  public onNextTurnUnsubscribe() {
+    this.unsubscribeToAllListenersByEvent("cube:nextturn");
   }
 
   public onGameAbord(callback: SCallback<string>) {
     this.subscribeToEvent("game:interrupted", callback);
   }
 
+  public onGameAbordUnsubscribe() {
+    this.unsubscribeToAllListenersByEvent("cube:interrupted");
+  }
+
   public onDraftOver(callback: SCallback<string>) {
     this.subscribeToEvent("cube:draft_over", callback);
+  }
+
+  public onDraftOverUnsubscribe() {
+    this.unsubscribeToAllListenersByEvent("cube:draft_over");
   }
 }

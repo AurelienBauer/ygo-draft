@@ -1,8 +1,8 @@
 import { Socket } from "socket.io";
-import { IPlayer, Player } from "../domain/useCases/Player";
+import { Logger } from "winston";
+import { IPlayer } from "../domain/useCases/Player";
 import { Callback } from "./event";
 import PlayerManager from "../domain/useCases/PlayerManager";
-import { Logger } from "winston";
 
 interface IDisconnectionMsg {
   message: "disconnected" | "disconnection_failed";
@@ -19,6 +19,7 @@ interface ReconnectionInfo {
 
 export default class PlayerEventsHandler {
   private playerManager: PlayerManager;
+
   private logger: Logger;
 
   constructor(playerManager: PlayerManager, logger: Logger) {
@@ -26,8 +27,9 @@ export default class PlayerEventsHandler {
     this.logger = logger;
   }
 
+  // eslint-disable-next-line class-methods-use-this
   public getMyProfile(socket: Socket, callback: Callback<IPlayer>): void {
-    const player: Player = socket.data.player;
+    const { player } = socket.data;
     const room = player.room ? player?.room.get() : undefined;
     if (room) {
       room.iAmAdmin = player.room?.isAdmin(player.getSocketID());
@@ -37,18 +39,18 @@ export default class PlayerEventsHandler {
         name: player.getName(),
         uuid: player.getId(),
         socketID: player.getSocketID(),
-        room: room,
+        room,
         connected: player.getConnected(),
       },
     });
   }
 
   public disconnect(socket: Socket): void {
-    const player: Player = socket.data.player;
+    const { player } = socket.data;
     this.logger.info(
       `Client disconnected. Player name: ${
         player ? player.getName() : "undefined"
-      }`
+      }`,
     );
     if (player) {
       player.setConnected(false);
@@ -62,9 +64,9 @@ export default class PlayerEventsHandler {
 
   public deepDisconnect(
     socket: Socket,
-    callback: Callback<IDisconnectionMsg>
+    callback: Callback<IDisconnectionMsg>,
   ): void {
-    const player: Player = socket.data.player;
+    const { player } = socket.data;
     if (player) {
       if (player.room) {
         if (player.room.game) {
@@ -75,8 +77,8 @@ export default class PlayerEventsHandler {
         }
         socket.leave(`room:${player.room.getUUID()}`);
         if (
-          player.room.isAdmin(player.getSocketID()) &&
-          player.room.getPlayers().length
+          player.room.isAdmin(player.getSocketID())
+          && player.room.getPlayers().length
         ) {
           socket.to(`room:${player.room.getUUID()}`).emit("room:adminleft");
         }
@@ -96,10 +98,11 @@ export default class PlayerEventsHandler {
   public abortReconnect(
     socket: Socket,
     playback: SocketId,
-    callback: Callback<IDisconnectionMsg>
+    callback: Callback<IDisconnectionMsg>,
   ): void {
     const { socketId } = playback;
     const player = this.playerManager.findPlayer(socketId);
+    // eslint-disable-next-line no-param-reassign
     socket.data.player = player;
     this.deepDisconnect(socket, callback);
   }
@@ -107,7 +110,7 @@ export default class PlayerEventsHandler {
   public reconnect(
     socket: Socket,
     playback: SocketId,
-    callback: Callback<ReconnectionInfo | {}>
+    callback: Callback<ReconnectionInfo | NonNullable<unknown>>,
   ): void {
     const { socketId } = playback;
 

@@ -25,13 +25,21 @@ interface ICreateSocket {
   socketId?: string;
 }
 
+interface SocketListener {
+  event: string;
+  callback: SCallback<unknown>;
+}
+
 export default class SocketManager {
   protected socket: Socket;
 
   protected socketID: string;
 
+  private listeners: SocketListener[];
+
   constructor(socket: Socket) {
     this.socket = socket;
+    this.listeners = [];
     // eslint-disable-next-line no-console
     this.socket.io.on("reconnect", () => console.dir("reConnected !!!"));
   }
@@ -39,6 +47,7 @@ export default class SocketManager {
   protected socketRequest<T, D>(
     event: string,
     body: T | null = null,
+    volatile: boolean = false,
   ): Promise<SResponse<D>> {
     return new Promise((resolve, reject) => {
       const responseCb = (res: SResponse<D>) => {
@@ -48,7 +57,13 @@ export default class SocketManager {
         resolve(res);
       };
       if (body) {
-        this.socket.emit(event, body, responseCb);
+        if (volatile) {
+          this.socket.volatile.emit(event, body, responseCb);
+        } else {
+          this.socket.emit(event, body, responseCb);
+        }
+      } else if (volatile) {
+        this.socket.volatile.emit(event, responseCb);
       } else {
         this.socket.emit(event, responseCb);
       }
@@ -101,6 +116,23 @@ export default class SocketManager {
 
   public subscribeToEvent<T>(event: string, callback: SCallback<T>) {
     this.socket.on(event, callback);
+    this.listeners.push({
+      event,
+      callback,
+    });
+  }
+
+  public unsubscribeToAllListenersByEvent(event: string) {
+    this.socket.removeAllListeners(event);
+  }
+
+  public unsubscribeToAllListeners() {
+    this.listeners.forEach((listener) => this.unsubscribeToEvent(listener));
+    this.listeners = [];
+  }
+
+  private unsubscribeToEvent(listener: SocketListener) {
+    this.socket.off(listener.event, listener.callback);
   }
 
   public async getMyProfile(): Promise<IPlayer> {

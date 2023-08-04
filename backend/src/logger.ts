@@ -1,7 +1,7 @@
-import * as winston from 'winston';
+import * as winston from "winston";
 
 export default winston.createLogger({
-  level: 'info',
+  level: "info",
   format: winston.format.combine(
     winston.format.errors({ stack: true }),
     winston.format.splat(),

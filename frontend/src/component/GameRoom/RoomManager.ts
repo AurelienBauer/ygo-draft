@@ -29,8 +29,8 @@ export default class RoomManager extends SocketManager {
 
   private roomIdNoDefine = new Error("The room Id is not set");
 
-  public async getAllRooms(): Promise<IRoom[]> {
-    return this.socketRequest<void, IRoom[]>("room:list").then((res) => res.data);
+  public async getAllRooms(volatile = false): Promise<IRoom[]> {
+    return this.socketRequest<void, IRoom[]>("room:list", null, volatile).then((res) => res.data);
   }
 
   public async createRoom(data: ICreateRoom): Promise<string> {
@@ -78,12 +78,20 @@ export default class RoomManager extends SocketManager {
     this.subscribeToEvent("room:adminleft", callback);
   }
 
+  public onAdminLeftUnsubscribe() {
+    this.unsubscribeToAllListenersByEvent("cube:adminleft");
+  }
+
   public onPlayerJoin(callback: () => void) {
     this.subscribeToEvent("room:playerjoined", callback);
   }
 
   public onGameStart(callback: () => void) {
     this.subscribeToEvent("room:gamestart", callback);
+  }
+
+  public onGameStartUnsubscribe() {
+    this.unsubscribeToAllListenersByEvent("cube:gamestart");
   }
 
   public async amIAdmin(roomAdminId: string): Promise<boolean> {

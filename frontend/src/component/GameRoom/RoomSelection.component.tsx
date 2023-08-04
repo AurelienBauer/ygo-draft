@@ -105,7 +105,7 @@ function RoomJoinCreateRoom(props: PropsRoomJoinCreateRoom) {
 
   useEffect(() => {
     const listRooms = () => {
-      roomManager?.getAllRooms().then((r) => setRooms(r));
+      roomManager?.getAllRooms(true).then((r) => setRooms(r));
     };
 
     listRooms();

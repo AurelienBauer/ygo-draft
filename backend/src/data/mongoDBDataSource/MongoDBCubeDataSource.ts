@@ -40,10 +40,10 @@ const cubeSchema = new mongoose.Schema({
 });
 
 export default class MongoDBCubeDataSource implements CubeDataSource {
-  private cube: Model<any>;
+  private cube: Model<IDBCube>;
 
   constructor() {
-    this.cube = mongoose.model("Cubes", cubeSchema);
+    this.cube = mongoose.model<IDBCube>("Cubes", cubeSchema);
   }
 
   public async getByID(id: string): Promise<IDBCube> {
@@ -64,6 +64,7 @@ export default class MongoDBCubeDataSource implements CubeDataSource {
 
   public async save(cube: IDBCube): Promise<string> {
     const result = await this.cube.create(cube);
+    // eslint-disable-next-line no-underscore-dangle
     return result._id.toString();
   }
 }

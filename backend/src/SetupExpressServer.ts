@@ -1,6 +1,6 @@
-import helmet from "helmet";
 import * as http from "http";
 import * as net from "net";
+import helmet from "helmet";
 import { Application, json, urlencoded } from "express";
 import * as express from "express";
 import ISetupServer from "./ISetupServer";
@@ -47,7 +47,7 @@ export default class SetupExpressServer implements ISetupServer {
       this.connectionPool.push(connection);
       connection.on("close", () => {
         this.connectionPool = this.connectionPool.filter(
-          (curr) => curr !== connection
+          (curr) => curr !== connection,
         );
       });
     });
@@ -63,7 +63,7 @@ export default class SetupExpressServer implements ISetupServer {
 
       setTimeout(() => {
         logger.error(
-          "Could not close connections in time, forcefully shutting down"
+          "Could not close connections in time, forcefully shutting down",
         );
         process.exit(1);
       }, 10000);
@@ -71,7 +71,7 @@ export default class SetupExpressServer implements ISetupServer {
       this.connectionPool.forEach((curr) => curr.end());
       setTimeout(
         () => this.connectionPool.forEach((curr) => curr.destroy()),
-        5000
+        5000,
       );
     } else {
       logger.error("Could not close connections, server is not running");

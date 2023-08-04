@@ -11,6 +11,7 @@ export interface IPlayer {
 
 export class Player {
   private player: IPlayer;
+
   public room: GameRoom | null;
 
   constructor(name: string, socketID: string) {

@@ -18,17 +18,29 @@ function Room(props: Props) {
   const [hasAdminLeft, setHasAdminLeft] = useState<boolean>(false);
 
   useEffect(() => {
-    roomManager?.refresh().then((r: IRoom) => {
-      setRoomInfo(r);
-    });
+    if (roomManager) {
+      roomManager.refresh().then((r: IRoom) => {
+        setRoomInfo(r);
+      });
+    }
+  }, [onGameStart, roomManager]);
 
+  useEffect(() => {
     if (roomManager) {
       roomManager.onAdminLeft(() => setHasAdminLeft(true));
+      return () => roomManager.onAdminLeftUnsubscribe();
+    }
+    return () => null;
+  }, [roomManager]);
 
+  useEffect(() => {
+    if (roomManager) {
       roomManager.onGameStart(() => {
         onGameStart();
       });
+      return () => roomManager.onGameStartUnsubscribe();
     }
+    return () => null;
   }, [onGameStart, roomManager]);
 
   useEffect(() => {

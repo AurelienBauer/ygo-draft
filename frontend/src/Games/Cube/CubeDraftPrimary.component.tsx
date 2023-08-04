@@ -26,7 +26,7 @@ function CubeDraftPrimary(props: Props) {
   }, [boardCards]);
 
   const handleCardPicked = (card: ICard) => {
-    cgservice.socket.pickACard(card.uuid).then((res) => {
+    cgservice.socket.pickACard(card.uuid, true).then((res) => {
       removeCardFromBoard(res.cardUUID);
       addCardToPlayerDeck(currentPlayer, card);
     });
@@ -40,22 +40,11 @@ function CubeDraftPrimary(props: Props) {
         addCardToPlayerDeck(res.playerID, card);
       }
     });
+    return () => cgservice.socket.onCardPickedUnsubscribe();
   }, [boardCards, addCardToPlayerDeck, cgservice.socket, removeCardFromBoard]);
 
   useEffect(() => {
     if (cube) {
-      cgservice.socket.onNewBoard((cards) => {
-        const board = cube.cards.filter((c) => cards.includes(c.uuid));
-        if (board) {
-          setDisplayBoard(board);
-          setBoardCards(board);
-        }
-      });
-
-      cgservice.socket.onNextTurn((playerUUID: string) => {
-        setCurrentPlayer(playerUUID);
-      });
-
       cgservice.socket.getCurrentGameState().then((gamecube) => {
         setPlayers(gamecube.playersInGame.map((pig) => pig.player));
         const board = cube.cards.filter((c) => gamecube.board.includes(c.uuid));
@@ -67,6 +56,27 @@ function CubeDraftPrimary(props: Props) {
       });
     }
   }, [cgservice.socket, cube]);
+
+  useEffect(() => {
+    if (cube) {
+      cgservice.socket.onNewBoard((cards) => {
+        const board = cube.cards.filter((c) => cards.includes(c.uuid));
+        if (board) {
+          setDisplayBoard(board);
+          setBoardCards(board);
+        }
+      });
+      return () => cgservice.socket.onNewBoardUnsubscribe();
+    }
+    return () => null;
+  }, [cgservice.socket, cube]);
+
+  useEffect(() => {
+    cgservice.socket.onNextTurn((playerUUID: string) => {
+      setCurrentPlayer(playerUUID);
+    });
+    return () => cgservice.socket.onNextTurnUnsubscribe();
+  }, [cgservice.socket]);
 
   const getTurn = (): string => {
     const player = players.filter((p) => p.uuid === currentPlayer);

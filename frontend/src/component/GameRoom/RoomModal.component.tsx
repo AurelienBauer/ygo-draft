@@ -25,31 +25,30 @@ function RoomModal(props: Props) {
   };
 
   useEffect(() => {
-    if (socket && profile?.room && profile.room?.uuid) {
-      const roomManager = new RoomManager(socket, profile?.room?.uuid);
+    if (socket && profile?.room?.uuid) {
+      const roomManager = new RoomManager(socket, profile.room.uuid);
 
-      const refreshModal = () => roomManager?.refresh().then((r: IRoom) => {
-        setRoom(r);
-      });
+      const refreshModal = () => {
+        roomManager.refresh().then((r: IRoom) => {
+          setRoom(r);
+        });
+      };
 
-      roomManager.onPlayerDisconnect(() => {
+      // Event listeners
+      const onPlayerEvent = () => {
         refreshModal();
-      });
+      };
 
-      roomManager.onPlayerReconnect(() => {
-        refreshModal();
-      });
-
-      roomManager.onPlayerLeft(() => {
-        refreshModal();
-      });
-
-      roomManager.onPlayerJoin(() => {
-        refreshModal();
-      });
+      roomManager.onPlayerDisconnect(onPlayerEvent);
+      roomManager.onPlayerReconnect(onPlayerEvent);
+      roomManager.onPlayerLeft(onPlayerEvent);
+      roomManager.onPlayerJoin(onPlayerEvent);
 
       refreshModal();
+
+      return () => roomManager.unsubscribeToAllListeners();
     }
+    return () => null;
   }, [socket, profile]);
 
   return (

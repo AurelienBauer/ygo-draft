@@ -67,19 +67,22 @@ function CubeDraft(props: Props) {
         setDecksByPlayer(
           gamecube.playersInGame.map((pig) => ({
             player: pig.player,
-            deck:
-              cube?.cards.filter(
-                (c) => pig?.deck && pig?.deck.length && pig.deck.includes(c.uuid),
-              ) ?? [],
+            deck: pig.deck.map((cardUUid) => {
+              const card = cube.cards.filter((c) => c.uuid === cardUUid);
+              return card?.[0] || {};
+            }),
           })),
         );
       });
-
-      cgservice.socket.onDraftOver(() => {
-        setIsDraftOver(true);
-      });
     }
   }, [cgservice, cube]);
+
+  useEffect(() => {
+    cgservice.socket.onDraftOver(() => {
+      setIsDraftOver(true);
+    });
+    return () => cgservice.socket.onDraftOverUnsubscribe();
+  }, [cgservice]);
 
   useEffect(() => {
     if (reconnectionParam === "draft_over") {

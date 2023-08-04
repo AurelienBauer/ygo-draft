@@ -9,12 +9,12 @@ import {
 } from "./roomEventInterface";
 import { IRoom } from "../domain/useCases/GameRoom";
 import CubeGame from "../domain/useCases/CubeGame";
-import { Player } from "../domain/useCases/Player";
 import { DataSource } from "../data/interfaces";
 import { Callback } from "./event";
 
 export default class RoomEventsHandler {
   private roomManager: RoomManager;
+
   private ds: DataSource;
 
   constructor(roomManager: RoomManager, ds: DataSource) {
@@ -32,7 +32,7 @@ export default class RoomEventsHandler {
   public getRoom(
     socket: Socket,
     playback: IGetRoom,
-    callback: Callback<IRoom | undefined>
+    callback: Callback<IRoom | undefined>,
   ): void {
     const room: IRoom | undefined = this.roomManager
       .getRoomById(playback.roomId)
@@ -43,13 +43,13 @@ export default class RoomEventsHandler {
   public createRoom(
     socket: Socket,
     playback: ICreateRoom,
-    callback: Callback<IJoinRoomResponse>
+    callback: Callback<IJoinRoomResponse>,
   ): void {
-    const player: Player = socket.data.player;
+    const { player } = socket.data;
     const room = this.roomManager.createNewRoom(
       playback.title,
       player,
-      new CubeGame(this.ds)
+      new CubeGame(this.ds),
     );
     player.joinRoom(room);
     socket.join(`room:${room.getUUID()}`);
@@ -63,9 +63,9 @@ export default class RoomEventsHandler {
   public joinRoom(
     socket: Socket,
     playback: IJoinRoom,
-    callback: Callback<IJoinRoomResponse>
+    callback: Callback<IJoinRoomResponse>,
   ): void {
-    const player: Player = socket.data.player;
+    const { player } = socket.data;
     const room = this.roomManager.getRoomById(playback.roomId);
 
     player.joinRoom(room);
@@ -82,14 +82,14 @@ export default class RoomEventsHandler {
   public leaveRoom(
     socket: Socket,
     playback: ILeaveRoom,
-    callback: Callback<string>
+    callback: Callback<string>,
   ): void {
-    const player: Player = socket.data.player;
+    const { player } = socket.data;
     const gameRoom = player.room;
     if (gameRoom) {
       if (
-        gameRoom.isAdmin(player.getSocketID()) &&
-        gameRoom.getPlayers().length
+        gameRoom.isAdmin(player.getSocketID())
+        && gameRoom.getPlayers().length
       ) {
         socket.to(`room:${playback.roomId}`).emit("room:adminleft");
       }
@@ -103,8 +103,8 @@ export default class RoomEventsHandler {
     }
   }
 
-  public startGame(socket: Socket, callback: Callback<string>) {
-    const player: Player = socket.data.player;
+  public static startGame(socket: Socket, callback: Callback<string>) {
+    const { player } = socket.data;
     if (player.room?.isAdmin(socket.id)) {
       socket.to(`room:${player.room.getUUID()}`).emit("room:gamestart");
       player.room.game.changeGameState("game_start");

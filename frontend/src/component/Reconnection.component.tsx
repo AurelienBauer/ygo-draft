@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
 import { useNavigate } from "react-router";
 import { GameContext, GameContextType } from "./Game/GameContext";
@@ -9,7 +9,7 @@ function Reconnection() {
   const [cookie, setCookie, removeCookie] = useCookies(["socket"]);
   const {
     socket, setSocket, setProfile, setReconnectionParam,
-  } = React.useContext(GameContext) as GameContextType;
+  } = useContext(GameContext) as GameContextType;
   const navigate = useNavigate();
 
   const [canReconnect, setCanReconnect] = useState(false);
@@ -58,7 +58,7 @@ function Reconnection() {
       const skt = SocketManager.ReconnectSession(cookie.socket);
       const sm = new SocketManager(skt);
       sm.onConnect(() => {
-        setSocket(socket);
+        setSocket(skt);
         setSocketManager(sm);
         setCanReconnect(true);
       });
@@ -70,9 +70,10 @@ function Reconnection() {
         setReconnectionParam("undefine");
         navigate("/");
       });
+      return () => sm.unsubscribeToAllListeners();
     }
-  }, [cookie.socket, navigate, removeCookie,
-    setProfile, setReconnectionParam, setSocket, socket]);
+    return () => null;
+  }, [cookie.socket, navigate, removeCookie, setProfile, setReconnectionParam, setSocket, socket]);
 
   return (
     <YesNoModal

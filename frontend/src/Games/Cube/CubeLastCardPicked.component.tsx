@@ -81,24 +81,21 @@ function CubeLastCardPicked(props: Props) {
       </div>
       <div className="last-card-picked-container">
         <div className="last-card-picked">
-          {cardStack
-            .slice(0)
-            .reverse()
-            .map((card: ICard) => (
-              <div
-                key={`last-card-picked-${card.uuid}`}
-                className="last-card-picked-image"
-                onClick={() => handleOpenDetailModal(card)}
-                onKeyDown={() => handleOpenDetailModal(card)}
-                role="button"
-                tabIndex={0}
-              >
-                <img src={card.image_small_url} alt={card.name} />
-                <div className="last-card-picked-svg-overlay ">
-                  <Icon icon="search" />
-                </div>
+          {cardStack.slice(0).reverse().map((card: ICard) => (
+            <div
+              key={`last-card-picked-${card.uuid}`}
+              className="last-card-picked-image"
+              onClick={() => handleOpenDetailModal(card)}
+              onKeyDown={() => handleOpenDetailModal(card)}
+              role="button"
+              tabIndex={0}
+            >
+              <img src={card.image_small_url} alt={card.name} />
+              <div className="last-card-picked-svg-overlay ">
+                <Icon icon="search" />
               </div>
-            ))}
+            </div>
+          ))}
         </div>
       </div>
     </div>

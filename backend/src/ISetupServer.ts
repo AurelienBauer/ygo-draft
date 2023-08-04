@@ -1,5 +1,5 @@
-import { Server } from 'http';
-import { DataSource } from './data/interfaces';
+import { Server } from "http";
+import { DataSource } from "./data/interfaces";
 
 export default interface SetupServer {
   start(): void;

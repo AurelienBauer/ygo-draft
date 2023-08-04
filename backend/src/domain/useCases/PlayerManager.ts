@@ -3,6 +3,7 @@ import { Player } from "./Player";
 
 export default class PlayerManager {
   private playerList: Player[];
+
   private roomManager: RoomManager;
 
   constructor(roomManager: RoomManager) {
@@ -18,9 +19,9 @@ export default class PlayerManager {
 
   public removePlayer(player: Player) {
     this.playerList = this.playerList.filter(
-      (p) => p.getSocketID() !== player.getSocketID()
+      (p) => p.getSocketID() !== player.getSocketID(),
     );
-    const room = player.room;
+    const { room } = player;
     if (room) {
       player.leaveRoom();
       this.roomManager.deleteRoomIfNotPlayerInRoom(room);
@@ -28,9 +29,9 @@ export default class PlayerManager {
   }
 
   public findPlayer(socketID: string): Player {
-    const p = this.playerList.find((p) => p.getSocketID() === socketID);
-    if (p) {
-      return p;
+    const player = this.playerList.find((p) => p.getSocketID() === socketID);
+    if (player) {
+      return player;
     }
     throw new Error("Player not found");
   }

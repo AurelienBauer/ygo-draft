@@ -2,6 +2,7 @@ import { ICard } from "../../data/interfaces";
 
 export default class Deck {
   private cards: ICard[];
+
   private cardsDiscarded: ICard[];
 
   constructor(cards: ICard[]) {

@@ -305,7 +305,6 @@ span {
 
 .last-card-picked > .last-card-picked-image:first-child {
   height: 100%;
-  margin: 0 0.25rem 0 0.25rem;
 }
 
 .last-card-picked-svg-overlay {
@@ -325,6 +324,16 @@ span {
 .last-card-picked-image {
   position: relative;
   display: inline-block;
+}
+
+@-moz-document url-prefix() {
+  .last-card-picked > .last-card-picked-image {
+    width: 4.25rem;
+  }
+
+  .last-card-picked > .last-card-picked-image:first-child {
+    width: 5.5rem;
+  }
 }
 
 .pick-picture:hover {
