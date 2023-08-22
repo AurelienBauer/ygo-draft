@@ -1,8 +1,10 @@
 import { IRoom } from "../domain/useCases/GameRoom";
+import { Games } from "../types";
 import { Response } from "./event";
 
 export interface ICreateRoom {
   title: string;
+  forGame: Games;
 }
 
 export interface IGetRoom {

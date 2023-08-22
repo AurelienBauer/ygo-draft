@@ -1,6 +1,8 @@
 @import "./custom-theme.scss";
 @import "../frontendComponent/connectionDot/style.scss";
+@import "../frontendComponent/sideScreenModal/style.scss";
 @import "../component/DeckExplorer/style.scss";
+@import "../Games/BoosterOpening/styles.scss";
 
 /* ===== Scrollbar CSS ===== */
 /* Firefox */
@@ -139,7 +141,7 @@ span {
 
 .room-side-modal.fixed {
   position: fixed;
-  top: 4%;
+  top: 8%;
   z-index: 1;
   width: 13rem;
 }
@@ -441,4 +443,13 @@ span {
   pointer-events: visible;
   right: 50%;
   left: 50%;
+}
+
+.country-flags {
+  width: 1.5rem;
+  margin-right: 0.2rem;
+}
+
+.header-bar-right {
+  float: right;
 }

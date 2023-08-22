@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router";
 import { useCookies } from "react-cookie";
+import { useTranslation } from "react-i18next";
 import { ConnectionDot } from "../frontendComponent/connectionDot/Dots.component";
 import Icon from "../frontendComponent/Icon.components";
 import YesNoModal from "./YesNoModal.component";
@@ -15,6 +16,7 @@ function ConnectedBadge({ name }: Props) {
   const [open, setOpen] = useState(false);
   const [, , removeCookie] = useCookies(["socket"]);
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const {
     socket, setSocket, setProfile, setReconnectionParam,
@@ -53,7 +55,7 @@ function ConnectedBadge({ name }: Props) {
         open={open}
         handleYesResponse={handleLeave}
         handleNoResponse={handleCloseModal}
-        text="Are you sure you want to disconnect?"
+        text={t("Are you sure you want to disconnect?")}
       />
     </div>
   );

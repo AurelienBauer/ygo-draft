@@ -82,7 +82,7 @@ function DeckExplorer(props: Props) {
           ))}
       </div>
       <div className="side-info">
-        <DeckExplorerSideInfo selectedCard={selectedCard || hoverCard} />
+        <DeckExplorerSideInfo selectedCard={selectedCard ?? hoverCard} />
         <CardsTypeDistribution deck={deck} />
         <DownloadDeckButton type="icon" deck={deck} filename={deckName} />
       </div>

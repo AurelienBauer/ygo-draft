@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { ICard } from "../../types";
 import Card from "../Card.component";
 
@@ -8,6 +9,7 @@ interface Props {
 
 function DeckExplorerSideInfo(props: Props) {
   const { selectedCard } = props;
+  const { t } = useTranslation();
 
   return (
     <div className="side-info-card">
@@ -19,19 +21,19 @@ function DeckExplorerSideInfo(props: Props) {
           <div className="mt-2 mb-4">{selectedCard?._type}</div>
           {selectedCard?.race && (
             <div>
-              <span>Race</span>
+              <span>{t("Race")}</span>
               <div>{selectedCard?.race}</div>
             </div>
           )}
           {selectedCard?.attribute && (
             <div>
-              <span>Attribut</span>
+              <span>{t("Attribut")}</span>
               <div>{selectedCard?.attribute}</div>
             </div>
           )}
           {selectedCard?.level && (
             <div>
-              <span>Niveau</span>
+              <span>{t("Level")}</span>
               <div>{selectedCard?.level}</div>
             </div>
           )}
@@ -39,11 +41,17 @@ function DeckExplorerSideInfo(props: Props) {
             && selectedCard?.def !== undefined && (
               <div className="side-info-attribute-atk-def mt-2">
                 <div>
-                  <span className="mr-1">Atk:</span>
+                  <span className="mr-1">
+                    {t("Atk")}
+                    :
+                  </span>
                   {selectedCard?.atk}
                 </div>
                 <div>
-                  <span className="mr-1">Def:</span>
+                  <span className="mr-1">
+                    {t("Def")}
+                    :
+                  </span>
                   {selectedCard?.def}
                 </div>
               </div>
@@ -51,7 +59,7 @@ function DeckExplorerSideInfo(props: Props) {
         </div>
       </div>
       <div className="side-info-description">
-        <span>Description</span>
+        <span>{t("Description")}</span>
         <div className="side-info-description-text">
           {selectedCard?.description}
         </div>

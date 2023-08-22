@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 
 interface Props {
   open: boolean;
@@ -11,21 +12,23 @@ function YesNoModal(props: Props) {
   const {
     open, handleYesResponse, handleNoResponse, text,
   } = props;
+  const { t } = useTranslation();
+
   return (
     <div className={`modal small ${open ? "open" : ""}`}>
       <div className="modal-content">
         <div className="modal-body">
           <div className="text-align-start">
-            <h5>Confirm Action</h5>
+            <h5>{t("Confirm Action")}</h5>
             <p>{text}</p>
           </div>
         </div>
         <div className="modal-footer">
           <button className="btn btn-secondary" onClick={handleNoResponse} onKeyDown={handleNoResponse} type="button">
-            No
+            {t("No")}
           </button>
           <button className="btn btn-primary" onClick={handleYesResponse} onKeyDown={handleYesResponse} type="button">
-            Yes
+            {t("Yes")}
           </button>
         </div>
       </div>

@@ -1,0 +1,51 @@
+.side-screen-modal {
+  position: fixed;
+  display: block;
+  border: #1b1d23 2px solid;
+  background-color: #1b1d2389;
+  padding: 0 0.5rem 0 0.5rem;
+  z-index: 1;
+  width: 35rem;
+  top: 25%;
+  right: 0;
+  max-height: 50vh;
+  min-height: 8rem;
+}
+
+.side-screen-modal.modal-open
+  > .last-card-picked-container
+  > .last-card-picked {
+  overflow-x: scroll;
+}
+
+.side-screen-modal.modal-open {
+  right: 0;
+  transition: opacity 0.3s linear, right 0.3s ease-out;
+}
+
+.side-screen-modal.modal-reduce {
+  right: -22rem;
+  transition: opacity 0.3s linear, right 0.3s ease-out;
+}
+
+.side-screen-modal.modal-close {
+  right: -35rem;
+  transition: opacity 0.3s linear, right 0.3s ease-out;
+}
+
+.side-screen-modal > .side-screen-modal-button {
+  display: flex;
+  align-items: flex-start;
+  position: absolute;
+  width: 1.5rem;
+  height: 1.5rem;
+  left: -1.5rem;
+  top: -2px;
+  background-color: #1b1d2389;
+  border: #1b1d23 2px solid;
+  cursor: pointer;
+}
+
+.side-screen-modal > .normal-body-container {
+  width: 12rem;
+}

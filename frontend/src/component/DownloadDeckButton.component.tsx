@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 import Icon from "../frontendComponent/Icon.components";
 import { downloadDeck } from "../service";
 import { ICard } from "../types";
@@ -11,6 +12,7 @@ interface Props {
 
 function DownloadDeckButton(props: Props) {
   const { type, deck, filename } = props;
+  const { t } = useTranslation();
 
   return type === "icon" ? (
     <button
@@ -28,7 +30,7 @@ function DownloadDeckButton(props: Props) {
         type="button"
       >
         <Icon icon="import" />
-        Download the Deck
+        {t("Download the Deck")}
       </button>
     </div>
   );

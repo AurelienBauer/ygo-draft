@@ -3,11 +3,12 @@ import React, {
 } from "react";
 import { useCookies } from "react-cookie";
 import { Socket } from "socket.io-client";
+import { useTranslation } from "react-i18next";
 import Room from "./Room.component";
 import SocketManager from "../../SocketManager";
 import RoomManager from "./RoomManager";
 import { GameContext, GameContextType } from "../Game/GameContext";
-import { IPlayer, IRoom } from "../../types";
+import { Games, IPlayer, IRoom } from "../../types";
 
 interface PropsPlayerConnection {
   setIsconnected: Dispatch<boolean>;
@@ -19,6 +20,7 @@ function PlayerConnection(props: PropsPlayerConnection) {
     GameContext,
   ) as GameContextType;
   const [, setCookie] = useCookies(["socket"]);
+  const { t } = useTranslation();
 
   const [playerName, setPlayerName] = useState("");
 
@@ -28,7 +30,7 @@ function PlayerConnection(props: PropsPlayerConnection) {
     const rm = new RoomManager(socket);
     rm.onConnect((s: Socket) => {
       setIsconnected(true);
-      setCookie("socket", s.id, { maxAge: 60 * 60 });
+      setCookie("socket", s.id, { maxAge: 60 * 60, sameSite: "strict" });
       setSocket(s);
       rm.getMyProfile().then((profile) => {
         setProfile(profile);
@@ -41,7 +43,7 @@ function PlayerConnection(props: PropsPlayerConnection) {
       <form className="max-width-20" onSubmit={handleSocketConnection}>
         <div className="mb-3">
           <label htmlFor="playerName" className="form-label">
-            <b>Choose your username</b>
+            <b>{t("Choose your username")}</b>
             <input
               id="playerName"
               name="player_name"
@@ -52,7 +54,7 @@ function PlayerConnection(props: PropsPlayerConnection) {
           </label>
         </div>
         <button type="submit" className="btn btn-primary">
-          Connect
+          {t("Connect")}
         </button>
       </form>
     </div>
@@ -62,14 +64,17 @@ function PlayerConnection(props: PropsPlayerConnection) {
 interface PropsRoomJoinCreateRoom {
   roomManager: RoomManager | null;
   setIsInRoom: Dispatch<boolean>;
+  game: Games;
 }
 
 function RoomJoinCreateRoom(props: PropsRoomJoinCreateRoom) {
-  const { roomManager, setIsInRoom } = props;
+  const { roomManager, setIsInRoom, game } = props;
 
   const [roomName, setRoomName] = useState("");
   const [rooms, setRooms] = useState<IRoom[]>([]);
   const { setProfile } = React.useContext(GameContext) as GameContextType;
+
+  const { t } = useTranslation();
 
   const updateProfile = () => {
     if (roomManager) {
@@ -86,6 +91,7 @@ function RoomJoinCreateRoom(props: PropsRoomJoinCreateRoom) {
       roomManager
         .createRoom({
           title: roomName,
+          forGame: game,
         })
         .then(() => {
           updateProfile();
@@ -119,8 +125,8 @@ function RoomJoinCreateRoom(props: PropsRoomJoinCreateRoom) {
         <thead>
           <tr>
             <td>NoP</td>
-            <td>Room</td>
-            <td>Created by</td>
+            <td>{t("Room")}</td>
+            <td>{t("Created by")}</td>
             <td> </td>
           </tr>
         </thead>
@@ -140,7 +146,7 @@ function RoomJoinCreateRoom(props: PropsRoomJoinCreateRoom) {
                   onClick={() => handleJoinRoom(r.uuid)}
                   type="button"
                 >
-                  Join
+                  {t("Join")}
                 </button>
               </td>
             </tr>
@@ -150,7 +156,7 @@ function RoomJoinCreateRoom(props: PropsRoomJoinCreateRoom) {
       <form className="row g-3 max-width-20" onSubmit={createNewRoom}>
         <div>
           <label htmlFor="room_name" className="form-label">
-            <b>Create a room</b>
+            <b>{t("Create a room")}</b>
             <input
               id="room_name"
               className="form-control"
@@ -162,7 +168,7 @@ function RoomJoinCreateRoom(props: PropsRoomJoinCreateRoom) {
           </label>
         </div>
         <button type="submit" className="btn btn-primary">
-          Create
+          {t("Create")}
         </button>
       </form>
     </div>
@@ -171,10 +177,11 @@ function RoomJoinCreateRoom(props: PropsRoomJoinCreateRoom) {
 
 interface Props {
   onGameStart: () => void;
+  game: Games;
 }
 
 function RoomSelection(props: Props) {
-  const { onGameStart } = props;
+  const { onGameStart, game } = props;
 
   const { profile, socket } = React.useContext(GameContext) as GameContextType;
 
@@ -201,6 +208,7 @@ function RoomSelection(props: Props) {
         <RoomJoinCreateRoom
           roomManager={roomManager}
           setIsInRoom={setIsInRoom}
+          game={game}
         />
       )}
       {isInRoom && (

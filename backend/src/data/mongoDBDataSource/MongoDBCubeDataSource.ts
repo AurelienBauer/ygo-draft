@@ -1,22 +1,6 @@
 import mongoose, { Model } from "mongoose";
 import { CubeDataSource, IDBCube } from "../interfaces";
-
-const cardSchema = new mongoose.Schema({
-  id: String,
-  uuid: String,
-  name: String,
-  description: String,
-  image_url: String,
-  image_small_url: String,
-  _type: String,
-  attribute: String,
-  level: Number,
-  frameType: String,
-  atk: Number,
-  def: Number,
-  race: String,
-  archetype: String,
-});
+import { cardSchema } from "./commonSchema";
 
 const cubeSchema = new mongoose.Schema({
   name: {

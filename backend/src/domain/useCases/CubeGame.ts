@@ -97,7 +97,7 @@ export default class CubeGame extends Game {
     this.newAction({
       action: `${currentPlayer.player.name} picked the card: ${card.name}(${card.id})`,
     });
-    return card?.uuid || "";
+    return card?.uuid ?? "";
   }
 
   public nextTurn(): string {

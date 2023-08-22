@@ -1,5 +1,6 @@
 /* eslint-disable no-underscore-dangle */
 import React, { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { ICard } from "../../types";
 import SimplePieChart from "../StatsAndCharts/SimplePieChart.component";
 
@@ -23,6 +24,8 @@ const FLIP_EFFECT_MONSTER_TYPE = "Flip Effect Monster";
 
 function CardsTypeDistribution(props: Props) {
   const { deck } = props;
+  const { t } = useTranslation();
+
   const [typesDis, setTypesDis] = useState<TypesDistribution>({
     gTarp: 0,
     gSpell: 0,
@@ -67,25 +70,25 @@ function CardsTypeDistribution(props: Props) {
           data={[
             {
               id: "Monsters",
-              label: "Monsters",
+              label: t("Monsters"),
               value: typesDis.gMonster,
               color: "#d5ba8e",
             },
             {
               id: "Spells",
-              label: "Spells",
+              label: t("Spells"),
               value: typesDis.gSpell,
               color: "#52aaa1",
             },
             {
               id: "Traps",
-              label: "Traps",
+              label: t("Traps"),
               value: typesDis.gTarp,
               color: "#be6696",
             },
           ]}
         />
-        <span>Cards distribution</span>
+        <span>{t("Cards distribution")}</span>
       </div>
       <div>
         <SimplePieChart
@@ -93,19 +96,19 @@ function CardsTypeDistribution(props: Props) {
           data={[
             {
               id: "Normal",
-              label: "Normal Monsters",
+              label: t("Normal Monsters"),
               value: typesDis.normalMonster,
               color: "#d5ba8e",
             },
             {
               id: "Effect",
-              label: "Effect Monsters",
+              label: t("Effect Monsters"),
               value: typesDis.effectMonster,
               color: "#b0461d",
             },
           ]}
         />
-        <span>Monsters distribution(Normal / Effect)</span>
+        <span>{t("Monsters distribution (Normal / Effect)")}</span>
       </div>
     </div>
   );

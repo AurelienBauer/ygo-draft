@@ -1,19 +1,19 @@
 import React from "react";
-import { createRoot } from "react-dom/client";
 import "./App.css";
-import Home from "./Home";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import CubeHome from "./Games/Cube/CubeHome.component";
 import { CookiesProvider } from "react-cookie";
+import { ReactNotifications } from "react-notifications-component";
+import { createRoot } from "react-dom/client";
+import Home from "./Home";
+import CubeHome from "./Games/Cube/CubeHome.component";
 import GameProvider from "./component/Game/GameContext";
 import ErrorBoundary from "./component/ErrorBoundary.component";
 import ErrorPromiseBoundary from "./component/ErrorPromiseBoundary.component";
-import { ReactNotifications } from "react-notifications-component";
+import BoosterHome from "./Games/BoosterOpening/BoosterHome.component";
 
-const test = {};
-
-const App = () => {
+function App() {
   return (
+    // eslint-disable-next-line react/jsx-filename-extension
     <ErrorBoundary>
       <ReactNotifications />
       <ErrorPromiseBoundary>
@@ -23,6 +23,7 @@ const App = () => {
               <Routes>
                 <Route path="/" element={<Home />} />
                 <Route path="cube" element={<CubeHome />} />
+                <Route path="booster" element={<BoosterHome />} />
               </Routes>
             </BrowserRouter>
           </GameProvider>
@@ -30,10 +31,6 @@ const App = () => {
       </ErrorPromiseBoundary>
     </ErrorBoundary>
   );
-};
+}
 
-export default createRoot(document.getElementById("root")).render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
-);
+export default createRoot(document.getElementById("root")!).render(<App />);

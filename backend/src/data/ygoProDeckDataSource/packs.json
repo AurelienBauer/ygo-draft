@@ -1,0 +1,157 @@
+[
+    {
+        "name": "Elemental Energy",
+        "code": "1",
+        "img_code": "EEN",
+        "release_date": "2005-11-16",
+        "region": "TCG Pre 2016",
+        "alias": "Elemental Energy",
+        "release_date_pretty": "November 16, 2005"
+    },
+    {
+        "name": "Cybernetic Revolution",
+        "code": "1",
+        "img_code": "CRV",
+        "release_date": "2005-08-17",
+        "region": "TCG Pre 2016",
+        "alias": "Cybernetic Revolution",
+        "release_date_pretty": "August 17, 2005"
+    },
+    {
+        "name": "The Lost Millennium",
+        "code": "1",
+        "img_code": "TLM",
+        "release_date": "2005-06-01",
+        "region": "TCG Pre 2016",
+        "alias": "The Lost Millennium",
+        "release_date_pretty": "June 1, 2005"
+    },
+    {
+        "name": "Flaming Eternity",
+        "code": "1",
+        "img_code": "FET",
+        "release_date": "2005-03-01",
+        "region": "TCG Pre 2016",
+        "alias": "Flaming Eternity",
+        "release_date_pretty": "March 1, 2005"
+    },
+    {
+        "name": "Rise of Destiny",
+        "code": "1",
+        "img_code": "RDS",
+        "release_date": "2004-11-20",
+        "region": "TCG Pre 2016",
+        "alias": "Rise of Destiny",
+        "release_date_pretty": "November 20, 2004"
+    },
+    {
+        "name": "Soul of the Duelist",
+        "code": "1",
+        "img_code": "SOD",
+        "release_date": "2004-10-01",
+        "region": "TCG Pre 2016",
+        "alias": "Soul of the Duelist",
+        "release_date_pretty": "October 1, 2004"
+    },
+    {
+        "name": "Ancient Sanctuary",
+        "code": "1",
+        "img_code": "AST",
+        "release_date": "2004-06-01",
+        "region": "TCG Pre 2016",
+        "alias": "Ancient Sanctuary",
+        "release_date_pretty": "June 1, 2004"
+    },
+    {
+        "name": "Invasion of Chaos",
+        "code": "1",
+        "img_code": "IOC",
+        "release_date": "2004-03-01",
+        "region": "TCG Pre 2016",
+        "alias": "Invasion of Chaos",
+        "release_date_pretty": "March 1, 2004"
+    },
+    {
+        "name": "Dark Crisis",
+        "code": "1",
+        "img_code": "DCR",
+        "release_date": "2003-12-01",
+        "region": "TCG Pre 2016",
+        "alias": "Dark Crisis",
+        "release_date_pretty": "December 1, 2003"
+    },
+    {
+        "name": "Magician's Force",
+        "code": "1",
+        "img_code": "MFC",
+        "release_date": "2003-10-10",
+        "region": "TCG Pre 2016",
+        "alias": "Magician's Force",
+        "release_date_pretty": "October 10, 2003"
+    },
+    {
+        "name": "Pharaonic Guardian",
+        "code": "1",
+        "img_code": "PGD",
+        "release_date": "2003-07-18",
+        "region": "TCG Pre 2016",
+        "alias": "Pharaonic Guardian",
+        "release_date_pretty": "July 18, 2003"
+    },
+    {
+        "name": "Legacy of Darkness",
+        "code": "1",
+        "img_code": "LOD",
+        "release_date": "2003-06-06",
+        "region": "TCG Pre 2016",
+        "alias": "Legacy of Darkness",
+        "release_date_pretty": "June 6, 2003"
+    },
+    {
+        "name": "Labyrinth of Nightmare",
+        "code": "1",
+        "img_code": "LON",
+        "release_date": "2003-03-01",
+        "region": "TCG Pre 2016",
+        "alias": "Labyrinth of Nightmare",
+        "release_date_pretty": "March 1, 2003"
+    },
+    {
+        "name": "Pharaoh's Servant",
+        "code": "1",
+        "img_code": "PSV",
+        "release_date": "2002-10-20",
+        "region": "TCG Pre 2016",
+        "alias": "Pharaoh's Servant",
+        "release_date_pretty": "October 20, 2002"
+    },
+    {
+        "name": "Magic Ruler (European)",
+        "code": "1",
+        "img_code": "MRL",
+        "release_date": "2002-09-16",
+        "region": "TCG Pre 2016",
+        "alias": "Magic Ruler",
+        "release_date_pretty": "September 16, 2002"
+    },
+    {
+        "name": "Metal Raiders",
+        "code": "1",
+        "img_code": "MRD",
+        "release_date": "2002-06-26",
+        "region": "TCG Pre 2016",
+        "alias": "Metal Raiders",
+        "release_date_pretty": "June 26, 2002"
+    },
+    {
+        "name": "The Legend of Blue Eyes White Dragon",
+        "name_fr": "La Légende du Dragon Blanc aux Yeux Bleu",
+        "code": "1",
+        "img_code": "LOB",
+        "release_date": "2002-03-08",
+        "region": "TCG Pre 2016",
+        "alias": "Legend of Blue Eyes White Dragon",
+        "release_date_pretty": "March 8, 2002",
+        "pack_opener_link": "https://ygoprodeck.com/api/pack-sim/pack-open.php?format=The%20Legend%20of%20Blue%20Eyes%20White%20Dragon&settype=1"
+    }
+]

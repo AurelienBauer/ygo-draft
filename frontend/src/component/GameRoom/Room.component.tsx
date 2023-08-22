@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-
+import { useTranslation } from "react-i18next";
 import RoomManager from "./RoomManager";
 import { IRoom } from "../../types";
 import RoomModal from "./RoomModal.component";
@@ -16,6 +16,7 @@ function Room(props: Props) {
   const [roomInfo, setRoomInfo] = useState<IRoom>();
   const [amIAdmin, setamIAdmin] = useState<boolean>(false);
   const [hasAdminLeft, setHasAdminLeft] = useState<boolean>(false);
+  const { t } = useTranslation();
 
   useEffect(() => {
     if (roomManager) {
@@ -74,8 +75,7 @@ function Room(props: Props) {
           <div className="flex space-between mb-1">
             <div>{roomInfo?.title}</div>
             <span>
-              Created by:
-              {roomInfo?.createdBy}
+              {t("Created by:", { name: roomInfo?.createdBy })}
             </span>
           </div>
           <div className="mb-4">
@@ -83,15 +83,15 @@ function Room(props: Props) {
           </div>
           {amIAdmin && (
             <button className="btn btn-primary mb-3" type="button" onClick={handleStartGame}>
-              Start the game
+              {t("Start the game")}
             </button>
           )}
         </div>
       ) : (
-        <div> Admin has left, please leave the room</div>
+        <div>{t("Admin has left, please leave the room")}</div>
       )}
       <button className="btn btn-secondary" type="button" onClick={handleLeaveTheRoom}>
-        Leave the room
+        {t("Leave the room")}
       </button>
     </div>
   );

@@ -10,13 +10,13 @@ export default function CubeRoutes(ds: DataSource) {
   const routes = Router();
   const cube = new Cubes(ds);
 
-  routes.get("/", async (req: Request, res: Response) => {
+  routes.get("/", async (_req: Request, res: Response) => {
     try {
       const cubes = await cube.getAll();
       logger.info(cubes);
-      res.send(cubes);
+      return res.send(cubes);
     } catch (err) {
-      res.status(500).send({ message: "Error fetching data" });
+      return res.status(500).send({ message: "Error fetching data" });
     }
   });
 
@@ -51,27 +51,6 @@ export default function CubeRoutes(ds: DataSource) {
       }
     },
   );
-
-  // routes.post("/load-cube-form-file", async (req: Request, res: Response) => {
-  //   try {
-  //     const { name, content } = req.body;
-
-  //     const cards = await _getCardAsync(content);
-  //     const newCube = new Cubes({
-  //       name,
-  //       cardsId: cards,
-  //     });
-  //     await newCube.save();
-
-  //     res.status(httpStatus.CREATED).json({
-  //       id: newCube._id,
-  //     });
-  //   } catch (err) {
-  //     if (err && err.error && err.error === "CARD_NOT_FOUND") {
-  //       res.status(httpStatus.INTERNAL_SERVER_ERROR).json(err);
-  //     }
-  //   }
-  // });
 
   return routes;
 }

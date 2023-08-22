@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { ICard } from "../types";
 
 interface Props {
@@ -9,6 +10,7 @@ interface Props {
 
 function CardDetail(props: Props) {
   const { card, open, closeModal } = props;
+  const { t } = useTranslation();
 
   return (
     <div className={`modal ${open ? "open" : ""}`}>
@@ -29,13 +31,16 @@ function CardDetail(props: Props) {
           <div className="modal-card-desc">
             <ul>
               <li>
-                <b>French name:</b>
+                <b>
+                  {t("Title")}
+                  :
+                </b>
                 {" "}
                 {card?.name}
               </li>
               <li>
-                <b>Description:</b>
-                {" "}
+                <b>{t("Description")}</b>
+                {": "}
                 <p>{card?.description}</p>
               </li>
             </ul>

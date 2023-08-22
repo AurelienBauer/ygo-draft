@@ -1,0 +1,137 @@
+.booster-selection-container {
+    display: flex;
+    flex-flow: wrap;
+    justify-content: space-evenly;
+    width: 80%;
+    margin: auto;
+    align-items: center;
+}
+
+.booster-container {
+    display: block;
+    margin: 3rem;
+    width: 14rem;
+}
+
+.booster-number-input {
+    display: block;
+    margin-top: 0.5rem;
+}
+
+.booster-number-input > input {
+    width: 3.5rem;
+}
+
+.booster-selection-box {
+    background: rgb(27,29,35);
+    background: linear-gradient(135deg, #1b1d2389 0%, rgba(40,44,52,0.2) 19%, rgba(112,112,112,0.2) 100%);
+    border: #1b1d23 1px solid;
+    padding: 0.5rem;
+    overflow-y: auto;
+    overflow-x: hidden;
+    height: 30vh;
+    text-align: start;
+    font-size: small;
+}
+
+.booster-cards-container {
+  display: flex;
+  flex-flow: wrap;
+  justify-content: space-evenly;
+  width: 80%;
+  margin: auto;
+  align-items: center;
+}
+
+.booster-cards-container > div {
+  padding: 1rem;
+  position: relative;
+}
+
+.rarity-overlay {
+  position: absolute;
+  top: 4%;
+  pointer-events: none;
+}
+
+.rare {
+  position: relative;
+  overflow: hidden;
+  color: #ffffff;
+  width: 12vw;
+  aspect-ratio: 230 / 336;
+}
+
+.rare:after {
+  animation: shine 2s ease-in-out infinite;
+  animation-fill-mode: forwards;
+  content: "";
+  position: absolute;
+  top: -110%;
+  left: -210%;
+  width: 200%;
+  height: 200%;
+  opacity: 0;
+  transform: rotate(30deg);
+
+  background: rgba(255, 255, 255, 0.13);
+  background: linear-gradient(
+    to right,
+    rgba(255, 255, 255, 0.13) 0%,
+    rgba(255, 255, 255, 0.13) 77%,
+    rgba(255, 255, 255, 0.5) 92%,
+    rgba(255, 255, 255, 0) 100%
+  );
+}
+
+.rare:active:after {
+  opacity: 0;
+}
+
+@keyframes shine {
+  0% {
+    opacity: 1;
+    top: -170%;
+    left: -170%;
+    transition-property: left, top, opacity;
+  }
+  100% {
+    opacity: 0;
+    top: -50%;
+    left: -50%;
+    transition-property: left, top, opacity;
+  }
+}
+
+@keyframes rare-shadow-box-move {
+  50% {
+    box-shadow: 0 0 10px 5px #f5d017;
+  }
+}
+
+.super-rare {
+  animation: rare-shadow-box-move 5s infinite;
+  box-shadow: 0 0 5px 2px #f5d017;
+}
+
+@keyframes ultra-rare-shadow-box-move {
+  50% {
+    box-shadow: 0 0 10px 5px #ff3eff;
+  }
+}
+
+.ultra-rare {
+  animation: ultra-rare-shadow-box-move 5s infinite;
+  box-shadow: 0 0 5px 2px #ff3eff;
+}
+
+@keyframes secret-rare-shadow-box-move {
+  50% {
+    box-shadow: 0 0 9px 6px #fff, 0 0 11px 8px #f0f, 0 0 13px 10px #0ff;
+  }
+}
+
+.secret-rare {
+  animation: secret-rare-shadow-box-move 5s infinite;
+  box-shadow: 0 0 5px 2px #fff, 0 0 7px 4px #f0f, 0 0 9px 6px #0ff;
+}

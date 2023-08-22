@@ -1,13 +1,13 @@
-FROM node:20-alpine3.17 as builder
+FROM node:20-alpine3.17 AS builder
 
 # create root application folder
 WORKDIR /app
 
 # copy configs to /app folder
-COPY package*.json ./
+COPY package.json ./
 COPY tsconfig.json ./
 
-RUN yarn
+RUN yarn install
 
 # copy source code to /app/src folder
 COPY src /app/src
@@ -15,7 +15,7 @@ COPY public /app/public
 RUN yarn run build
 
 # Bundle static assets with nginx
-FROM nginx:1.25.1-alpine as production
+FROM nginx:1.25.1-alpine AS production
 
 ENV NODE_ENV production
 # Copy built assets from `builder` image

@@ -9,6 +9,6 @@ export default class Card {
 
   public getByID = async (id: string): Promise<ICard> => {
     const res = await this.ds.card.getByIDs([id]);
-    return res[0] as ICard;
+    return res[0];
   };
 }

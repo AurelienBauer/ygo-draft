@@ -1,8 +1,7 @@
 import * as http from "http";
 import * as net from "net";
 import helmet from "helmet";
-import { Application, json, urlencoded } from "express";
-import * as express from "express";
+import express, { Application, json, urlencoded } from "express";
 import ISetupServer from "./ISetupServer";
 import routes from "./routes/expressRoutes";
 import { DataSource } from "./data/interfaces";

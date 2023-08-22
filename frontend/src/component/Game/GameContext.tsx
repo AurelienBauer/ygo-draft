@@ -8,6 +8,8 @@ import React, {
 import { Socket } from "socket.io-client";
 import { IPlayer } from "../../types";
 
+export type AvailableLangs = "en" | "fr";
+
 export type GameContextType = {
   socket: Socket | null;
   setSocket: Dispatch<SetStateAction<Socket | null>>;
@@ -15,6 +17,8 @@ export type GameContextType = {
   setProfile: Dispatch<SetStateAction<IPlayer | null>>;
   reconnectionParam: string;
   setReconnectionParam: Dispatch<SetStateAction<string>>;
+  lang: AvailableLangs;
+  setLang: Dispatch<AvailableLangs>;
 };
 
 export const GameContext = React.createContext<GameContextType | null>(null);
@@ -28,6 +32,7 @@ function GameProvider(props: Props) {
   const [socket, setSocket] = useState(null);
   const [profile, setProfile] = useState<IPlayer | null>(null);
   const [reconnectionParam, setReconnectionParam] = useState("undefine");
+  const [lang, setLang] = useState<AvailableLangs>("en");
 
   const value = useMemo(
     () => ({
@@ -37,8 +42,10 @@ function GameProvider(props: Props) {
       setProfile,
       reconnectionParam,
       setReconnectionParam,
+      lang,
+      setLang,
     }),
-    [socket, profile, reconnectionParam],
+    [socket, profile, reconnectionParam, lang],
   );
 
   return <GameContext.Provider value={value}>{children}</GameContext.Provider>;

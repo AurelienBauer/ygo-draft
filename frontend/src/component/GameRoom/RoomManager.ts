@@ -1,6 +1,6 @@
 import { Socket } from "socket.io-client";
 import SocketManager from "../../SocketManager";
-import { IPlayer, IRoom } from "../../types";
+import { Games, IPlayer, IRoom } from "../../types";
 
 interface IGetRoom {
   roomId: string;
@@ -17,6 +17,7 @@ interface IRoomJoined {
 
 interface ICreateRoom {
   title: string;
+  forGame: Games;
 }
 
 export default class RoomManager extends SocketManager {

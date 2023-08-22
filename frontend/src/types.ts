@@ -52,3 +52,39 @@ export interface ICube {
   created: Date;
   cards: ICard[];
 }
+
+export interface IBooster {
+  id: string;
+  name: string;
+  name_fr?: string;
+  image_url: string;
+  release_date: Date;
+  region: string;
+  alias: string;
+  pack_opener_link: string;
+}
+
+export type Games = "cube" | "booster";
+
+export interface SelectedBooster {
+  boosterId: string;
+  boosterName: string;
+  imageUrl: string;
+  number: number;
+}
+
+export interface CardFromPack extends ICard {
+  rarity: string;
+  setcode: string;
+  price: string;
+}
+
+export interface BoosterOpened {
+  id: string;
+  name: string;
+  cardsLeft: number;
+  image_url: string;
+  cards: CardFromPack[];
+}
+
+export type Langs = "fr" | "en";

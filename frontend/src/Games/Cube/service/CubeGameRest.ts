@@ -12,8 +12,8 @@ export default class CubeGameRest {
     return result.data;
   }
 
-  public static async getCubeById(id: string): Promise<ICube> {
-    const result = await axios.get(`api/v1/cubes/${id}?language=fr`, {
+  public static async getCubeById(id: string, lang = "en"): Promise<ICube> {
+    const result = await axios.get(`api/v1/cubes/${id}?language=${lang}`, {
       headers: {
         "Content-Type": "application/json",
       },

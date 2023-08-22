@@ -23,10 +23,10 @@ function Card(props: Props) {
   }
 
   return card ? (
-    <img style={{ width: widthSize, height: "100%" }} src={card[imgSrc]} alt={card.name} />
+    <img style={{ width: widthSize }} src={card[imgSrc]} alt={card.name} />
   ) : (
     <img
-      style={{ width: widthSize, height: "100%" }}
+      style={{ width: widthSize }}
       src="https://images.ygoprodeck.com/images/cards/100421010.jpg"
       alt=""
     />

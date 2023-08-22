@@ -1,7 +1,9 @@
 import React, { ReactNode } from "react";
+import { withTranslation } from "react-i18next";
 
 interface ErrorBoundaryProps {
   children: ReactNode;
+  t: (s: string) => string;
 }
 
 interface ErrorBoundaryState {
@@ -37,19 +39,19 @@ ErrorBoundaryState
   }
 
   render() {
-    const { children } = this.props;
+    const { children, t } = this.props;
     const { hasError } = this.state;
 
     if (hasError) {
       return (
         <div className="error-dom-container">
           <div className="error-status">500</div>
-          <div className="error-ooops">Ooops!!</div>
+          <div className="error-ooops">{t("Ooops!!")}</div>
           <div className="error-message mb-3">
-            An error occurred on this page.
+            {t("An error occurred on this page.")}
           </div>
           <a href="/" className="btn btn-primary">
-            Go Back to Home
+            {t("Go Back to Home")}
           </a>
         </div>
       );
@@ -59,4 +61,4 @@ ErrorBoundaryState
   }
 }
 
-export default ErrorBoundary;
+export default withTranslation()(ErrorBoundary);

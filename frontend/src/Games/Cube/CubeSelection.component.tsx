@@ -6,6 +6,7 @@ import React, {
   useEffect,
   useState,
 } from "react";
+import { useTranslation } from "react-i18next";
 import { GameContext, GameContextType } from "../../component/Game/GameContext";
 import { ICube } from "../../types";
 import CubeGameRest from "./service/CubeGameRest";
@@ -16,6 +17,7 @@ interface Props {
 
 function CubeSelection(props: Props) {
   const { setCubeID } = props;
+  const { t } = useTranslation();
 
   const { profile } = React.useContext(GameContext) as GameContextType;
 
@@ -64,7 +66,7 @@ function CubeSelection(props: Props) {
     <div className="mt-5">
       {profile?.room?.iAmAdmin ? (
         <form className="width-20" onSubmit={onSubmitCube}>
-          <h4>Cube selection</h4>
+          <h4>{t("Cube selection")}</h4>
           <div onChange={onCubeSelectionChange}>
             {cubes
               && cubes.length > 0
@@ -86,7 +88,7 @@ function CubeSelection(props: Props) {
                 </div>
               ))}
           </div>
-          <h4 className="mt-3">Load a Cube</h4>
+          <h4 className="mt-3">{t("Load a Cube")}</h4>
           <input
             type="file"
             className="btn"
@@ -101,11 +103,11 @@ function CubeSelection(props: Props) {
             className="form-control"
           />
           <button type="submit" className="btn btn-primary mt-3">
-            Submit
+            {t("Submit")}
           </button>
         </form>
       ) : (
-        <div>The Admin of the room is selecting a cube...</div>
+        <div>{t("The Admin of the room is selecting a cube...")}</div>
       )}
     </div>
   );

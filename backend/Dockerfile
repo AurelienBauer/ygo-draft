@@ -4,7 +4,8 @@ FROM node:20-alpine3.17
 WORKDIR /app
 
 # copy configs to /app folder
-COPY package*.json ./
+COPY package.json ./
+COPY yarn.lock ./
 COPY tsconfig.json ./
 
 RUN yarn

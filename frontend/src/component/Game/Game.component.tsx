@@ -1,13 +1,15 @@
 import React, { ReactNode, useEffect, useState } from "react";
 import GameRoomSelection from "../GameRoom/RoomSelection.component";
 import { GameContext, GameContextType } from "./GameContext";
+import { Games } from "../../types";
 
 interface Props {
   children: ReactNode;
+  game: Games;
 }
 
 function Game(props: Props) {
-  const { children } = props;
+  const { children, game } = props;
 
   const { reconnectionParam } = React.useContext(
     GameContext,
@@ -34,7 +36,7 @@ function Game(props: Props) {
       {hasStarted ? (
         children
       ) : (
-        <GameRoomSelection onGameStart={handleGameStart} />
+        <GameRoomSelection onGameStart={handleGameStart} game={game} />
       )}
     </div>
   );

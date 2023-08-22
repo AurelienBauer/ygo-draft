@@ -8,17 +8,8 @@ import PlayerEventsHandler from "./PlayerEventsHandler";
 import RoomEventsHandler from "./RoomEventsHandler";
 import CubeGameEventsHandler from "./CubeGameEventsHandler";
 import { Callback } from "./event";
-
-/// try/catch
-const tc = <T>(tryFunc: () => T, catchFunc: (e: Error) => T) => {
-  let val: T;
-  try {
-    val = tryFunc();
-  } catch (e) {
-    val = catchFunc(e as Error);
-  }
-  return val;
-};
+import { tc } from "../service";
+import BoosterGameEventsHandler from "./BoosterGameEventsHandler";
 
 type EventHandler = (...args: unknown[]) => unknown;
 
@@ -37,6 +28,8 @@ export default class SocketHandler {
 
   private cubeGameEventsHandler: CubeGameEventsHandler;
 
+  private boosterGameEventsHandler: BoosterGameEventsHandler;
+
   constructor(httpServer: HttpServer, ds: DataSource, logger: Logger) {
     this.logger = logger;
     this.roomManager = new RoomManager();
@@ -48,6 +41,7 @@ export default class SocketHandler {
     );
     this.roomEventsHandler = new RoomEventsHandler(this.roomManager, ds);
     this.cubeGameEventsHandler = new CubeGameEventsHandler(ds);
+    this.boosterGameEventsHandler = new BoosterGameEventsHandler(ds);
 
     this.io = new Server(httpServer, {
       cors: {
@@ -202,6 +196,18 @@ export default class SocketHandler {
             event: "cube:currentinfo",
             handler: this.cubeGameEventsHandler.currentInfo.bind(
               this.cubeGameEventsHandler,
+            ),
+          },
+          {
+            event: "booster:startopening",
+            handler: this.boosterGameEventsHandler.startOpening.bind(
+              this.boosterGameEventsHandler,
+            ),
+          },
+          {
+            event: "booster:open",
+            handler: this.boosterGameEventsHandler.openNextBooster.bind(
+              this.boosterGameEventsHandler,
             ),
           },
         ];

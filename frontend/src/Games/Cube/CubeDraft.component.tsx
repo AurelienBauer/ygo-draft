@@ -1,6 +1,7 @@
 import React, {
   useCallback, useEffect, useRef, useState,
 } from "react";
+import { useTranslation } from "react-i18next";
 import CubeGameService from "./service/CubeGameService";
 import { DecksByPlayer, ICard, ICube } from "../../types";
 import CubeDraftPrimary from "./CubeDraftPrimary.component";
@@ -18,6 +19,7 @@ interface Props {
 
 function CubeDraft(props: Props) {
   const { cubeID, cgservice, handleOpenDetailModal } = props;
+  const { t } = useTranslation();
 
   const [cube, setCube] = useState<ICube>();
   const [decksByPlayer, setDecksByPlayer] = useState<DecksByPlayer[]>([]);
@@ -26,7 +28,7 @@ function CubeDraft(props: Props) {
 
   const refIntersecting = useRef<HTMLDivElement>(null);
 
-  const { reconnectionParam, profile } = React.useContext(
+  const { reconnectionParam, profile, lang } = React.useContext(
     GameContext,
   ) as GameContextType;
 
@@ -55,11 +57,11 @@ function CubeDraft(props: Props) {
 
   useEffect(() => {
     if (cubeID) {
-      CubeGameRest.getCubeById(cubeID).then((c) => {
+      CubeGameRest.getCubeById(cubeID, lang).then((c) => {
         setCube(c);
       });
     }
-  }, [cubeID]);
+  }, [cubeID, lang]);
 
   useEffect(() => {
     if (cube) {
@@ -105,10 +107,10 @@ function CubeDraft(props: Props) {
 
   return (
     <>
-      <h1>{cube?.name}</h1>
+      <h1>{cube?.name.toUpperCase()}</h1>
       {isDraftOver ? (
         <div>
-          <h2 className="big-blue-text mt-5 mb-5">DRAFT OVER</h2>
+          <h2 className="big-blue-text mt-5 mb-5">{t("DRAFT OVER")}</h2>
           <DownloadDeckButton
             type="button"
             deck={

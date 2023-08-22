@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { ICard, ICube, IPlayer } from "../../types";
 import CubeGameService from "./service/CubeGameService";
 import { GameContext, GameContextType } from "../../component/Game/GameContext";
@@ -14,6 +15,8 @@ function CubeDraftPrimary(props: Props) {
   const {
     cube, cgservice, addCardToPlayerDeck, handleOpenDetailModal,
   } = props;
+  const { t } = useTranslation();
+
   const [boardCards, setBoardCards] = useState<ICard[]>([]);
   const [displayBoard, setDisplayBoard] = useState<ICard[]>([]);
   const [currentPlayer, setCurrentPlayer] = useState<string>("");
@@ -81,12 +84,12 @@ function CubeDraftPrimary(props: Props) {
   const getTurn = (): string => {
     const player = players.filter((p) => p.uuid === currentPlayer);
     if (player.length <= 0 || !profile?.uuid) {
-      return "UNKNOWN";
+      return t("UNKNOWN");
     }
 
     return player[0].uuid === profile.uuid
-      ? "YOUR TURN"
-      : `${player[0].name.toUpperCase()} IS PLAYING`;
+      ? t("YOUR TURN")
+      : t("x IS PLAYING", { name: player[0].name.toUpperCase() });
   };
 
   return (
@@ -110,7 +113,7 @@ function CubeDraftPrimary(props: Props) {
               className="mt-2 btn btn-outline-secondary"
               type="button"
             >
-              Detail
+              {t("Detail")}
             </button>
           </div>
         ) : (

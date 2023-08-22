@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
 import { useNavigate } from "react-router";
+import { useTranslation } from "react-i18next";
 import { GameContext, GameContextType } from "./Game/GameContext";
 import SocketManager from "../SocketManager";
 import YesNoModal from "./YesNoModal.component";
@@ -11,6 +12,7 @@ function Reconnection() {
     socket, setSocket, setProfile, setReconnectionParam,
   } = useContext(GameContext) as GameContextType;
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const [canReconnect, setCanReconnect] = useState(false);
   const [socketManager, setSocketManager] = useState<
@@ -25,7 +27,7 @@ function Reconnection() {
         .reconnect(cookie.socket)
         .then(({ game, gameCurrentState }) => {
           socketManager.getMyProfile().then((profile) => {
-            setCookie("socket", profile.socketID, { maxAge: 60 * 60 });
+            setCookie("socket", profile.socketID, { maxAge: 60 * 60, sameSite: "strict" });
             setProfile(profile);
             setCanReconnect(false);
             if (game && gameCurrentState) {
@@ -80,7 +82,7 @@ function Reconnection() {
       open={canReconnect}
       handleNoResponse={handleAbortPreviousSession}
       handleYesResponse={handleJoinPreviousSession}
-      text="Re-connect to your previous session?"
+      text={t("Re-connect to your previous session?")}
     />
   );
 }

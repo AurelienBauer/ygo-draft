@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { ICard } from "../../types";
 
 import Icon from "../../frontendComponent/Icon.components";
@@ -16,6 +17,7 @@ function CubeLastCardPicked(props: Props) {
   const {
     cardStack, playerName, handleOpenDetailModal, isDisturbing,
   } = props;
+  const { t } = useTranslation();
 
   const [openState, setOpenState] = useState<OpenStates>("reduce");
 
@@ -75,7 +77,7 @@ function CubeLastCardPicked(props: Props) {
         />
       </div>
       <div className="cube-last-card-picked-name">
-        Cards picked by:
+        {t("Cards picked by:")}
         {" "}
         {playerName}
       </div>

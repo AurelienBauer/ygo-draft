@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { GameContext, GameContextType } from "../../component/Game/GameContext";
 import CubeGameService from "./service/CubeGameService";
 import CubeSelection from "./CubeSelection.component";
@@ -16,14 +17,15 @@ interface PropsGAModal {
 
 function GameAbordedModal(props: PropsGAModal) {
   const { open, handleLeaveGameRoom } = props;
+  const { t } = useTranslation();
 
   return (
     <div className={`modal small ${open ? "open" : ""}`}>
       <div className="modal-content">
         <div className="modal-body">
           <div className="text-align-start">
-            <h5>Game aborded</h5>
-            <p>A player has left the room, the game cannot continue.</p>
+            <h5>{t("Game aborted")}</h5>
+            <p>{t("A player has left the room, the game cannot continue.")}</p>
           </div>
         </div>
         <div className="modal-footer">
@@ -32,7 +34,7 @@ function GameAbordedModal(props: PropsGAModal) {
             onClick={handleLeaveGameRoom}
             type="button"
           >
-            Leave the game and the room
+            {t("Leave the game and the room")}
           </button>
         </div>
       </div>
@@ -41,6 +43,8 @@ function GameAbordedModal(props: PropsGAModal) {
 }
 
 function CubeGame() {
+  const { t } = useTranslation();
+
   const [cubeID, setCubeID] = useState<string>("");
   const [draftStarted, setDraftStarted] = useState(false);
   const [openDetailModal, setOpenDetailModal] = useState(false);
@@ -138,7 +142,7 @@ function CubeGame() {
             onClick={handleStartGame}
             type="button"
           >
-            Start Game
+            {t("Start Game")}
           </button>
         )}
         {cgservice && cubeID && draftStarted && (

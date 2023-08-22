@@ -1,3 +1,5 @@
+import { Games } from "../../types";
+
 interface GameAction {
   stage?: string;
   nextStage?: string;
@@ -10,9 +12,9 @@ export default class Game {
 
   private gameStage: string;
 
-  private name: string;
+  private name: Games;
 
-  constructor(name: string) {
+  constructor(name: Games) {
     this.actionsStack = [];
     this.gameStage = "room";
     this.name = name;

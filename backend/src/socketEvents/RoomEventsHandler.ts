@@ -11,6 +11,8 @@ import { IRoom } from "../domain/useCases/GameRoom";
 import CubeGame from "../domain/useCases/CubeGame";
 import { DataSource } from "../data/interfaces";
 import { Callback } from "./event";
+import BoosterGame from "../domain/useCases/BoosterGame";
+import Game from "../domain/useCases/Game";
 
 export default class RoomEventsHandler {
   private roomManager: RoomManager;
@@ -46,10 +48,26 @@ export default class RoomEventsHandler {
     callback: Callback<IJoinRoomResponse>,
   ): void {
     const { player } = socket.data;
+    let game: Game | null;
+    switch (playback.forGame) {
+      case "cube":
+        game = new CubeGame(this.ds);
+        break;
+      case "booster":
+        game = new BoosterGame(this.ds);
+        break;
+      default:
+        game = null;
+        break;
+    }
+    if (!game) {
+      throw new Error(`Game ${playback.forGame} is not handled by this app`);
+    }
+
     const room = this.roomManager.createNewRoom(
       playback.title,
       player,
-      new CubeGame(this.ds),
+      game,
     );
     player.joinRoom(room);
     socket.join(`room:${room.getUUID()}`);

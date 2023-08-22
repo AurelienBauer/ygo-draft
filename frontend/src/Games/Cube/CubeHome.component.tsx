@@ -7,7 +7,7 @@ import Wrapper from "../../component/Wrapper.component";
 function CubeHome() {
   return (
     <Wrapper>
-      <Game>
+      <Game game="cube">
         <CubeGame />
       </Game>
     </Wrapper>

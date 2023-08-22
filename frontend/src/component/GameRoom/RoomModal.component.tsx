@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Tooltip } from "react-tooltip";
+import { useTranslation } from "react-i18next";
 import {
   ConnectionDot,
   DisconnectionDot,
@@ -16,6 +17,7 @@ interface Props {
 function RoomModal(props: Props) {
   const { position } = props;
   const { profile, socket } = React.useContext(GameContext) as GameContextType;
+  const { t } = useTranslation();
 
   const [isOpen, setIsOpen] = useState(true);
   const [room, setRoom] = useState<IRoom | undefined>();
@@ -73,8 +75,7 @@ function RoomModal(props: Props) {
         </div>
       )}
       <div>
-        Room:
-        {room?.title}
+        {t("Room: x", { title: room?.title })}
       </div>
       <div className="room-list-of-players">
         {room?.players.map((p) => (
@@ -86,7 +87,7 @@ function RoomModal(props: Props) {
                 <div
                   className="player-admin-icon"
                   data-tooltip-id="tt-icon-admin"
-                  data-tooltip-content="Admin of the room"
+                  data-tooltip-content={t("Admin of the room")}
                 >
                   <Icon
                     icon="user-filled"
