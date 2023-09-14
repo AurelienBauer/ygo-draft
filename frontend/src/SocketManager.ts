@@ -52,7 +52,7 @@ export default class SocketManager {
     return new Promise((resolve, reject) => {
       const responseCb = (res: SResponse<D>) => {
         if (res.error) {
-          reject(res.error);
+          reject(res);
         }
         resolve(res);
       };

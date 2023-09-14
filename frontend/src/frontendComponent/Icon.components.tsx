@@ -1,7 +1,9 @@
 import React from "react";
 
+type Icons = "arrow-right" | "arrow-left" | "user-filled" | "user" | "signout" | "search" | "import" | "star" | "bookmark" | "reload" | "chevron-bottom" | "ygo-deck";
+
 interface Props {
-  icon: string;
+  icon: Icons;
   scale?: string;
   strokeWidth?: string;
   strokeColor?: string;
@@ -53,6 +55,40 @@ function Icon(props: Props) {
       id = "i-import";
       path = (
         <path d="M28 22 L28 30 4 30 4 22 M16 4 L16 24 M8 16 L16 24 24 16" />
+      );
+      break;
+    case "star":
+      id = "i-star";
+      path = (
+        <path d="M16 2 L20 12 30 12 22 19 25 30 16 23 7 30 10 19 2 12 12 12 Z" />
+      );
+      break;
+    case "bookmark":
+      id = "i-bookmark";
+      path = (
+        <path d="M6 2 L26 2 26 30 16 20 6 30 Z" />
+      );
+      break;
+    case "reload":
+      id = "i-reload";
+      path = (
+        <path d="M29 16 C29 22 24 29 16 29 8 29 3 22 3 16 3 10 8 3 16 3 21 3 25 6 27 9 M20 10 L27 9 28 2" />
+      );
+      break;
+    case "chevron-bottom":
+      id = "i-chevron-bottom";
+      path = (
+        <path d="M30 12 L16 24 2 12" />
+      );
+      break;
+    case "ygo-deck":
+      id = "i-ygo-deck";
+      path = (
+        <>
+          <rect x="5.418" y="36.181" width="20.524" height="6.359" transform="matrix(0.999967, 0.008139, -1.005924, 0.991846, 94.172005, 44.533161)" />
+          <rect x="56.792" y="86.83" width="20.578" height="6.505" />
+          <rect x="27.016" y="11.994" width="8.67" height="3.902" transform="matrix(0.68424, -0.729257, -0.120406, 1.589803, 60.407426, 87.605787)" />
+        </>
       );
       break;
     default:

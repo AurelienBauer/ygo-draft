@@ -1,3 +1,5 @@
+import { func } from "joi";
+
 export async function verifyEndpoint(endpoint: string): Promise<boolean> {
   try {
     const response = await fetch(endpoint);
@@ -19,4 +21,8 @@ export function tc <T>(tryFunc: () => T, catchFunc: (e: Error) => T) {
     val = catchFunc(e as Error);
   }
   return val;
+}
+
+export function removeDuplicationFromArray<T>(array: T[]) {
+  return array.filter((value, index, self) => self.indexOf(value) === index);
 }

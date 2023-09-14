@@ -3,20 +3,27 @@ import BoosterGameSelection from "./BoosterGameSelection.component";
 import BoosterGameService from "./service/BoosterGameService";
 import { GameContext, GameContextType } from "../../component/Game/GameContext";
 import BoosterGameOpening from "./BoosterGameOpening.component";
+import BoosterGameBuilding from "./BoosterGameBuilding.component";
 
-type GameStates = "selection" | "opening" | "building";
+type GameStates = "game_start" | "start_opening" | "start_building";
 
 function BoosterGame() {
-  const [state, setState] = useState<GameStates>("selection");
   const [bgservice, setBgservice] = useState<BoosterGameService | null>(null);
-  const { socket } = useContext(GameContext) as GameContextType;
+  const { socket, reconnectionParam } = useContext(GameContext) as GameContextType;
+  const [state, setState] = useState<GameStates>(
+    reconnectionParam === "undefine" ? "game_start" : reconnectionParam as GameStates,
+  );
 
   const handleStartOpening = () => {
-    setState("opening");
+    setState("start_opening");
   };
 
   const handleStartBuilding = () => {
-    setState("building");
+    if (bgservice) {
+      bgservice.socket.startDeckBuilding().then(() => {
+        setState("start_building");
+      });
+    }
   };
 
   useEffect(() => {
@@ -27,9 +34,9 @@ function BoosterGame() {
 
   return (
     <div className="text-center flex justify-content-center">
-      {/* <a href="/boosters">Return</a> */}
-      {bgservice && state === "selection" && <BoosterGameSelection bgservice={bgservice} handleStartOpening={() => handleStartOpening()} />}
-      {bgservice && state === "opening" && <BoosterGameOpening bgservice={bgservice} handleStartBuilding={() => handleStartBuilding()} />}
+      {bgservice && state === "game_start" && <BoosterGameSelection bgservice={bgservice} handleStartOpening={() => handleStartOpening()} />}
+      {bgservice && state === "start_opening" && <BoosterGameOpening bgservice={bgservice} handleStartBuilding={() => handleStartBuilding()} />}
+      {bgservice && state === "start_building" && <BoosterGameBuilding bgservice={bgservice} />}
     </div>
   );
 }

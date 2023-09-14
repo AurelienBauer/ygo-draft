@@ -1,0 +1,85 @@
+.deck-builder {
+  width: 95vw;
+}
+
+.deck-builder > div:first-child {
+  flex: 1.5;
+  text-align: center;
+  background-color: $content-bg;
+  margin-right: 1rem;
+}
+
+.deck-builder > div {
+  flex: 2;
+  padding: 0.5rem;
+  width: 50%;
+  flex-direction: column;
+  text-align: start;
+}
+
+.extraDeck {
+  min-height: 6rem;
+}
+
+.deck{
+  height: 100%;
+}
+
+.stock {
+  height: 100%;
+}
+
+.bookmarked {
+  min-height: 6rem;
+}
+
+.deck-can-drop-hover {
+  background-color: aqua;
+}
+
+.deck-can-drop {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  top: 0;
+  pointer-events: none;
+  background-color: #8d8d8d57;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.deck-can-drop > .deck-can-drop-icon {
+  width: 3rem;
+  animation: .7s linear 0s infinite sun-rise;
+  position: relative;
+}
+
+@keyframes sun-rise {
+  0% {
+    top: -3px;
+    transition-property: top;
+  }
+  70% {
+    top: 5px;
+    transition-property: top;
+  }
+  100% {
+    top: -3px;
+    transition-property: top;
+  }
+}
+
+.card-area {
+  position: relative;
+  overflow-y: hidden;
+  overflow-x: hidden;
+}
+
+.cards-area-hover {
+  display: block;
+}
+
+.card-area > .cards-list {
+  height: 100%;
+}

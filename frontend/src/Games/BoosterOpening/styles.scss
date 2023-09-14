@@ -135,3 +135,74 @@
   animation: secret-rare-shadow-box-move 5s infinite;
   box-shadow: 0 0 5px 2px #fff, 0 0 7px 4px #f0f, 0 0 9px 6px #0ff;
 }
+
+.booster-flip-all-cards-icon {
+  width: 1rem;
+  height: 1rem;
+  display: inline-block;
+  margin-right: 0.5rem;
+}
+
+.booster-flip-all-cards-icon > svg {
+  rotate: 60deg;
+}
+
+.booster-search-overlay {
+  position: absolute;
+  transform: translate(0, -100%);
+  display: none;
+  width: 12vw;
+  aspect-ratio: 230 / 336;
+}
+
+.booster-bookmark-overlay {
+  position: absolute;
+  transform: translate(-50%, 50%);
+  display: none;
+  top: 0;
+  right: 0;
+  z-index: 1;
+}
+
+.booster-card:hover {
+  opacity: 0.5;
+}
+.booster-card:hover > .booster-bookmark-overlay,
+.booster-card:hover > .booster-search-overlay {
+  display: block;
+}
+
+.booster-search-overlay > div {
+  display: flex;
+  height: 100%;
+  justify-content: center;
+}
+
+.booster-bookmark {
+  margin-top: 0.5rem;
+  margin-right: 0.5rem;
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+.booster-bookmark > svg:hover {
+  fill: #ff000066;
+  stroke: #ff000088;
+}
+
+.booster-bookmark-overlay.selected {
+  display: block;
+}
+
+.booster-bookmark-overlay.selected > .booster-bookmark > svg {
+  fill: #660000;
+  stroke: #880000;
+}
+
+.booster-search > svg {
+  width: 8vw;
+}
+
+.booster-search {
+  margin: auto;
+}

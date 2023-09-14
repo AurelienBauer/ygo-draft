@@ -53,4 +53,21 @@ export default class Deck {
   public getCardsUUID(): string[] {
     return this.cards.map((c) => c.uuid as string);
   }
+
+  public getCards(): ICard[] {
+    return this.cards;
+  }
+
+  public setCards(cards: ICard[]) {
+    this.cards = cards;
+  }
+
+  public retrieveCard(uuid: string): ICard {
+    const card = this.cards.find((c: ICard) => c.uuid === uuid);
+    if (!card) {
+      throw new Error("Card not found.");
+    }
+    this.cards = this.cards.filter((c: ICard) => c.uuid !== uuid);
+    return card;
+  }
 }

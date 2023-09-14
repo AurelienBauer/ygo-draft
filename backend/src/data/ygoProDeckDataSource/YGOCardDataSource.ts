@@ -1,8 +1,16 @@
+import { removeDuplicationFromArray } from "../../service";
 import { CardDataSource, ICard } from "../interfaces";
 import { YGOCardImages, YGOCardResponseBody, YGORequestResponse } from "./type";
 
 export default class YGOCardDataSource implements CardDataSource {
   private CARDS_URL = "https://db.ygoprodeck.com/api/v7/cardinfo.php";
+
+  // eslint-disable-next-line max-len
+  private static findAlternativeIds = (originId: number, images: YGOCardImages[]) :number[] => removeDuplicationFromArray<number>(
+    images
+      .filter((i) => i.id !== originId)
+      .map((i) => i.id),
+  );
 
   public static formatReturnedCard(cards: YGOCardResponseBody[]) {
     return cards.map((card) => ({
@@ -25,6 +33,7 @@ export default class YGOCardDataSource implements CardDataSource {
       def: card.def,
       race: card.race,
       archetype: card.archetype,
+      altIds: YGOCardDataSource.findAlternativeIds(card.id, card.card_images),
     }));
   }
 

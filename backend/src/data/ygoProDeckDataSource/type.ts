@@ -6,6 +6,7 @@ export interface YGORequestResponse {
 }
 
 export interface YGOCardImages {
+  id: number
   image_url: string;
   image_url_small: string;
 }
@@ -14,7 +15,7 @@ export interface YGOCardResponseBody {
   id: number;
   name: string;
   desc: string;
-  card_images?: YGOCardImages[];
+  card_images: YGOCardImages[];
   type?: string;
   attribute?: string;
   level?: number;

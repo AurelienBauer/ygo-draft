@@ -21,6 +21,8 @@ export interface ICard {
   def?: number;
   race?: string;
   archetype?: string;
+  altIds?: number[];
+  bookmarked?: boolean;
 }
 
 export interface ICube {

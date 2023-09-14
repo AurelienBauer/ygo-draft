@@ -87,4 +87,18 @@ export interface BoosterOpened {
   cards: CardFromPack[];
 }
 
+export interface CardFromPackOpening extends CardFromPack {
+  show: boolean;
+  bookMarked: boolean
+}
+
 export type Langs = "fr" | "en";
+
+export interface IBuildingDeck {
+  deck: ICard[],
+  extraDeck: ICard[],
+  stock: ICard[],
+  bookmarked: ICard[],
+}
+
+export type DeckBuilderLoc = "stock" | "deck" | "extraDeck" | "bookmarked";

@@ -3,7 +3,7 @@ import { ICard } from "../types";
 
 interface Props {
   card: ICard | null;
-  size?: "small" | "large";
+  size?: "micro" | "small" | "large";
 }
 
 function Card(props: Props) {
@@ -13,6 +13,10 @@ function Card(props: Props) {
   let imgSrc: "image_small_url" | "image_url" = "image_small_url";
   if (size) {
     switch (size) {
+      case "micro":
+        widthSize = "3vw";
+        imgSrc = "image_small_url";
+        break;
       case "large":
         widthSize = "12vw";
         imgSrc = "image_url";

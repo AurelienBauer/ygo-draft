@@ -21,6 +21,12 @@ export default class Booster {
         const enCards = await this.ds.card.getByCardset(encodedAlias);
         const frCards = await this.ds.card.getByCardset(encodedAlias, "fr");
 
+        if (enCards.length !== frCards.length) {
+          throw new Error(
+            "Length of decks for difference languages do not matches",
+          );
+        }
+
         const packOpenerLink = pack.pack_opener_link
             ?? `https://ygoprodeck.com/api/pack-sim/pack-open.php?format=${encodedAlias}&settype=${pack.code}`;
         if (!await verifyEndpoint(packOpenerLink)) {

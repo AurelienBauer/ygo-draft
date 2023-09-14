@@ -1,19 +1,30 @@
 import React, { useState } from "react";
 import Card from "./Card.component";
-import { CardFromPack } from "../types";
+import { CardFromPackOpening, ICard } from "../types";
 import Icon from "../frontendComponent/Icon.components";
 
 interface Props {
-  card: CardFromPack,
+  card: CardFromPackOpening,
+  show: boolean,
+  handleOpenCardDetail: (c: ICard) => void,
+  handleBookmarkACard: (cardUUID: string) => void,
 }
 
 function BoosterCard(props: Props) {
-  const { card } = props;
+  const {
+    card, show, handleOpenCardDetail, handleBookmarkACard,
+  } = props;
 
-  const [show, setShow] = useState<boolean>(false);
+  const [isBookMarked, setIsBookMarked] = useState(false);
 
-  const handleShowCard = () => {
-    setShow(true);
+  const myHandleBookMark = () => {
+    setIsBookMarked(!isBookMarked);
+    handleBookmarkACard(card.uuid);
+  };
+
+  const myHandleOpenCardDetail = () => {
+    console.dir("click");
+    handleOpenCardDetail(card);
   };
 
   let rarityClass = "";
@@ -37,18 +48,37 @@ function BoosterCard(props: Props) {
   }
 
   return (show ? (
-    <div className="shine">
+    <div className="shine booster-card">
       <Card card={card} size="large" />
       <div className="rarity-overlay">
-        {/* <Icon icon="search" /> */}
         <div className={`${rarityClass}`} />
+      </div>
+      <div className={`booster-bookmark-overlay ${isBookMarked ? "selected" : ""}`}>
+        <div
+          className="booster-bookmark"
+          onClick={myHandleBookMark}
+          onKeyDown={myHandleBookMark}
+          role="button"
+          tabIndex={0}
+        >
+          <Icon icon="bookmark" />
+        </div>
+      </div>
+      <div className="booster-search-overlay">
+        <div
+          className="booster-search"
+          onClick={myHandleOpenCardDetail}
+          onKeyDown={myHandleOpenCardDetail}
+          role="button"
+          tabIndex={0}
+        >
+          <Icon icon="search" />
+        </div>
       </div>
     </div>
   )
     : (
-      <div onClick={handleShowCard} onKeyDown={handleShowCard} role="button" tabIndex={0}>
-        <Card card={null} size="large" />
-      </div>
+      <Card card={null} size="large" />
     ));
 }
 

@@ -210,6 +210,24 @@ export default class SocketHandler {
               this.boosterGameEventsHandler,
             ),
           },
+          {
+            event: "booster:movecard",
+            handler: this.boosterGameEventsHandler.moveCard.bind(
+              this.boosterGameEventsHandler,
+            ),
+          },
+          {
+            event: "booster:startbuilding",
+            handler: this.boosterGameEventsHandler.startDeckBuilding.bind(
+              this.boosterGameEventsHandler,
+            ),
+          },
+          {
+            event: "booster:buildingcurrentstate",
+            handler: this.boosterGameEventsHandler.deckBuildingCurrentState.bind(
+              this.boosterGameEventsHandler,
+            ),
+          },
         ];
 
         eventListeners.forEach(({ event, handler }) => socket.on(

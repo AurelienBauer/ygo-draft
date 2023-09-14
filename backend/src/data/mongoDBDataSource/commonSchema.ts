@@ -16,4 +16,8 @@ export const cardSchema = new mongoose.Schema({
   def: Number,
   race: String,
   archetype: String,
+  altIds: [{
+    type: Number,
+    required: false,
+  }],
 });

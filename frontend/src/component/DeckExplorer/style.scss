@@ -5,15 +5,14 @@
   min-height: 30rem;
 }
 
-.deck-explorer > .cards-list {
+.cards-list {
   display: block;
   column-gap: 85px;
-  width: 59%;
   overflow-y: scroll;
   overflow-x: hidden;
 }
 
-.deck-explorer > .cards-list > div {
+.cards-list > div {
   float: left;
 }
 
@@ -37,7 +36,6 @@
 
 .side-info-attribute > div {
   text-overflow: ellipsis;
-  white-space: nowrap;
   overflow: hidden;
 }
 
