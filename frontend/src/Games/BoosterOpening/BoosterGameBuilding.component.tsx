@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react";
+import { Store } from "react-notifications-component";
+import { useTranslation } from "react-i18next";
 import BoosterGameService from "./service/BoosterGameService";
 import { DeckBuilderLoc, ICard } from "../../types";
 import DeckBuilder from "../../component/DeckBuilder/DeckBuilder.component";
@@ -10,6 +12,8 @@ interface Props {
 
 function BoosterGameBuilding(props: Props) {
   const { bgservice } = props;
+
+  const { t } = useTranslation();
 
   const [deck, setDeck] = useState<ICard[]>([]);
   const [extraDeck, setExtraDeck] = useState<ICard[]>([]);
@@ -52,6 +56,20 @@ function BoosterGameBuilding(props: Props) {
           default:
             break;
         }
+      }).catch(() => {
+        Store.addNotification({
+          title: "Card Limit",
+          message: t("The maximum number for this card has been reached."),
+          type: "info",
+          insert: "bottom",
+          container: "bottom-right",
+          animationIn: ["animate__animated", "animate__fadeIn"],
+          animationOut: ["animate__animated", "animate__fadeOut"],
+          dismiss: {
+            duration: 5000,
+            onScreen: true,
+          },
+        });
       });
     }
   };

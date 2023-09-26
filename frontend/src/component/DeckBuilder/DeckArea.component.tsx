@@ -4,11 +4,11 @@ import React, {
 } from "react";
 
 import { useDrop } from "react-dnd";
-import { getCardTypeNumber } from "../../service";
+import { filterCards, orderCards } from "../../service";
 import DragableCard from "./DragableCard.component";
-import { DeckBuilderLoc, ICard } from "../../types";
-import { canBeDropIn } from "./service";
+import { DeckBuilderFilter, DeckBuilderLoc, ICard } from "../../types";
 import Icon from "../../frontendComponent/Icon.components";
+import { canBeDropIn } from "../../Games/BoosterOpening/service";
 
 interface DropItem {
   card: ICard;
@@ -20,11 +20,12 @@ interface Props {
   moveCardHandler: (c: ICard, from: DeckBuilderLoc, to: DeckBuilderLoc) => void;
   setInfoCard: Dispatch<SetStateAction<ICard | null>>;
   sectionName: DeckBuilderLoc;
+  searchFilters?: DeckBuilderFilter;
 }
 
 function DeckArea(props: Props) {
   const {
-    deck, moveCardHandler, setInfoCard, sectionName,
+    deck, moveCardHandler, setInfoCard, sectionName, searchFilters,
   } = props;
 
   const [{ canDrop }, drop] = useDrop(
@@ -45,12 +46,7 @@ function DeckArea(props: Props) {
   return (
     <div className={`card-area ${sectionName}`}>
       <div className="cards-list" ref={drop}>
-        {deck
-          .slice(0)
-          .sort(
-            (a, b) => getCardTypeNumber(a._type) - getCardTypeNumber(b._type),
-          )
-          .sort((a, b) => a.level - b.level)
+        {orderCards(filterCards(deck, searchFilters ?? { search: "", level: "", type: "" }))
           .map((card) => (
             <div
               key={card.uuid}
@@ -78,5 +74,9 @@ function DeckArea(props: Props) {
     </div>
   );
 }
+
+DeckArea.defaultProps = {
+  searchFilters: { search: "", level: "", type: "" },
+};
 
 export default DeckArea;

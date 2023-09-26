@@ -205,6 +205,12 @@ export default class SocketHandler {
             ),
           },
           {
+            event: "booster:loadextracards",
+            handler: this.boosterGameEventsHandler.loadExtraCard.bind(
+              this.boosterGameEventsHandler,
+            ),
+          },
+          {
             event: "booster:open",
             handler: this.boosterGameEventsHandler.openNextBooster.bind(
               this.boosterGameEventsHandler,

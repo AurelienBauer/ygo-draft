@@ -44,7 +44,7 @@ export default class YGOCardDataSource implements CardDataSource {
     return images?.[0]?.[key] ? images[0][key] : "";
   }
 
-  public async getByIDs(ids: string[], language?: string): Promise<ICard[]> {
+  public async getByIDs(ids: number[], language?: string): Promise<ICard[]> {
     return fetch(
       `${this.CARDS_URL}?id=${ids.join(",")}${
         language ? `&language=${language}` : ""

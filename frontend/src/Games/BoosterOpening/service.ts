@@ -1,8 +1,11 @@
-import { DeckBuilderLoc, ICard } from "../../types";
+/* eslint-disable no-underscore-dangle */
+import { JSONSchemaType } from "ajv";
+import { DeckBuilderLoc, IBuildingDeckExport, ICard } from "../../types";
 
 function isAnExtraDeckCard(c: ICard) {
-  // eslint-disable-next-line no-underscore-dangle
-  return c._type === "Fusion Monster";
+  return c._type === "Fusion Monster"
+  || c._type === "Ritual Effect Monster"
+  || c._type === "Ritual Monster";
 }
 
 // eslint-disable-next-line import/prefer-default-export
@@ -31,3 +34,37 @@ export function canBeDropIn(
       return false;
   }
 }
+
+const IBuildingDeckJSONSchema: JSONSchemaType<IBuildingDeckExport> = {
+  type: "object",
+  properties: {
+    deck: {
+      type: "array",
+      items: {
+        type: "number",
+      },
+    },
+    extraDeck: {
+      type: "array",
+      items: {
+        type: "number",
+      },
+    },
+    stock: {
+      type: "array",
+      items: {
+        type: "number",
+      },
+    },
+    bookmarked: {
+      type: "array",
+      items: {
+        type: "number",
+      },
+    },
+  },
+  required: ["deck", "extraDeck", "stock", "bookmarked"],
+  additionalProperties: false,
+};
+
+export { IBuildingDeckJSONSchema };

@@ -21,7 +21,7 @@ export interface IPlayer {
 export interface ICard {
   attribute: string;
   description: string;
-  id: string;
+  id: number;
   image_small_url: string;
   image_url: string;
   level: number;
@@ -99,6 +99,24 @@ export interface IBuildingDeck {
   extraDeck: ICard[],
   stock: ICard[],
   bookmarked: ICard[],
+}
+
+export interface IBuildingDeckExport {
+  deck: number[],
+  extraDeck: number[],
+  stock: number[],
+  bookmarked: number[],
+}
+
+export interface IBuildingDeckExportInfo {
+  lang: Langs,
+  export: IBuildingDeckExport,
+}
+
+export interface DeckBuilderFilter {
+  search: string;
+  type: string;
+  level: string;
 }
 
 export type DeckBuilderLoc = "stock" | "deck" | "extraDeck" | "bookmarked";

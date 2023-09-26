@@ -23,7 +23,6 @@ function BoosterCard(props: Props) {
   };
 
   const myHandleOpenCardDetail = () => {
-    console.dir("click");
     handleOpenCardDetail(card);
   };
 
@@ -47,39 +46,43 @@ function BoosterCard(props: Props) {
       console.log(`New rarity "${card.rarity}"`);
   }
 
-  return (show ? (
-    <div className="shine booster-card">
-      <Card card={card} size="large" />
-      <div className="rarity-overlay">
-        <div className={`${rarityClass}`} />
-      </div>
-      <div className={`booster-bookmark-overlay ${isBookMarked ? "selected" : ""}`}>
-        <div
-          className="booster-bookmark"
-          onClick={myHandleBookMark}
-          onKeyDown={myHandleBookMark}
-          role="button"
-          tabIndex={0}
-        >
-          <Icon icon="bookmark" />
+  return (
+    <div className="flip-card">
+      <div className={`flip-card-inner booster-card ${show ? "show" : ""}`}>
+        <div className="flip-card-front shine">
+          <Card card={card} size="large" />
+          <div className="rarity-overlay">
+            <div className={`${rarityClass}`} />
+          </div>
+          <div className={`booster-bookmark-overlay ${isBookMarked ? "selected" : ""}`}>
+            <div
+              className="booster-bookmark"
+              onClick={myHandleBookMark}
+              onKeyDown={myHandleBookMark}
+              role="button"
+              tabIndex={0}
+            >
+              <Icon icon="bookmark" />
+            </div>
+          </div>
+          <div className="booster-search-overlay">
+            <div
+              className="booster-search"
+              onClick={myHandleOpenCardDetail}
+              onKeyDown={myHandleOpenCardDetail}
+              role="button"
+              tabIndex={0}
+            >
+              <Icon icon="search" />
+            </div>
+          </div>
         </div>
-      </div>
-      <div className="booster-search-overlay">
-        <div
-          className="booster-search"
-          onClick={myHandleOpenCardDetail}
-          onKeyDown={myHandleOpenCardDetail}
-          role="button"
-          tabIndex={0}
-        >
-          <Icon icon="search" />
+        <div className="flip-card-back">
+          <Card card={null} size="large" />
         </div>
       </div>
     </div>
-  )
-    : (
-      <Card card={null} size="large" />
-    ));
+  );
 }
 
 export default BoosterCard;

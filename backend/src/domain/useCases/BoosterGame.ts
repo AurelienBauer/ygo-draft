@@ -1,7 +1,6 @@
 import { v4 as uuidv4 } from "uuid";
 import { DataSource, ICard } from "../../data/interfaces";
-import { Langs } from "../../types";
-import Deck from "./Deck";
+import { IBuildingDeckExport, Langs } from "../../types";
 import Game from "./Game";
 import DeckBuilder, { DeckBuilderLoc, IDeckBuilderAllDeck } from "./DeckBuilder";
 
@@ -26,10 +25,6 @@ export default class BoosterGame extends Game {
 
   private openedBoosterIds: string[];
 
-  private deck: Deck;
-
-  private stock: Deck;
-
   private deckBuilder: DeckBuilder;
 
   constructor(datasource: DataSource) {
@@ -37,8 +32,6 @@ export default class BoosterGame extends Game {
     this.ds = datasource;
     this.boosterIDs = [];
     this.openedBoosterIds = [];
-    this.stock = new Deck([]);
-    this.deck = new Deck([]);
     this.deckBuilder = new DeckBuilder();
   }
 
@@ -94,6 +87,29 @@ export default class BoosterGame extends Game {
       cardsLeft: this.boosterIDs.length,
       cards: cardsToReturn,
     };
+  }
+
+  public async deckImport(deck: IBuildingDeckExport, lang: Langs) {
+    const cards = await this.ds.card.getByIDs(
+      [...deck.deck, ...deck.extraDeck, ...deck.bookmarked, ...deck.stock],
+      lang,
+    );
+
+    const storeCards = (cardsID: number[], addToBuilder: (c :ICard) => void) => {
+      cardsID.forEach((bCardID) => {
+        const card = cards.find((c) => c.id === bCardID);
+        if (!card) {
+          throw new Error(`Card with the id: ${bCardID} not found`);
+        }
+        card.uuid = uuidv4();
+        addToBuilder({ ...card });
+      });
+    };
+
+    storeCards(deck.deck, (c) => this.deckBuilder.addToDeck(c));
+    storeCards(deck.extraDeck, (c) => this.deckBuilder.addToExtraDeck(c));
+    storeCards(deck.bookmarked, (c) => this.deckBuilder.addToBooked(c));
+    storeCards(deck.stock, (c) => this.deckBuilder.addToStock(c));
   }
 
   public moveCardByUUID(uuid: string, from: DeckBuilderLoc, to: DeckBuilderLoc) {

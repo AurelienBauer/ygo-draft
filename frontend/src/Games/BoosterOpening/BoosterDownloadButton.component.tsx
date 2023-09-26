@@ -1,11 +1,11 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 import Icon from "../../frontendComponent/Icon.components";
-import { IBuildingDeck } from "../../types";
+import { IBuildingDeckExport } from "../../types";
 import { downloadDraft } from "../../service";
 
 interface Props {
-  draft: IBuildingDeck;
+  draft: IBuildingDeckExport;
   filename: string;
 }
 

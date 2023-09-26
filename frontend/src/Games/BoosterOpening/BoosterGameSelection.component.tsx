@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import BoosterGameRest from "./service/BoosterGameRest";
 import { GameContext, GameContextType } from "../../component/Game/GameContext";
 import BoosterGameSelectionSideModal from "./BoosterGameSelectionSideModal.component";
-import { SelectedBooster } from "../../types";
+import { IBuildingDeckExport, SelectedBooster } from "../../types";
 import BoosterGameService from "./service/BoosterGameService";
 
 interface Props {
@@ -35,7 +35,10 @@ function BoosterGameSelection(props: Props) {
     }
   };
 
-  const handleSelectedBooster = (boostersSelected: SelectedBooster[]) => {
+  const handleSelectedBooster = (
+    boostersSelected: SelectedBooster[],
+    extraCards? :IBuildingDeckExport,
+  ) => {
     const b = boostersSelected
       .filter((bt) => bt.number > 0)
       .map((bt) => ({
@@ -43,9 +46,16 @@ function BoosterGameSelection(props: Props) {
         number: bt.number,
       }));
 
-    bgservice.socket.startOpening(b).then(() => {
-      handleStartOpening();
-    });
+    bgservice.socket.startOpening(b)
+      .then(() => {
+        if (extraCards) {
+          return bgservice.socket.loadExtraCard({ export: extraCards, lang });
+        }
+        return null;
+      })
+      .then(() => {
+        handleStartOpening();
+      });
   };
 
   useEffect(() => {
@@ -69,7 +79,7 @@ function BoosterGameSelection(props: Props) {
           <div key={b.boosterId} className="booster-container">
             <h5>{b.boosterName}</h5>
             <div className="booster-image">
-              <img src={b.imageUrl} alt={b.boosterName} />
+              <img className="unselectable" draggable={false} src={b.imageUrl} alt={b.boosterName} />
             </div>
             <div className="booster-number-input">
               <span>

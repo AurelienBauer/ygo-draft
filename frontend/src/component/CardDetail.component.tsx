@@ -24,6 +24,8 @@ function CardDetail(props: Props) {
         <div className="modal-body">
           <div className="modal-card-pic">
             <img
+              className="unselectable"
+              draggable={false}
               src={card?.image_url ? card.image_url : ""}
               alt={card?.name ? card.name : "no_card"}
             />

@@ -50,7 +50,7 @@
 
 .rarity-overlay {
   position: absolute;
-  top: 4%;
+  top: 0;
   pointer-events: none;
 }
 
@@ -164,12 +164,9 @@
   z-index: 1;
 }
 
-.booster-card:hover {
-  opacity: 0.5;
-}
-.booster-card:hover > .booster-bookmark-overlay,
-.booster-card:hover > .booster-search-overlay {
-  display: block;
+.booster-card {
+  height: 21rem;
+  width: 14rem;
 }
 
 .booster-search-overlay > div {
@@ -179,8 +176,6 @@
 }
 
 .booster-bookmark {
-  margin-top: 0.5rem;
-  margin-right: 0.5rem;
   width: 1.5rem;
   height: 1.5rem;
 }
@@ -205,4 +200,41 @@
 
 .booster-search {
   margin: auto;
+}
+
+
+.flip-card-inner {
+  position: relative;
+  text-align: center;
+  transition: transform 0.6s;
+  transform-style: preserve-3d;
+  // box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+}
+
+.flip-card-inner.show {
+  transform: rotateY(180deg);
+}
+
+.flip-card-front, .flip-card-back {
+  position: absolute;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
+
+.flip-card-front {
+  transform: rotateY(180deg);
+}
+
+.flip-card {
+  background-color: transparent;
+  perspective: 1000px;
+}
+
+.flip-card-front:hover {
+  opacity: 0.5;
+}
+
+.flip-card-front:hover > .booster-bookmark-overlay,
+.flip-card-front:hover > .booster-search-overlay {
+  display: block;
 }

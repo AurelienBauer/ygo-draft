@@ -1,6 +1,6 @@
 import SocketManager from "../../../SocketManager";
 import {
-  BoosterOpened, DeckBuilderLoc, IBuildingDeck, Langs,
+  BoosterOpened, DeckBuilderLoc, IBuildingDeck, IBuildingDeckExportInfo, Langs,
 } from "../../../types";
 
 interface IStartOpening {
@@ -19,6 +19,13 @@ export default class BoosterGameSocket extends SocketManager {
     return this.socketRequest(
       "booster:startopening",
       { boosters },
+    ).then((res) => res.data);
+  }
+
+  public async loadExtraCard(deckExportInfo: IBuildingDeckExportInfo) {
+    return this.socketRequest(
+      "booster:loadextracards",
+      deckExportInfo,
     ).then((res) => res.data);
   }
 

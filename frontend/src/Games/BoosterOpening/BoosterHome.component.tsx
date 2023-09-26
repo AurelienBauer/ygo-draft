@@ -6,7 +6,7 @@ import BoosterGame from "./BoosterGame.component";
 function BoosterHome() {
   return (
     <Wrapper>
-      <Game game="booster">
+      <Game game="booster" skipRoom>
         <BoosterGame />
       </Game>
     </Wrapper>

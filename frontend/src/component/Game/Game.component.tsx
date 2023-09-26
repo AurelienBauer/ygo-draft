@@ -6,10 +6,11 @@ import { Games } from "../../types";
 interface Props {
   children: ReactNode;
   game: Games;
+  skipRoom?: boolean;
 }
 
 function Game(props: Props) {
-  const { children, game } = props;
+  const { children, game, skipRoom } = props;
 
   const { reconnectionParam } = React.useContext(
     GameContext,
@@ -36,10 +37,14 @@ function Game(props: Props) {
       {hasStarted ? (
         children
       ) : (
-        <GameRoomSelection onGameStart={handleGameStart} game={game} />
+        <GameRoomSelection onGameStart={handleGameStart} game={game} skipRoom={!!skipRoom} />
       )}
     </div>
   );
 }
+
+Game.defaultProps = {
+  skipRoom: false,
+};
 
 export default Game;

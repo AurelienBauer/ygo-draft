@@ -1,6 +1,7 @@
 import React, {
   Dispatch, FormEvent, useEffect, useState,
 } from "react";
+import { v4 as uuidv4 } from "uuid";
 import { useCookies } from "react-cookie";
 import { Socket } from "socket.io-client";
 import { useTranslation } from "react-i18next";
@@ -11,11 +12,11 @@ import { GameContext, GameContextType } from "../Game/GameContext";
 import { Games, IPlayer, IRoom } from "../../types";
 
 interface PropsPlayerConnection {
-  setIsconnected: Dispatch<boolean>;
+  handleConnection: (rm: RoomManager) => void;
 }
 
 function PlayerConnection(props: PropsPlayerConnection) {
-  const { setIsconnected } = props;
+  const { handleConnection } = props;
   const { setSocket, setProfile } = React.useContext(
     GameContext,
   ) as GameContextType;
@@ -29,11 +30,11 @@ function PlayerConnection(props: PropsPlayerConnection) {
     const socket = SocketManager.NewSession(playerName);
     const rm = new RoomManager(socket);
     rm.onConnect((s: Socket) => {
-      setIsconnected(true);
       setCookie("socket", s.id, { maxAge: 60 * 60, sameSite: "strict" });
       setSocket(s);
       rm.getMyProfile().then((profile) => {
         setProfile(profile);
+        handleConnection(rm);
       });
     });
   };
@@ -178,12 +179,13 @@ function RoomJoinCreateRoom(props: PropsRoomJoinCreateRoom) {
 interface Props {
   onGameStart: () => void;
   game: Games;
+  skipRoom: boolean;
 }
 
 function RoomSelection(props: Props) {
-  const { onGameStart, game } = props;
+  const { onGameStart, game, skipRoom } = props;
 
-  const { profile, socket } = React.useContext(GameContext) as GameContextType;
+  const { profile, socket, setProfile } = React.useContext(GameContext) as GameContextType;
 
   const [isConnected, setIsconnected] = useState(false);
   const [roomManager, setRoomManager] = useState<RoomManager | null>(null);
@@ -191,6 +193,24 @@ function RoomSelection(props: Props) {
 
   const handleLeftTheRoom = () => {
     setIsInRoom(false);
+  };
+
+  const handleConnection = (rm: RoomManager) => {
+    setIsconnected(true);
+    if (skipRoom && rm) {
+      setRoomManager(rm);
+      rm
+        .createRoom({
+          title: uuidv4(),
+          forGame: game,
+        })
+        .then(() => rm.getMyProfile())
+        .then((p: IPlayer) => {
+          setProfile(p);
+          setIsInRoom(true);
+          return rm.startGame();
+        }).then(() => onGameStart());
+    }
   };
 
   useEffect(() => {
@@ -203,7 +223,7 @@ function RoomSelection(props: Props) {
 
   return (
     <div className="container text-center flex justify-content-center">
-      {!isConnected && <PlayerConnection setIsconnected={setIsconnected} />}
+      {!isConnected && <PlayerConnection handleConnection={handleConnection} />}
       {isConnected && !isInRoom && (
         <RoomJoinCreateRoom
           roomManager={roomManager}

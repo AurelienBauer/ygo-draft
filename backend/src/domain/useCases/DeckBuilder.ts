@@ -26,11 +26,19 @@ export default class DeckBuilder {
     this.bookmarked = new Deck([]);
   }
 
+  private static hasReachNumberLimit(card: ICard, deck: Deck) {
+    const cards = deck.getCards();
+    return cards.filter((c) => card.id === c.id).length >= 3;
+  }
+
   public addToDeck(c: ICard) {
     this.deck.addCard(c);
   }
 
   public addToExtraDeck(c: ICard) {
+    if (DeckBuilder.hasReachNumberLimit(c, this.extraDeck)) {
+      throw new Error("The maximum number for this card has been reached");
+    }
     this.extraDeck.addCard(c);
   }
 
@@ -58,43 +66,32 @@ export default class DeckBuilder {
     return this.bookmarked;
   }
 
-  private getCardByUUIDByLocation(uuid: string, loc: DeckBuilderLoc): ICard {
+  private getDeckByLoc(loc: DeckBuilderLoc): Deck {
     switch (loc) {
       case "deck":
-        return this.deck.retrieveCard(uuid);
+        return this.deck;
       case "extraDeck":
-        return this.extraDeck.retrieveCard(uuid);
+        return this.extraDeck;
       case "stock":
-        return this.stock.retrieveCard(uuid);
+        return this.stock;
       case "bookmarked":
-        return this.bookmarked.retrieveCard(uuid);
+        return this.bookmarked;
       default:
-        throw new Error(`Location "${loc}" not found`);
-    }
-  }
-
-  private addCardToLocation(card: ICard, loc: DeckBuilderLoc) {
-    switch (loc) {
-      case "deck":
-        this.deck.addCard(card);
-        break;
-      case "extraDeck":
-        this.extraDeck.addCard(card);
-        break;
-      case "stock":
-        this.stock.addCard(card);
-        break;
-      case "bookmarked":
-        this.bookmarked.addCard(card);
-        break;
-      default:
-        break;
+        throw new Error("Deck not found");
     }
   }
 
   public moveCardByUUID(uuid: string, from: DeckBuilderLoc, to: DeckBuilderLoc) {
-    const card: ICard = this.getCardByUUIDByLocation(uuid, from);
-    this.addCardToLocation(card, to);
+    const fromDeck = this.getDeckByLoc(from);
+    const toDeck = this.getDeckByLoc(to);
+
+    const card: ICard = fromDeck.retrieveCard(uuid);
+    if ((to === "deck" || to === "extraDeck") && DeckBuilder.hasReachNumberLimit(card, toDeck)) {
+      fromDeck.addCard(card);
+      throw new Error("The maximum number for this card has been reached");
+    }
+
+    toDeck.addCard(card);
   }
 
   public getAllDecks(): IDeckBuilderAllDeck {

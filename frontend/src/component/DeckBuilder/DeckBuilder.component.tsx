@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { DeckBuilderLoc, ICard } from "../../types";
+import { DeckBuilderFilter, DeckBuilderLoc, ICard } from "../../types";
 
 import DeckExplorerSideInfo from "../DeckExplorer/DeckExplorerSideInfo.component";
-import DeckArea from "./DeckArea.component";
 import DownloadDeckButton from "../DownloadDeckButton.component";
 import BoosterDownloadButton from "../../Games/BoosterOpening/BoosterDownloadButton.component";
 import { GameContext, GameContextType } from "../Game/GameContext";
+import DeckBuilderSearchFields from "./DeckBuilderSearchFields.component";
+import DeckArea from "./DeckArea.component";
 
 interface Props {
   deck: ICard[];
@@ -24,6 +25,7 @@ function DeckBuilder(props: Props) {
   const { t } = useTranslation();
 
   const [infoCard, setInfoCard] = useState<ICard | null>(null);
+  const [searchFilters, setSearchFilters] = useState<DeckBuilderFilter>({ search: "", level: "", type: "" });
 
   const { profile } = React.useContext(
     GameContext,
@@ -39,10 +41,10 @@ function DeckBuilder(props: Props) {
           <DownloadDeckButton type="button" deck={[...deck, ...extraDeck]} filename={deckName} />
           <BoosterDownloadButton
             draft={({
-              deck,
-              extraDeck,
-              stock,
-              bookmarked,
+              deck: deck.map((c) => c.id),
+              extraDeck: extraDeck.map((c) => c.id),
+              stock: stock.map((c) => c.id),
+              bookmarked: bookmarked.map((c) => c.id),
             })}
             filename={draftFileName}
           />
@@ -68,18 +70,19 @@ function DeckBuilder(props: Props) {
         <DeckArea deck={extraDeck} moveCardHandler={onMoveCard} setInfoCard={setInfoCard} sectionName="extraDeck" />
       </div>
       <div className="deck-explorer">
+        <DeckBuilderSearchFields setSearchFilter={setSearchFilters} />
         <h5>
           {t("Bookmarked")}
           {" "}
           {bookmarked.length}
         </h5>
-        <DeckArea deck={bookmarked} moveCardHandler={onMoveCard} setInfoCard={setInfoCard} sectionName="bookmarked" />
+        <DeckArea deck={bookmarked} moveCardHandler={onMoveCard} setInfoCard={setInfoCard} sectionName="bookmarked" searchFilters={searchFilters} />
         <h5>
           {t("Stock")}
           {" "}
           {stock.length}
         </h5>
-        <DeckArea deck={stock} moveCardHandler={onMoveCard} setInfoCard={setInfoCard} sectionName="stock" />
+        <DeckArea deck={stock} moveCardHandler={onMoveCard} setInfoCard={setInfoCard} sectionName="stock" searchFilters={searchFilters} />
       </div>
     </div>
   );

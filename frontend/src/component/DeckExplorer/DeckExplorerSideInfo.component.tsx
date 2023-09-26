@@ -18,17 +18,17 @@ function DeckExplorerSideInfo(props: Props) {
         <div className="side-info-attribute">
           <div className="mt-2">{selectedCard?.name}</div>
           {/* eslint-disable-next-line no-underscore-dangle */}
-          <div className="mt-2 mb-4">{selectedCard?._type}</div>
+          <div className="mt-2 mb-4">{t(selectedCard?._type ?? "")}</div>
           {selectedCard?.race && (
             <div>
               <span>{t("Race")}</span>
-              <div>{selectedCard?.race}</div>
+              <div>{t(selectedCard?.race)}</div>
             </div>
           )}
           {selectedCard?.attribute && (
             <div>
               <span>{t("Attribut")}</span>
-              <div>{selectedCard?.attribute}</div>
+              <div>{t(selectedCard?.attribute)}</div>
             </div>
           )}
           {selectedCard?.level && (

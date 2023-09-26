@@ -4,6 +4,7 @@ import { Callback, ILangs } from "./event";
 import { DataSource } from "../data/interfaces";
 import BoosterGame, { BoosterOpened } from "../domain/useCases/BoosterGame";
 import { DeckBuilderLoc, IDeckBuilderAllDeck } from "../domain/useCases/DeckBuilder";
+import { IBuildingDeckExportInfo } from "../types";
 
 interface IStartOpening {
   boosterId: string;
@@ -60,6 +61,16 @@ export default class BoosterGameEventsHandler {
       .catch((err) => {
         callback({ error: err, errorDetails: err.toString() });
       });
+  }
+
+  public loadExtraCard(
+    socket: Socket,
+    playback: IBuildingDeckExportInfo,
+    callback: Callback<string>,
+  ) {
+    const game = BoosterGameEventsHandler.getGame(socket);
+
+    game.deckImport(playback.export, playback.lang).then(() => callback({ data: "Deck imported" }));
   }
 
   public moveCard(

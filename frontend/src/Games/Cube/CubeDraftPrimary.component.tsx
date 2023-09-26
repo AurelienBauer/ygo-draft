@@ -102,7 +102,8 @@ function CubeDraftPrimary(props: Props) {
           >
             <div onClick={() => handleCardPicked(card)} onKeyDown={() => handleCardPicked(card)} role="button" tabIndex={0}>
               <img
-                className="pick-picture"
+                draggable={false}
+                className="pick-picture unselectable"
                 src={card.image_url}
                 alt={card.name}
               />

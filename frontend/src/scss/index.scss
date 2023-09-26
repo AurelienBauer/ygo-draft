@@ -454,3 +454,17 @@ span {
 .header-bar-right {
   float: right;
 }
+
+.error-span {
+  color: red;
+}
+
+.success-span {
+  color: #23DC3D;
+}
+
+.unselectable {
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  user-select: none;
+}

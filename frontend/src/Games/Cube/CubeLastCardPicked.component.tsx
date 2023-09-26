@@ -92,7 +92,7 @@ function CubeLastCardPicked(props: Props) {
               role="button"
               tabIndex={0}
             >
-              <img src={card.image_small_url} alt={card.name} />
+              <img className="unselectable" draggable={false} src={card.image_small_url} alt={card.name} />
               <div className="last-card-picked-svg-overlay ">
                 <Icon icon="search" />
               </div>

@@ -3,7 +3,7 @@ import { DataSource, ICube, IDBCube } from "../../data/interfaces";
 
 interface NewCube {
   name: string;
-  data: string[];
+  data: number[];
   author: string;
   description: string;
 }
@@ -26,7 +26,7 @@ export default class Cubes {
     created: cube.created,
   }));
 
-  private retrieveCardsInfo = (cardsID: string[], language?: string) => this.ds.card
+  private retrieveCardsInfo = (cardsID: number[], language?: string) => this.ds.card
     .getByIDs(cardsID, language)
     .then((cards) => cards.sort((a, b) => a.id - b.id));
 

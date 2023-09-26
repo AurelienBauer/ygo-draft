@@ -51,7 +51,7 @@ export interface CubeDataSource {
 }
 
 export interface CardDataSource {
-  getByIDs(ids: string[], language?: string): Promise<ICard[]>;
+  getByIDs(ids: number[], language?: string): Promise<ICard[]>;
   getByCardset(cardset: string, language?: string): Promise<ICard[]>;
 }
 

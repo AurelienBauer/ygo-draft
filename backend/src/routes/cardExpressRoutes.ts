@@ -8,7 +8,7 @@ export default function CardRoutes(ds: DataSource) {
 
   routes.get("/:id", async (req: Request, res: Response) => {
     try {
-      return res.send(await card.getByID(req.params.id));
+      return res.send(await card.getByID(+req.params.id)); // cast to int
     } catch (err) {
       return res.status(500).send({ message: "Error fetching data" });
     }

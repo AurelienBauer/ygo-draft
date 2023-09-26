@@ -8,3 +8,15 @@ export interface IDeck {
   cards: ICard[]
   length: number;
 }
+
+export interface IBuildingDeckExport {
+  deck: number[],
+  extraDeck: number[],
+  stock: number[],
+  bookmarked: number[],
+}
+
+export interface IBuildingDeckExportInfo {
+  lang: Langs,
+  export: IBuildingDeckExport,
+}
