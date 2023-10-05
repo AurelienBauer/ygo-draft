@@ -30,7 +30,7 @@ function Card(props: Props) {
     <img
       className="unselectable"
       draggable="false"
-      style={{ width: widthSize }}
+      style={{ width: widthSize, maxWidth: "14rem" }}
       src={card[imgSrc]}
       alt={card.name}
     />
@@ -38,7 +38,7 @@ function Card(props: Props) {
     <img
       className="unselectable"
       draggable="false"
-      style={{ width: widthSize }}
+      style={{ width: widthSize, maxWidth: "14rem" }}
       src="https://images.ygoprodeck.com/images/cards/100421010.jpg"
       alt=""
     />

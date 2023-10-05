@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import Card from "./Card.component";
-import { CardFromPackOpening, ICard } from "../types";
-import Icon from "../frontendComponent/Icon.components";
+import Card from "../../component/Card.component";
+import { CardFromPackOpening, ICard } from "../../types";
+import Icon from "../../frontendComponent/Icon.components";
 
 interface Props {
   card: CardFromPackOpening,

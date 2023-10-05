@@ -4,7 +4,7 @@ import CardDetail from "../../component/CardDetail.component";
 import BoosterGameService from "./service/BoosterGameService";
 import { BoosterOpened, CardFromPackOpening, ICard } from "../../types";
 import { GameContext, GameContextType } from "../../component/Game/GameContext";
-import BoosterCard from "../../component/BoosterCard.component";
+import BoosterCard from "./BoosterCard.component";
 import Icon from "../../frontendComponent/Icon.components";
 
 interface Props {

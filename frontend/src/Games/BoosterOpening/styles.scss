@@ -59,6 +59,7 @@
   overflow: hidden;
   color: #ffffff;
   width: 12vw;
+  max-width: 14rem;
   aspect-ratio: 230 / 336;
 }
 
@@ -208,7 +209,8 @@
   text-align: center;
   transition: transform 0.6s;
   transform-style: preserve-3d;
-  // box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+  -webkit-transform-style: preserve-3d;
+  -moz-transform-style: preserve-3d;
 }
 
 .flip-card-inner.show {
@@ -218,7 +220,9 @@
 .flip-card-front, .flip-card-back {
   position: absolute;
   -webkit-backface-visibility: hidden;
+  -moz-backface-visibility: hidden;
   backface-visibility: hidden;
+  transform: rotateX(0deg);
 }
 
 .flip-card-front {
