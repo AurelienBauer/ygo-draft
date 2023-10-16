@@ -1,5 +1,3 @@
-import { func } from "joi";
-
 export async function verifyEndpoint(endpoint: string): Promise<boolean> {
   try {
     const response = await fetch(endpoint);
@@ -26,3 +24,10 @@ export function tc <T>(tryFunc: () => T, catchFunc: (e: Error) => T) {
 export function removeDuplicationFromArray<T>(array: T[]) {
   return array.filter((value, index, self) => self.indexOf(value) === index);
 }
+
+// export function groupBy<T>(xs: T[], key: string) {
+//   return xs.reduce((rv: { [key: string]: T[] }, x: T) => {
+//     (rv[x[key]] = rv[x[key]] || []).push(x);
+//     return rv;
+//   }, {});
+// }

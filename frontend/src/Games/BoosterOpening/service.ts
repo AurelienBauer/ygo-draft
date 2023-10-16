@@ -1,6 +1,8 @@
 /* eslint-disable no-underscore-dangle */
 import { JSONSchemaType } from "ajv";
-import { DeckBuilderLoc, IBuildingDeckExport, ICard } from "../../types";
+import {
+  DeckBuilderLoc, IBooster, IBuildingDeckExport, ICard, SelectedBooster,
+} from "../../types";
 
 function isAnExtraDeckCard(c: ICard) {
   return c._type === "Fusion Monster"
@@ -35,7 +37,46 @@ export function canBeDropIn(
   }
 }
 
-const IBuildingDeckJSONSchema: JSONSchemaType<IBuildingDeckExport> = {
+export function sortAndMapBoostersSelection(boosters: IBooster[], lang = "en") {
+  return boosters
+    .sort((a, b) => new Date(a.release_date).getTime() - new Date(b.release_date).getTime())
+    .map((b) => ({
+      boosterId: b.id,
+      boosterName: (lang === "fr" && b.name_fr) ? b.name_fr : b.name,
+      imageUrl: b.image_url,
+      number: 0,
+    }));
+}
+
+export function sortAndMapBoostersOpeningList(boosters: IBooster[], lang = "en") {
+  return boosters
+    .map((b) => ({
+      boosterId: b.id,
+      boosterName: (lang === "fr" && b.name_fr) ? b.name_fr : b.name,
+      imageUrl: b.image_url,
+      number: 1,
+    })).reduce((result: (SelectedBooster[]), entry: SelectedBooster) => {
+      const incrementNumberForIndex = (arr: SelectedBooster[], index: number) => arr
+        .map((item, i) => {
+          if (i === index) {
+            return {
+              ...item,
+              number: item.number + 1,
+            };
+          }
+          return item;
+        });
+
+      const index = result.findIndex((e: SelectedBooster) => e.boosterName === entry.boosterName);
+      if (index >= 0) {
+        return incrementNumberForIndex(result, index);
+      }
+      result.push(entry);
+      return result;
+    }, []).reverse();
+}
+
+export const IBuildingDeckJSONSchema: JSONSchemaType<IBuildingDeckExport> = {
   type: "object",
   properties: {
     deck: {
@@ -66,5 +107,3 @@ const IBuildingDeckJSONSchema: JSONSchemaType<IBuildingDeckExport> = {
   required: ["deck", "extraDeck", "stock", "bookmarked"],
   additionalProperties: false,
 };
-
-export { IBuildingDeckJSONSchema };

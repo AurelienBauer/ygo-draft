@@ -5,8 +5,9 @@ import { useTranslation } from "react-i18next";
 import BoosterGameRest from "./service/BoosterGameRest";
 import { GameContext, GameContextType } from "../../component/Game/GameContext";
 import BoosterGameSelectionSideModal from "./BoosterGameSelectionSideModal.component";
-import { IBuildingDeckExport, SelectedBooster } from "../../types";
+import { IBooster, IBuildingDeckExport, SelectedBooster } from "../../types";
 import BoosterGameService from "./service/BoosterGameService";
+import { sortAndMapBoostersSelection } from "./service";
 
 interface Props {
   bgservice: BoosterGameService;
@@ -59,15 +60,8 @@ function BoosterGameSelection(props: Props) {
   };
 
   useEffect(() => {
-    BoosterGameRest.getBoosters().then((res) => {
-      setBoosters(res
-        .sort((a, b) => new Date(a.release_date).getTime() - new Date(b.release_date).getTime())
-        .map((b) => ({
-          boosterId: b.id,
-          boosterName: (lang === "fr" && b.name_fr) ? b.name_fr : b.name,
-          imageUrl: b.image_url,
-          number: 0,
-        })));
+    BoosterGameRest.getBoosters().then((res: IBooster[]) => {
+      setBoosters(sortAndMapBoostersSelection(res, lang));
     });
   }, []);
 

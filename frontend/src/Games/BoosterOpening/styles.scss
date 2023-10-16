@@ -167,7 +167,8 @@
 
 .booster-card {
   height: 21rem;
-  width: 14rem;
+  width: 12vw;
+  max-width: 14rem;
 }
 
 .booster-search-overlay > div {
@@ -241,4 +242,8 @@
 .flip-card-front:hover > .booster-bookmark-overlay,
 .flip-card-front:hover > .booster-search-overlay {
   display: block;
+}
+
+.booster-left-image > img {
+  width: 2rem;
 }

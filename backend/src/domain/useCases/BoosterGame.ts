@@ -1,5 +1,7 @@
 import { v4 as uuidv4 } from "uuid";
-import { DataSource, ICard } from "../../data/interfaces";
+import {
+  DataSource, IBooster, ICard, IDBBooster,
+} from "../../data/interfaces";
 import { IBuildingDeckExport, Langs } from "../../types";
 import Game from "./Game";
 import DeckBuilder, { DeckBuilderLoc, IDeckBuilderAllDeck } from "./DeckBuilder";
@@ -16,27 +18,30 @@ export interface BoosterOpened {
   cardsLeft: number;
   image_url: string;
   cards: CardFromPack[];
+  boosterLeft: IBooster[];
 }
 
 export default class BoosterGame extends Game {
   private ds: DataSource;
 
-  private boosterIDs: string[];
+  private boosters: IDBBooster[];
 
-  private openedBoosterIds: string[];
+  private openedBoosters: IDBBooster[];
 
   private deckBuilder: DeckBuilder;
 
   constructor(datasource: DataSource) {
     super("booster");
     this.ds = datasource;
-    this.boosterIDs = [];
-    this.openedBoosterIds = [];
+    this.boosters = [];
+    this.openedBoosters = [];
     this.deckBuilder = new DeckBuilder();
   }
 
-  public setBoosterIDs(ids: string[]) {
-    this.boosterIDs = ids;
+  public async setBoosterByIDs(ids: string[]) {
+    this.boosters = await Promise.all(
+      ids.map((id) => this.ds.booster.getByID(id)),
+    );
   }
 
   public startOpening() {
@@ -48,18 +53,17 @@ export default class BoosterGame extends Game {
   }
 
   public async open(lang: Langs): Promise<BoosterOpened> {
-    if (this.boosterIDs.length === 0) {
+    if (this.boosters.length === 0) {
       throw new Error("There is no boosters left");
     }
-    const id = this.boosterIDs.pop();
-    if (!id) {
+    const booster = this.boosters.pop();
+    if (!booster) {
       throw new Error("Booster not found");
     }
-    const booster = await this.ds.booster.getByID(id);
     const cardsFromPack = await this.ds.pack.openPack(booster.pack_opener_link);
     const cards = lang === "fr" ? booster.frcards : booster.encards;
 
-    this.openedBoosterIds.push(id);
+    this.openedBoosters.push(booster);
     const cardsToReturn = cardsFromPack.map((cfp) => {
       let card = cards.find((c) => c.id === cfp.id);
       if (!card) {
@@ -84,8 +88,18 @@ export default class BoosterGame extends Game {
       id: booster._id ?? "",
       name: lang === "fr" && booster.name_fr ? booster.name_fr : booster.name,
       image_url: booster.image_url,
-      cardsLeft: this.boosterIDs.length,
+      cardsLeft: this.boosters.length,
       cards: cardsToReturn,
+      boosterLeft: this.boosters.map((b) => ({
+        id: uuidv4(),
+        name: b.name,
+        name_fr: b.name_fr,
+        alias: b.alias,
+        image_url: b.image_url,
+        pack_opener_link: b.pack_opener_link,
+        region: b.region,
+        release_date: b.release_date,
+      })),
     };
   }
 

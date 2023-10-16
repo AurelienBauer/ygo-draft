@@ -41,9 +41,10 @@ export default class BoosterGameEventsHandler {
     const boosterIDs: string[] = playback.boosters.flatMap(
       (booster) => Array(booster.number).fill(booster.boosterId),
     );
-    game.setBoosterIDs(boosterIDs);
-    game.startOpening();
-    callback({ data: "start_opening" });
+    game.setBoosterByIDs(boosterIDs).then(() => {
+      game.startOpening();
+      callback({ data: "start_opening" });
+    });
   }
 
   public openNextBooster(

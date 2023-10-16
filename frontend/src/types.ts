@@ -85,6 +85,7 @@ export interface BoosterOpened {
   cardsLeft: number;
   image_url: string;
   cards: CardFromPack[];
+  boosterLeft: IBooster[];
 }
 
 export interface CardFromPackOpening extends CardFromPack {

@@ -6,6 +6,7 @@ import { BoosterOpened, CardFromPackOpening, ICard } from "../../types";
 import { GameContext, GameContextType } from "../../component/Game/GameContext";
 import BoosterCard from "./BoosterCard.component";
 import Icon from "../../frontendComponent/Icon.components";
+import BoosterGameOpeningSideModal from "./BoosterGameOpeningSideModal.component";
 
 interface Props {
   bgservice: BoosterGameService;
@@ -124,6 +125,7 @@ function BoosterGameOpening(props: Props) {
         </div>
         )}
       <CardDetail open={openModal} card={detailCard} closeModal={handleCloseDetailModal} />
+      {boosterInfo && <BoosterGameOpeningSideModal booster={boosterInfo} />}
     </div>
   );
 }
