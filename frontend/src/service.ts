@@ -1,6 +1,8 @@
 import Ajv, { JSONSchemaType } from "ajv";
 import { saveAs } from "file-saver";
-import { DeckBuilderFilter, IBuildingDeckExport, ICard } from "./types";
+import {
+  DeckBuilderFilter, IBuildingDeckExport, ICard, ICardGroup,
+} from "./types";
 
 const download = (filename: string, text: string) => {
   const file = new Blob([text], { type: "text/plain;charset=utf-8" });
@@ -77,7 +79,34 @@ const cardTypes = [
   },
 ];
 
+const cardAttributes = [
+  {
+    name: "EARTH",
+  },
+  {
+    name: "DARK",
+  },
+  {
+    name: "FIRE",
+  },
+  {
+    name: "WATER",
+  },
+  {
+    name: "WIND",
+  },
+  {
+    name: "LIGHT",
+  },
+];
+
 const cardLevels = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "?"];
+
+const cardRaces = [
+  "Pyro", "Beast", "Zombie", "Dinosaur", "Aqua", "Warrior", "Machine",
+  "Plant", "Fish", "Insect", "Fairy", "Thunder", "Fiend", "Dragon", "Reptile",
+  "Spellcaster", "Winged Beast", "Beast-Warrior", "Sea Serpent",
+];
 
 const getCardTypeNumber = (typeName: string): number => {
   const type = typeSort.find((t) => t.name === typeName);
@@ -90,6 +119,8 @@ const getCardTypeNumber = (typeName: string): number => {
 const filterCards = (deck: ICard[], filters: DeckBuilderFilter): ICard[] => deck
   // eslint-disable-next-line no-underscore-dangle
   .filter((c) => filters.type === "" || c._type === filters.type)
+  .filter((c) => filters.race === "" || c.race === filters.race)
+  .filter((c) => filters.attribute === "" || c.attribute === filters.attribute)
   .filter((c) => filters.level === "" || (c.level && c.level.toString() === filters.level))
   .filter((c) => filters.search === "" || c.name.toLowerCase().indexOf(filters.search.toLowerCase()) >= 0);
 
@@ -108,6 +139,31 @@ const orderCards = (deck: ICard[]): ICard[] => deck.slice(0)
     (a, b) => getCardTypeNumber(a._type) - getCardTypeNumber(b._type),
   )
   .sort((a, b) => a.level - b.level);
+
+const groupCards = (deck: ICard[]): ICardGroup[] => deck.reduce((result, entry) => {
+  const incrementNumberForIndex = (arr: ICardGroup[], index: number) => arr
+    .map((item, i) => {
+      if (i === index) {
+        return {
+          ...item,
+          number: item.number + 1,
+        };
+      }
+      return item;
+    });
+
+  const index = result.findIndex((e: ICardGroup) => e.id === entry.id);
+  if (index >= 0) {
+    return incrementNumberForIndex(result, index);
+  }
+
+  const testObj = {
+    ...entry,
+    number: 1,
+  };
+  // result.push(testObj);
+  return [...result, testObj];
+}, []);
 
 export function uploadFile(file: File): Promise<string> {
   return new Promise((resolve, reject) => {
@@ -146,6 +202,9 @@ export {
   downloadDraft,
   cardTypes,
   cardLevels,
+  cardAttributes,
+  cardRaces,
   orderCards,
   filterCards,
+  groupCards,
 };

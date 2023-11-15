@@ -25,9 +25,11 @@ function DeckBuilder(props: Props) {
   const { t } = useTranslation();
 
   const [infoCard, setInfoCard] = useState<ICard | null>(null);
-  const [searchFilters, setSearchFilters] = useState<DeckBuilderFilter>({ search: "", level: "", type: "" });
+  const [searchFilters, setSearchFilters] = useState<DeckBuilderFilter>({
+    search: "", level: "", type: "", race: "", attribute: "",
+  });
 
-  const { profile } = React.useContext(
+  const { profile, lang } = React.useContext(
     GameContext,
   ) as GameContextType;
 
@@ -41,10 +43,13 @@ function DeckBuilder(props: Props) {
           <DownloadDeckButton type="button" deck={[...deck, ...extraDeck]} filename={deckName} />
           <BoosterDownloadButton
             draft={({
-              deck: deck.map((c) => c.id),
-              extraDeck: extraDeck.map((c) => c.id),
-              stock: stock.map((c) => c.id),
-              bookmarked: bookmarked.map((c) => c.id),
+              lang,
+              cards: {
+                deck: deck.map((c) => c.id),
+                extraDeck: extraDeck.map((c) => c.id),
+                stock: stock.map((c) => c.id),
+                bookmarked: bookmarked.map((c) => c.id),
+              },
             })}
             filename={draftFileName}
           />

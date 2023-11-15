@@ -16,7 +16,7 @@ ErrorBoundaryState
 > {
   private static LogErrorToMyService(
     error: Error,
-    componentStack: string | null,
+    componentStack: string | null | undefined,
   ): void {
     // eslint-disable-next-line no-console
     console.error("Error occurred:", error);

@@ -103,10 +103,13 @@ export interface IBuildingDeck {
 }
 
 export interface IBuildingDeckExport {
-  deck: number[],
-  extraDeck: number[],
-  stock: number[],
-  bookmarked: number[],
+  cards: {
+    deck: number[],
+    extraDeck: number[],
+    stock: number[],
+    bookmarked: number[],
+  },
+  lang: Langs,
 }
 
 export interface IBuildingDeckExportInfo {
@@ -118,6 +121,12 @@ export interface DeckBuilderFilter {
   search: string;
   type: string;
   level: string;
+  race: string;
+  attribute: string;
+}
+
+export interface ICardGroup extends ICard {
+  number: number;
 }
 
 export type DeckBuilderLoc = "stock" | "deck" | "extraDeck" | "bookmarked";

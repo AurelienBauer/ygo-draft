@@ -5,6 +5,8 @@ import { IBuildingDeckExport, SelectedBooster } from "../../types";
 import UploadFile from "../../frontendComponent/UploadFile/UploadFile.component";
 import { uploadFile, validateJSONWithJSONSchema } from "../../service";
 import { IBuildingDeckJSONSchema } from "./service";
+import { GameContext, GameContextType } from "../../component/Game/GameContext";
+import { Store } from "react-notifications-component";
 
 interface Props {
   boosters: SelectedBooster[];
@@ -14,13 +16,17 @@ interface Props {
 function BoosterGameSelectionSideModal(props: Props) {
   const { boosters, startDraftHandler } = props;
   const { t } = useTranslation();
+  const { lang } = React.useContext(GameContext) as GameContextType;
 
   const [extraCards, setExtraCards] = useState<IBuildingDeckExport>();
   const [successUpload, setSuccessUpload] = useState<string>();
   const [errorUpload, setErrorUpload] = useState<string>();
 
-  const getTotalExportCardsNumber = (cardsExport: IBuildingDeckExport) => cardsExport.deck.length
-  + cardsExport.extraDeck.length + cardsExport.bookmarked.length + cardsExport.stock.length;
+  const getTotalExportCardsNumber = (
+    cardsExport: IBuildingDeckExport,
+  ) => cardsExport.cards.deck.length
+  + cardsExport.cards.extraDeck.length
+  + cardsExport.cards.bookmarked.length + cardsExport.cards.stock.length;
 
   const onFileUpload = (f: File) => {
     uploadFile(f).then((res) => {
@@ -34,6 +40,21 @@ function BoosterGameSelectionSideModal(props: Props) {
         throw new Error("Invalid file format");
       }
       setErrorUpload(undefined);
+      if (res.lang !== lang) {
+        Store.addNotification({
+          title: t("Wrong language"),
+          message: t("The language of the save doesn't match the currently set language."),
+          type: "warning",
+          insert: "bottom",
+          container: "bottom-right",
+          animationIn: ["animate__animated", "animate__fadeIn"],
+          animationOut: ["animate__animated", "animate__fadeOut"],
+          dismiss: {
+            duration: 5000,
+            onScreen: true,
+          },
+        });
+      }
       const nbr = getTotalExportCardsNumber(res);
       setSuccessUpload(`${nbr} cards will be imported!`);
       setExtraCards(res);

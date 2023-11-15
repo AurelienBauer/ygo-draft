@@ -135,7 +135,7 @@
   width: 100%;
 }
 
-.deck-builder-search-type-span {
+.deck-builder-search-span {
   display: flex;
   // width: 2rem;
   height: 100%;
@@ -164,4 +164,42 @@
   color: white;
   outline-width: 0;
   padding-left: .25rem;
+}
+
+.deck-builder-search-attribute > select {
+  border: solid 1px gray;
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+  background-color: $content-bg;
+  color: white;
+  outline-width: 0;
+  padding-left: .25rem;
+}
+
+.deck-builder-search-race > select {
+  border: solid 1px gray;
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+  background-color: $content-bg;
+  color: white;
+  outline-width: 0;
+  padding-left: .25rem;
+}
+
+.cards-list-card-number-over {
+  position: absolute;
+  display: flex;
+  pointer-events: none;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+.cards-list-card-number-over > div {
+  display: flex;
+  margin: auto;
+  font-size: 2.25vw;
+  overflow: hidden;
+  color: #dfdfdf;
 }

@@ -79,31 +79,41 @@ export function sortAndMapBoostersOpeningList(boosters: IBooster[], lang = "en")
 export const IBuildingDeckJSONSchema: JSONSchemaType<IBuildingDeckExport> = {
   type: "object",
   properties: {
-    deck: {
-      type: "array",
-      items: {
-        type: "number",
-      },
+    lang: {
+      type: "string",
+      enum: ["en", "fr"],
     },
-    extraDeck: {
-      type: "array",
-      items: {
-        type: "number",
+    cards: {
+      type: "object",
+      properties: {
+        deck: {
+          type: "array",
+          items: {
+            type: "number",
+          },
+        },
+        extraDeck: {
+          type: "array",
+          items: {
+            type: "number",
+          },
+        },
+        stock: {
+          type: "array",
+          items: {
+            type: "number",
+          },
+        },
+        bookmarked: {
+          type: "array",
+          items: {
+            type: "number",
+          },
+        },
       },
-    },
-    stock: {
-      type: "array",
-      items: {
-        type: "number",
-      },
-    },
-    bookmarked: {
-      type: "array",
-      items: {
-        type: "number",
-      },
+      required: ["deck", "bookmarked", "extraDeck", "stock"],
     },
   },
-  required: ["deck", "extraDeck", "stock", "bookmarked"],
+  required: ["cards", "lang"],
   additionalProperties: false,
 };

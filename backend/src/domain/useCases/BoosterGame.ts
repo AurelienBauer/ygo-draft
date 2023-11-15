@@ -103,15 +103,16 @@ export default class BoosterGame extends Game {
     };
   }
 
-  public async deckImport(deck: IBuildingDeckExport, lang: Langs) {
-    const cards = await this.ds.card.getByIDs(
-      [...deck.deck, ...deck.extraDeck, ...deck.bookmarked, ...deck.stock],
+  public async deckImport(exp: IBuildingDeckExport) {
+    const { cards, lang } = exp;
+    const allCards = await this.ds.card.getByIDs(
+      [...cards.deck, ...cards.extraDeck, ...cards.bookmarked, ...cards.stock],
       lang,
     );
 
     const storeCards = (cardsID: number[], addToBuilder: (c :ICard) => void) => {
       cardsID.forEach((bCardID) => {
-        const card = cards.find((c) => c.id === bCardID);
+        const card = allCards.find((c) => c.id === bCardID);
         if (!card) {
           throw new Error(`Card with the id: ${bCardID} not found`);
         }
@@ -120,10 +121,10 @@ export default class BoosterGame extends Game {
       });
     };
 
-    storeCards(deck.deck, (c) => this.deckBuilder.addToDeck(c));
-    storeCards(deck.extraDeck, (c) => this.deckBuilder.addToExtraDeck(c));
-    storeCards(deck.bookmarked, (c) => this.deckBuilder.addToBooked(c));
-    storeCards(deck.stock, (c) => this.deckBuilder.addToStock(c));
+    storeCards(cards.deck, (c) => this.deckBuilder.addToDeck(c));
+    storeCards(cards.extraDeck, (c) => this.deckBuilder.addToExtraDeck(c));
+    storeCards(cards.bookmarked, (c) => this.deckBuilder.addToBooked(c));
+    storeCards(cards.stock, (c) => this.deckBuilder.addToStock(c));
   }
 
   public moveCardByUUID(uuid: string, from: DeckBuilderLoc, to: DeckBuilderLoc) {

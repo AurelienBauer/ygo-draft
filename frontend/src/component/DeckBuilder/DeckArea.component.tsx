@@ -4,7 +4,7 @@ import React, {
 } from "react";
 
 import { useDrop } from "react-dnd";
-import { filterCards, orderCards } from "../../service";
+import { filterCards, groupCards, orderCards } from "../../service";
 import DragableCard from "./DragableCard.component";
 import { DeckBuilderFilter, DeckBuilderLoc, ICard } from "../../types";
 import Icon from "../../frontendComponent/Icon.components";
@@ -46,7 +46,9 @@ function DeckArea(props: Props) {
   return (
     <div className={`card-area ${sectionName}`}>
       <div className="cards-list" ref={drop}>
-        {orderCards(filterCards(deck, searchFilters ?? { search: "", level: "", type: "" }))
+        {groupCards(orderCards(filterCards(deck, searchFilters ?? {
+          search: "", level: "", type: "", race: "", attribute: "",
+        })))
           .map((card) => (
             <div
               key={card.uuid}
@@ -60,6 +62,9 @@ function DeckArea(props: Props) {
                 card={card}
                 sectionName={sectionName}
               />
+              <div className="cards-list-card-number-over">
+                {card.number > 1 && (<div>{card.number}</div>)}
+              </div>
             </div>
           ))}
       </div>
@@ -76,7 +81,9 @@ function DeckArea(props: Props) {
 }
 
 DeckArea.defaultProps = {
-  searchFilters: { search: "", level: "", type: "" },
+  searchFilters: {
+    search: "", level: "", type: "", race: "", attribute: "",
+  },
 };
 
 export default DeckArea;

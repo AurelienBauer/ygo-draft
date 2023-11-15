@@ -10,10 +10,13 @@ export interface IDeck {
 }
 
 export interface IBuildingDeckExport {
-  deck: number[],
-  extraDeck: number[],
-  stock: number[],
-  bookmarked: number[],
+  lang: Langs,
+  cards: {
+    deck: number[],
+    extraDeck: number[],
+    stock: number[],
+    bookmarked: number[],
+  }
 }
 
 export interface IBuildingDeckExportInfo {

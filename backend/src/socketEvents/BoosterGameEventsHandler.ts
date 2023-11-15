@@ -71,7 +71,7 @@ export default class BoosterGameEventsHandler {
   ) {
     const game = BoosterGameEventsHandler.getGame(socket);
 
-    game.deckImport(playback.export, playback.lang).then(() => callback({ data: "Deck imported" }));
+    game.deckImport(playback.export).then(() => callback({ data: "Deck imported" }));
   }
 
   public moveCard(
