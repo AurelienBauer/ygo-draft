@@ -39,7 +39,7 @@ function Card(props: Props) {
       className="unselectable"
       draggable="false"
       style={{ width: widthSize, maxWidth: "14rem" }}
-      src="https://images.ygoprodeck.com/images/cards/100421010.jpg"
+      src="https://images.ygoprodeck.com/images/cards/back_high.jpg"
       alt=""
     />
   );
